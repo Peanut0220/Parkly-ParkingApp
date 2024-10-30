@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/lblDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="7 April 2024"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="5:00 PM"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblDate" />
+
+        <TextView
+            android:id="@+id/end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="6:00 PM"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="@color/md_theme_dark_outline"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/start_time"
+            app:layout_constraintStart_toStartOf="@id/start_time"
+            app:layout_constraintTop_toBottomOf="@id/start_time" />
+
+        <io.getstream.avatarview.AvatarView
+            android:id="@+id/avatarView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@id/start_time"
+            app:layout_constraintTop_toTopOf="@+id/start_time">
+
+        </io.getstream.avatarview.AvatarView>
+
+        <TextView
+            android:id="@+id/applicant_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="GOH CHUN YEN"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/avatarView"
+            app:layout_constraintTop_toTopOf="@+id/start_time" />
+
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/applied_job"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Marketing Manager"
+            app:chipIcon="@drawable/ic_job"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/applicant_name"
+            app:layout_constraintTop_toBottomOf="@id/applicant_name" />
+
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="PV18 Residence Setapak saffaffdsf"
+            app:chipIcon="@drawable/baseline_location_on_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/applicant_name"
+            app:layout_constraintTop_toBottomOf="@id/applied_job" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/video"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="www.cjsj.com"
+            app:chipIcon="@drawable/baseline_videocam_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/applicant_name"
+            app:layout_constraintTop_toBottomOf="@id/location" />
+
+        <TextView
+            android:id="@+id/remark"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="PV18 Residence Setapak saffaffdsf"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/applicant_name"
+            app:layout_constraintTop_toBottomOf="@id/video" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/round_home_24"
+        android:title="Home" />
+    <item
+        android:id="@+id/communityFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/round_diversity_1_24"
+        android:title="Community" />
+    <item
+        android:id="@+id/chatFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/round_chat_bubble_24"
+        android:title="Chat" />
+    <item
+        android:id="@+id/eventFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/round_event_24"
+        android:title="Interview" />
+    <item
+        android:id="@+id/profileFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/round_account_circle_24"
+        android:title="Profile" />
+</menu>

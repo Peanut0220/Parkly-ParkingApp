@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_nav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.parkly.job.view.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_jobDetailsFragment"
+            app:destination="@id/jobDetailsFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_homeFragment_to_postJobFragment"
+            app:destination="@id/postJobFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_homeFragment_to_archivedJobFragment"
+            app:destination="@id/archivedJobFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_homeFragment_to_savedJobFragment"
+            app:destination="@id/savedJobFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/communityFragment"
+        android:name="com.example.parkly.community.view.CommunityFragment"
+        android:label="fragment_community"
+        tools:layout="@layout/fragment_community" >
+        <action
+            android:id="@+id/action_communityFragment_to_addPostFragment"
+            app:destination="@id/addPostFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_communityFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_communityFragment_to_postCommentFragment"
+            app:destination="@id/postCommentFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="com.example.parkly.interview.EventFragment"
+        android:label="fragment_event"
+        tools:layout="@layout/fragment_event" >
+        <action
+            android:id="@+id/action_eventFragment_to_scheduleInterviewFragment"
+            app:destination="@id/scheduleInterviewFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.parkly.chat.view.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" >
+        <action
+            android:id="@+id/action_chatFragment_to_chatTextFragment"
+            app:destination="@id/chatTextFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.parkly.profile.view.MyProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_my_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_settingFragment"
+            app:destination="@id/settingFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_profileFragment_to_emailVerificationFragment"
+            app:destination="@id/emailVerificationFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
+        <action
+            android:id="@+id/action_profileFragment_to_postCommentFragment"
+            app:destination="@id/postCommentFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_profileFragment_to_addPostFragment"
+            app:destination="@id/addPostFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_profileFragment_to_postDetailsFragment"
+            app:destination="@id/postDetailsFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.parkly.profile.view.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_settingFragment_to_signUpEnterpriseFragment"
+            app:destination="@id/signUpEnterpriseFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
+        <action
+            android:id="@+id/action_settingFragment_to_profileUpdateFragment"
+            app:destination="@id/profileUpdateFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
+        <action
+            android:id="@+id/action_settingFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/addPostFragment"
+        android:name="com.example.parkly.community.view.AddPostFragment"
+        android:label="fragment_add_post"
+        tools:layout="@layout/fragment_add_post" />
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.parkly.profile.view.UserProfileFragment"
+        android:label="UserProfileFragment"
+        tools:layout="@layout/fragment_user_profile">
+        <action
+            android:id="@+id/action_userProfileFragment_to_postCommentFragment"
+            app:destination="@id/postCommentFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/jobDetailsFragment"
+        android:name="com.example.parkly.job.view.JobDetailsFragment"
+        android:label="fragment_job_details"
+        tools:layout="@layout/fragment_job_details">
+        <action
+            android:id="@+id/action_jobDetailsFragment_to_applyJobFragment"
+            app:destination="@id/applyJobFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_jobDetailsFragment_to_postJobFragment"
+            app:destination="@id/postJobFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_jobDetailsFragment_to_viewApplicantFragment"
+            app:destination="@id/viewApplicantFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/applyJobFragment"
+        android:name="com.example.parkly.job_application.ApplyJobFragment"
+        android:label="fragment_apply_job"
+        tools:layout="@layout/fragment_apply_job" >
+        <action
+            android:id="@+id/action_applyJobFragment_to_eventFragment"
+            app:destination="@id/eventFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/postJobFragment"
+        android:name="com.example.parkly.job.view.PostJobFragment"
+        android:label="fragment_post_job"
+        tools:layout="@layout/fragment_post_job" >
+        <action
+            android:id="@+id/action_postJobFragment_to_jobDetailsFragment"
+            app:destination="@id/jobDetailsFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/viewApplicantFragment"
+        android:name="com.example.parkly.job_application.ViewApplicantFragment"
+        android:label="ViewApplicantFragment"
+        tools:layout="@layout/fragment_view_applicant">
+        <action
+            android:id="@+id/action_viewApplicantFragment_to_applicantDetailsFragment"
+            app:destination="@id/applicantDetailsFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/applicantDetailsFragment"
+        android:name="com.example.parkly.job_application.ApplicantDetailsFragment"
+        android:label="ApplicantDetailsFragment"
+        tools:layout="@layout/fragment_applicant_details"/>
+    <fragment
+        android:id="@+id/chatTextFragment"
+        android:name="com.example.parkly.chat.view.ChatTextFragment"
+        android:label="ChatTextFragment"
+        tools:layout="@layout/fragment_chat_text"/>
+    <fragment
+        android:id="@+id/scheduleInterviewFragment"
+        android:name="com.example.parkly.interview.ScheduleInterviewFragment"
+        android:label="ScheduleInterviewFragment"
+        tools:layout="@layout/fragment_schedule_interview"/>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.parkly.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/archivedJobFragment"
+        android:name="com.example.parkly.job.view.ArchivedJobFragment"
+        android:label="ArchivedJobFragment"
+        tools:layout="@layout/fragment_archived_job"/>
+    <fragment
+        android:id="@+id/savedJobFragment"
+        android:name="com.example.parkly.job.view.SavedJobFragment"
+        android:label="SavedJobFragment"
+        tools:layout="@layout/fragment_saved_job"/>
+    <fragment
+        android:id="@+id/signUpEnterpriseFragment"
+        android:name="com.example.parkly.profile.view.SignUpEnterpriseFragment"
+        android:label="fragment_sign_up_enterprise"
+        tools:layout="@layout/fragment_sign_up_enterprise"/>
+    <fragment
+        android:id="@+id/emailVerificationFragment"
+        android:name="com.example.parkly.profile.view.EmailVerificationFragment"
+        android:label="EmailVerificationFragment" />
+    <fragment
+        android:id="@+id/profileUpdateFragment"
+        android:name="com.example.parkly.profile.view.ProfileUpdateFragment"
+        android:label="fragment_profile_update"
+        tools:layout="@layout/fragment_profile_update" />
+    <fragment
+        android:id="@+id/postCommentFragment"
+        android:name="com.example.parkly.community.view.PostCommentFragment"
+        android:label="PostCommentFragment">
+        <action
+            android:id="@+id/action_postCommentFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/pdfViewerFragment"
+        android:name="com.example.parkly.util.PdfViewerFragment"
+        android:label="fragment_pdf_viewer"
+        tools:layout="@layout/fragment_pdf_viewer" />
+    <fragment
+        android:id="@+id/postDetailsFragment"
+        android:name="com.example.parkly.community.view.PostDetailsFragment"
+        android:label="PostDetailsFragment">
+        <action
+            android:id="@+id/action_postDetailsFragment_to_addPostFragment"
+            app:destination="@id/addPostFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_postDetailsFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.example.parkly.profile.view.ChangePasswordFragment"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password" />
+
+</navigation>

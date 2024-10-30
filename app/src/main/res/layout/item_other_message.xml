@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/txt_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="19 MAY 2024"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:background="@drawable/date_bubble"
+            android:textSize="15sp"
+            android:textColor="@color/md_theme_dark_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
+
+        <io.getstream.avatarview.AvatarView
+            android:id="@+id/avatarView"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+
+            app:avatarViewPlaceholder="@drawable/launchpadlogo_whitebg"
+            app:avatarViewShape="circle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_date"
+            app:srcCompat="@drawable/round_account_circle_24"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/txt_other_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="280dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/other_message_bubble"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="8dp"
+            android:text="Hi, yesterday I sent you the file which is related to xxx."
+            android:textColor="@color/md_theme_dark_inverseSurface"
+            android:textSize="17sp"
+            app:layout_constraintStart_toEndOf="@id/avatarView"
+            app:layout_constraintTop_toTopOf="@id/avatarView" />
+
+        <TextView
+            android:id="@+id/txt_other_message_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="4dp"
+            android:text="1:56 PM"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/txt_other_message"
+            app:layout_constraintStart_toStartOf="@id/txt_other_message"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
