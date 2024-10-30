@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "616595542565",
+    "project_id": "advanceparkingapp-3ec88",
+    "storage_bucket": "advanceparkingapp-3ec88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616595542565:android:6d192f81ada43cdde525cc",
+        "android_client_info": {
+          "package_name": "com.example.advanceparkingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7kyMrfxzu7Llb-wBtKhPDpV7x2tBLPb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
