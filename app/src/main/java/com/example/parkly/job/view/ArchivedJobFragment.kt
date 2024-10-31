@@ -42,16 +42,7 @@ class ArchivedJobFragment : Fragment() {
 
         jobVM.updateArchived()
 
-        jobVM.getArchivedLD().observe(viewLifecycleOwner) {
-            var archivedJobList = it.filter { it.companyID == userVM.getUserLD().value?.company_id }
 
-            if (archivedJobList.isEmpty()) {
-                binding.noArchivedJob.visibility = View.VISIBLE
-                return@observe
-            }
-            archivedJobList.forEach { it.company = companyVM.get(it.companyID) ?: Company() }
-            adapter.submitList(archivedJobList.sortedByDescending { it.deletedAt })
-        }
 
         binding.topAppBar.setNavigationOnClickListener { nav.navigateUp() }
 

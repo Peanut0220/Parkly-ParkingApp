@@ -1,5 +1,6 @@
 package com.example.parkly.util
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
@@ -191,19 +192,19 @@ fun Fragment.loadingDialog(): Dialog {
     return dialog
 }
 
-fun Fragment.dialogCompanyNotRegister(status: Boolean, nav: NavController) {
-    if (status) {
-        dialog(
-            getString(R.string.register_your_company),
-            getString(R.string.dialog_company_not_register),
-            getString(R.string.remind_me_later),
-            getString(R.string.register_now),
-            onPositiveClick = { _, _ ->
-                nav.navigate(R.id.signUpEnterpriseFragment)
+fun Fragment.dialogProfileNotComplete(nav: NavController) {
+    val dialog = AlertDialog.Builder(requireContext())
+        .setTitle(getString(R.string.complete_now))
+        .setMessage(getString(R.string.dialog_complete_your_profile))
+        .setPositiveButton(getString(R.string.complete_now)) { _, _ ->
+            nav.navigate(R.id.profileUpdateFragment)
+        }
+        .create()
 
-            }
-        )
-    }
+    // Make the dialog non-cancelable
+    dialog.setCancelable(false)
+    dialog.setCanceledOnTouchOutside(false)
+    dialog.show()
 }
 
 fun Fragment.displayErrorHelper(view: TextInputLayout, errorMsg: String) {

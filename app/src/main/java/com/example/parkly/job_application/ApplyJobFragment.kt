@@ -116,11 +116,11 @@ class ApplyJobFragment : Fragment() {
             onPositiveClick = { _, _ ->
                 upload()
                 //TODO push notification
-                sendPushNotification(
+              /*  sendPushNotification(
                     "NEW JOB APPLICATION",
                     // TO SOLVE DISPLAY NAME ISSUE
                     "${userVM.get(userVM.getAuth().uid)?.name} has applied your job ${job.jobName}.",
-                    userVM.getByCompanyID(job.companyID)!!.token)
+                    userVM.getByCompanyID(job.companyID)!!.token)*/
             })
 
     }

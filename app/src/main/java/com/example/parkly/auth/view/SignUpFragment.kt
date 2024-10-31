@@ -24,7 +24,7 @@ class SignUpFragment : Fragment() {
     private val userVM: UserViewModel by viewModels()
     private val nav by lazy { findNavController() }
     private lateinit var binding: FragmentSignUpBinding
-    private var isEnterprise = false
+    private var type = "Driver"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,12 +34,7 @@ class SignUpFragment : Fragment() {
 
         binding.btnSignUp.setOnClickListener {
             submit()
-            isEnterprise = false
-        }
 
-        binding.btnEnterprise.setOnClickListener {
-            submit()
-            isEnterprise = true
         }
 
         viewModel.errorResponseMsg.observe(viewLifecycleOwner) {
@@ -50,7 +45,7 @@ class SignUpFragment : Fragment() {
             if (it) {
                 lifecycleScope.launch {
                     val user = userVM.getAuth()
-                    user.isEnterprise = isEnterprise
+                    user.type = type
                     userVM.set(user)
                 }
                 nav.navigateUp()

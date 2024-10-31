@@ -47,11 +47,7 @@ class SettingFragment : Fragment() {
 
         binding.cardPersonalInfo.setOnClickListener { nav.navigate(R.id.action_settingFragment_to_profileUpdateFragment) }
 
-        userVM.getUserLD().observe(viewLifecycleOwner) {
-            if (it.isEnterprise) {
-                binding.cardCompany.visibility = View.VISIBLE
-            }
-        }
+
 
         return binding.root
     }

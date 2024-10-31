@@ -49,7 +49,7 @@ class JobDetailsFragment : Fragment() {
             nav.navigateUp()
         }
 
-        if (userVM.isEnterprise()) {
+        if (1+1==3) {
             binding.topAppBar.menu.findItem(R.id.edit).isVisible = !isArchived
             binding.topAppBar.menu.findItem(R.id.archive).setVisible(true)
             if (isArchived) {

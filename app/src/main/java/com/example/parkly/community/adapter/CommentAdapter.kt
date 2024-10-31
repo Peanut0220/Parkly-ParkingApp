@@ -48,9 +48,7 @@ class CommentAdapter(
                 ContextCompat.getDrawable(holder.itemView.context, avatarDrawableRes)
             holder.binding.avatarView.setImageDrawable(avatarDrawable)
         } else {
-            if (postComment.user.isEnterprise && postComment.user.company_id != "") {
-                holder.binding.avatarView.indicatorEnabled = true
-            }
+
             holder.binding.avatarView.loadImage(postComment.user.avatar.toBitmap())
         }
 

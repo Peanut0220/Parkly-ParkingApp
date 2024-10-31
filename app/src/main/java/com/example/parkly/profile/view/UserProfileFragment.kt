@@ -53,9 +53,7 @@ class UserProfileFragment : Fragment() {
                         R.drawable.round_account_circle_24
                     else
                         it.avatar.toBitmap()
-                if (user.isEnterprise && user.company_id != "") {
-                    binding.avatarView.indicatorEnabled = true
-                }
+
                 binding.txtName.text = it.name
                 binding.avatarView.loadImage(avatar)
 

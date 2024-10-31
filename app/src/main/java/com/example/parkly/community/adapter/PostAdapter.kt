@@ -30,9 +30,7 @@ class PostAdapter (
             val time = displayPostTime(post.createdAt)
 
             holder.binding.avatarView.loadImage(post.user.avatar.toBitmap())
-            if (post.user.isEnterprise && post.user.company_id != "") {
-                holder.binding.avatarView.indicatorEnabled = true
-            }
+
             holder.binding.postImageView.setImageBlob(post.image)
             holder.binding.txtDescription.text = post.description
             holder.binding.txtUsername.text = post.user.name

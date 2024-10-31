@@ -184,8 +184,8 @@ class PostJobFragment : Fragment() {
             requirement = binding.edtJobRequirement.text.toString().trim(),
             createdAt = if (isEditing) binding.createdAt.text.toString()
                 .toLong() else DateTime.now().millis,
-            updatedAt = if (isEditing) DateTime.now().millis else 0,
-            companyID = userVM.getUserLD().value!!.company_id
+            updatedAt = if (isEditing) DateTime.now().millis else 0
+
         )
 
     }
@@ -246,7 +246,7 @@ class PostJobFragment : Fragment() {
             requirement = binding.edtJobRequirement.text.toString().trim(),
             createdAt = binding.createdAt.text.toString().toLong(),
             updatedAt = binding.updatedAt.text.toString().toLong(),
-            companyID = userVM.getUserLD().value!!.company_id
+
         )
         Log.e("JOB1", job.toString())
         Log.e("JOB2", jobVM.get(jobID).toString())

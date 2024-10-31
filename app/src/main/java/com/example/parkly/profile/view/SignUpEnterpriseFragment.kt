@@ -39,11 +39,11 @@ class SignUpEnterpriseFragment : Fragment() {
                 snackbar("Company Updated Successfully")
             }
         }
-        userVM.getUserLD().observe(viewLifecycleOwner) {
+       /* userVM.getUserLD().observe(viewLifecycleOwner) {
             if (it.company_id != "" && it.isEnterprise) {
                 updateUI(companyVM.get(it.company_id))
             }
-        }
+        }*/
 
 
         return binding.root
@@ -76,10 +76,10 @@ class SignUpEnterpriseFragment : Fragment() {
             return
         }
 
-        lifecycleScope.launch {
+        /*lifecycleScope.launch {
             val companyId = companyVM.set(company)
             userVM.attachCompany(companyId)
-        }
+        }*/
 
     }
 

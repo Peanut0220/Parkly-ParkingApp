@@ -19,7 +19,7 @@ import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentHomeBinding
 import com.example.parkly.job.adapter.JobAdapter
 import com.example.parkly.data.viewmodel.JobViewModel
-import com.example.parkly.util.dialogCompanyNotRegister
+import com.example.parkly.util.dialogProfileNotComplete
 import com.example.parkly.util.getToken
 import com.google.android.material.search.SearchView
 import kotlinx.coroutines.launch
@@ -66,9 +66,16 @@ class HomeFragment : Fragment(), BottomSheetListener {
             }
 
             binding.username.text = it.name
+
             //-----------------------------------------------------------
             // Company
-            updateUI()
+            if (!userVM.isUserDataComplete(it)) {
+                dialogProfileNotComplete(
+                    nav
+                )
+            }
+
+
             binding.btnSavedJob.visibility = View.VISIBLE
 
             //-----------------------------------------------------------
@@ -99,11 +106,7 @@ class HomeFragment : Fragment(), BottomSheetListener {
             var sortedJobList = jobList.sortedByDescending { job ->
                 job.createdAt
             }.filter { it.deletedAt == 0L }
-            if (userVM.isEnterprise()) {
-                sortedJobList =
-                    sortedJobList.filter { it.companyID == userVM.getUserLD().value!!.company_id }
 
-            }
 
             adapter.submitList(sortedJobList)
         }
@@ -123,10 +126,7 @@ class HomeFragment : Fragment(), BottomSheetListener {
             var sortedJobList = jobList.sortedByDescending { job ->
                 job.createdAt
             }
-            if (userVM.isEnterprise()) {
-                sortedJobList =
-                    sortedJobList.filter { it.companyID == userVM.getUserLD().value!!.company_id }
-            }
+
 
             svAdapter.submitList(sortedJobList)
         }
@@ -169,7 +169,7 @@ class HomeFragment : Fragment(), BottomSheetListener {
     private fun setAdapter(it: User): JobAdapter {
         return JobAdapter { holder, job ->
             holder.binding.root.setOnClickListener { detail(job.jobID) }
-            if (!userVM.isEnterprise()) {
+            if (true) {
                 holder.binding.bookmark.visibility = View.VISIBLE
                 val saveJob = jobVM.getSaveJobByUser(it.uid)
                 saveJob.forEach { jobs ->
@@ -194,7 +194,8 @@ class HomeFragment : Fragment(), BottomSheetListener {
     }
 
     private fun updateUI() {
-        if (userVM.isEnterprise()) {
+
+       /* if (userVM.isEnterprise()) {
             binding.homeTitle.text = resources.getString(R.string.your_posted_job)
             binding.btnSavedJob.text = resources.getString(R.string.Archived)
             binding.btnSavedJob.setOnClickListener {
@@ -217,7 +218,7 @@ class HomeFragment : Fragment(), BottomSheetListener {
             binding.btnSavedJob.setOnClickListener {
                 nav.navigate(R.id.action_homeFragment_to_savedJobFragment)
             }
-        }
+        }*/
     }
 
 

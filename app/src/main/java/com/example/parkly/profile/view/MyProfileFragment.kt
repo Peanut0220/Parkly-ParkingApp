@@ -47,9 +47,7 @@ class MyProfileFragment : Fragment() {
 
             binding.txtName.text = user.name
             binding.avatarView.loadImage(avatar)
-            if (userVM.isCompanyRegistered()) {
-                binding.avatarView.indicatorEnabled = true
-            }
+
             if (userVM.isVerified()) {
                 binding.btnVerify.visibility = View.GONE
             } else {
@@ -61,12 +59,12 @@ class MyProfileFragment : Fragment() {
                 ViewPagerAdapter(
                     requireActivity().supportFragmentManager,
                     lifecycle,
-                    if (userVM.isEnterprise()) arrayOf("My Post") else tabItems
+                    tabItems
                 )
             binding.viewPager.adapter = adapter
 
             TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-                tab.text = if (userVM.isEnterprise()) "My Post" else tabItems[position]
+                tab.text = tabItems[position]
             }.attach()
         }
 

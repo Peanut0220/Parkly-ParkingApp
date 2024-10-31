@@ -52,11 +52,25 @@ class UserViewModel(val app: Application) : AndroidViewModel(app) {
         USERS.document(auth.currentUser!!.uid)
             .update(
                 "name", user.name,
-                "avatar", user.avatar
+                "avatar", user.avatar,
+                "ic",user.ic,
+                "phone",user.phone,
+                "dob",user.dob
+
             )
             .addOnCompleteListener {
                 response.value = it.isSuccessful
             }.await()
+    }
+
+    fun isUserDataComplete(user: User): Boolean {
+        return user.uid.isNotBlank() &&
+                user.name.isNotBlank() &&
+                user.email.isNotBlank() &&
+                user.phone.isNotBlank() &&
+                user.ic.isNotBlank() &&
+                user.dob != 0L && // Ensures dob has a valid timestamp
+                user.type.isNotBlank()
     }
 
     fun getAuth() = auth.currentUser!!.let {
@@ -69,15 +83,8 @@ class UserViewModel(val app: Application) : AndroidViewModel(app) {
 
     fun getAll() = _userLLD.value ?: emptyList()
     fun get(userID: String) = getAll().find { it.uid == userID }
-    fun getByCompanyID(companyID: String) = getAll().find { it.company_id == companyID }
-
-    fun isEnterprise() = _userLD.value!!.isEnterprise
-    fun isCompanyRegistered() = _userLD.value?.company_id != ""
 
     fun isVerified() = auth.currentUser!!.isEmailVerified
-    fun attachCompany(id: String) {
-        USERS.document(getAuth().uid).update("company_id", id)
-    }
 
     fun init() = Unit
 }

@@ -8,9 +8,10 @@ data class User(
     val uid: String = "",
     val name: String = "",
     val email: String = "",
+    val phone: String = "",
     val avatar: Blob = Blob.fromBytes(ByteArray(0)),
-    val provider: String = "",
-    val company_id: String = "",
-    var isEnterprise: Boolean = false,
+    val ic: String = "",
+    val dob: Long = 0,
+    var type: String = "",
     val token: String = "",
 )

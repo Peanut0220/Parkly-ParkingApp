@@ -69,7 +69,7 @@ class TabUpcomingInterviewFragment : Fragment() {
                 }
             }
             h.binding.root.setOnClickListener {
-                if (userVM.isEnterprise())
+                if (true)
                     nav.navigate(
                         R.id.scheduleInterviewFragment, bundleOf(
                             "jobAppID" to f.jobApp.id,
@@ -78,7 +78,7 @@ class TabUpcomingInterviewFragment : Fragment() {
                         )
                     )
             }
-        }, userVM.isEnterprise())
+        }, true)
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
@@ -107,8 +107,8 @@ class TabUpcomingInterviewFragment : Fragment() {
 
             //filter for the particular user only
             val personalInterviewList = interviewList.filter {
-                if (userVM.isEnterprise())
-                    it.jobApp.job.companyID == userVM.getUserLD().value!!.company_id
+                if (true)
+                    it.jobApp.job.companyID == "qwe"
                 else
                     it.jobApp.userId == userVM.getAuth().uid
             }.filter {
