@@ -135,8 +135,10 @@
                         android:layout_height="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/rv_job_card">
+                        app:layout_constraintTop_toTopOf="@+id/rv_job_card"
+                        app:layout_constraintVertical_bias="1.0">
 
                         <com.google.android.material.progressindicator.CircularProgressIndicator
                             android:layout_width="wrap_content"
@@ -151,85 +153,6 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <com.google.android.material.search.SearchView
-                    android:id="@+id/search_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/searchview_hint"
-                    app:layout_anchor="@id/search_bar">
-                    <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <HorizontalScrollView
-                            android:id="@+id/chip_scroll"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scrollbars="none"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <com.google.android.material.chip.ChipGroup
-                                android:id="@+id/filter_chips"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="4dp"
-                                android:paddingHorizontal="16dp"
-                                app:singleLine="true">
-
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chip_position"
-                                    style="@style/Widget.Material3.Chip.Suggestion"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/position" />
-
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chip_job_type"
-                                    style="@style/Widget.Material3.Chip.Suggestion"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/job_type" />
-
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chip_workplace"
-                                    style="@style/Widget.Material3.Chip.Suggestion"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/workplace" />
-
-                                <com.google.android.material.chip.Chip
-                                    android:id="@+id/chip_salary"
-                                    style="@style/Widget.Material3.Chip.Suggestion"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/salary" />
-
-                            </com.google.android.material.chip.ChipGroup>
-
-                        </HorizontalScrollView>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_search_result"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_marginTop="8dp"
-                            android:scrollbars="vertical"
-                            app:layoutManager="LinearLayoutManager"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/chip_scroll"
-                            tools:listitem="@layout/item_job_card" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                </com.google.android.material.search.SearchView>
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

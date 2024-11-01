@@ -84,7 +84,7 @@ class HomeFragment : Fragment(), BottomSheetListener {
             svAdapter = setAdapter(it)
 
             binding.rvJobCard.adapter = adapter
-            binding.rvSearchResult.adapter = svAdapter
+
 
             jobVM.updateResult()
             jobVM.reloadJob()
@@ -143,25 +143,7 @@ class HomeFragment : Fragment(), BottomSheetListener {
         // Search And Filter
 
 
-        binding.searchView.addTransitionListener { _, _, newState ->
-            if (newState == SearchView.TransitionState.HIDDEN) {
-                clearFilter()
-                jobVM.clearSearch()
-            }
-        }
 
-        binding.searchView.editText.doOnTextChanged { text, _, _, _ ->
-            isSearching = true
-            jobVM.search(text.toString())
-        }
-
-        binding.chipPosition.setOnClickListener { chipPosition() }
-
-        binding.chipJobType.setOnClickListener { chipJobType() }
-
-        binding.chipWorkplace.setOnClickListener { chipWorkplace() }
-
-        binding.chipSalary.setOnClickListener { chipSalary() }
 
         return binding.root
     }
@@ -227,14 +209,6 @@ class HomeFragment : Fragment(), BottomSheetListener {
         chipJobTypeState = emptyList<String>().toMutableList()
         chipWorkplaceState = emptyList<String>().toMutableList()
         chipSalaryState = mutableListOf("0", "999999")
-        binding.chipPosition.isChecked = false
-        binding.chipJobType.isChecked = false
-        binding.chipWorkplace.isChecked = false
-        binding.chipSalary.isChecked = false
-        binding.chipPosition.text = "Position"
-        binding.chipJobType.text = "Job Type"
-        binding.chipWorkplace.text = "Workplace"
-        binding.chipSalary.text = "Salary"
         isSearching = false
     }
 
@@ -282,53 +256,7 @@ class HomeFragment : Fragment(), BottomSheetListener {
 
     override fun onValueSelected(value: List<String>, type: BottomSheetListener.Type) {
 
-        when (type) {
-            BottomSheetListener.Type.POSITION -> {
-                jobVM.filterPosition(value)
-                chipPositionState = value.toMutableList()
-                binding.chipPosition.isChecked = value.isNotEmpty()
-                binding.chipPosition.text = "Position"
-                if (value.isNotEmpty()) {
-                    binding.chipPosition.text =
-                        if (value.count() > 1) "${value[0]}+${value.count() - 1}" else value[0]
-                }
-            }
 
-            BottomSheetListener.Type.JOB_TYPE -> {
-                jobVM.filterJobType(value)
-                chipJobTypeState = value.toMutableList()
-                binding.chipJobType.isChecked = value.isNotEmpty()
-                binding.chipJobType.text = "Job Type"
-                if (value.isNotEmpty()) {
-                    binding.chipJobType.text =
-                        if (value.count() > 1) "${value[0]}+${value.count() - 1}" else value[0]
-                }
-            }
-
-            BottomSheetListener.Type.WORKPLACE -> {
-                jobVM.filterWorkplace(value)
-                chipWorkplaceState = value.toMutableList()
-                binding.chipWorkplace.isChecked = value.isNotEmpty()
-                binding.chipWorkplace.text = "Workplace"
-                if (value.isNotEmpty()) {
-                    binding.chipWorkplace.text =
-                        if (value.count() > 1) "${value[0]}+${value.count() - 1}" else value[0]
-                }
-            }
-
-            BottomSheetListener.Type.SALARY -> {
-                val isDefaultValue = value[0].toInt() == 0 && value[1].toInt() == 999999
-                jobVM.filterSalary(value)
-                chipSalaryState = value.toMutableList()
-                binding.chipSalary.isChecked = !isDefaultValue
-                binding.chipSalary.text = "Salary"
-                if (!isDefaultValue) {
-                    binding.chipSalary.text =
-                        "RM ${value[0]} - RM ${value[1]}"
-                }
-            }
-        }
-        isSearching = true
 
     }
 }

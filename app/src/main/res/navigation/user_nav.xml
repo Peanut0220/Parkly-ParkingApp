@@ -325,5 +325,18 @@
         android:name="com.example.parkly.profile.view.ChangePasswordFragment"
         android:label="fragment_change_password"
         tools:layout="@layout/fragment_change_password" />
+    <fragment
+        android:id="@+id/parkingLotFragment"
+        android:name="com.example.parkly.ParkingLotFragment"
+        android:label="Parking Lot">
+        <action
+            android:id="@+id/action_parkingLotFragment_to_parkingSpaceDetailsFragment"
+            app:destination="@id/parkingSpaceDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/parkingSpaceDetailsFragment"
+        android:name="com.example.parkly.ParkingSpaceDetailsFragment"
+        android:label="Parking Space Details" />
 
 </navigation>

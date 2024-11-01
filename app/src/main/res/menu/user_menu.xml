@@ -8,11 +8,11 @@
         android:icon="@drawable/round_home_24"
         android:title="Home" />
     <item
-        android:id="@+id/communityFragment"
+        android:id="@+id/parkingLotFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/round_diversity_1_24"
-        android:title="Community" />
+        android:title="Parking Lot" />
     <item
         android:id="@+id/chatFragment"
         android:layout_width="wrap_content"
