@@ -1,6 +1,7 @@
 package com.example.parkly
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -9,14 +10,26 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.example.parkly.community.viewmodel.PostViewModel
+import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
+
+
 
 class ParkingLotView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : View(context, attrs) {
-
+    private val spaceVM: ParkingSpaceViewModel
+    private val nav by lazy { findNavController() }
     private val parkingSpaces = mutableListOf<Rect>()
+    private val roadRectangles = mutableListOf<Rect>()
     private val entrySign = Rect()
     private val exitSign = Rect()
+    private val buildingSign = Rect()
     private val paint = Paint()
     private var offsetX = 0f
     private var offsetY = 0f
@@ -24,6 +37,8 @@ class ParkingLotView @JvmOverloads constructor(
     private var lastTouchX = 0f
     private var lastTouchY = 0f
     private var isDragging = false
+    private val borderPaint = Paint() // Paint for borders
+    private val borderRadius = 20f // Radius for rounded corners
 
     // Layout configuration variables
     private val cols = 10 // Parking spaces per row
@@ -39,6 +54,7 @@ class ParkingLotView @JvmOverloads constructor(
     private var maxOffsetY = 0f
     private var currentY = startY // Initialize currentY at the start position
 
+
     private val scaleGestureDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             scaleFactor *= detector.scaleFactor
@@ -50,7 +66,27 @@ class ParkingLotView @JvmOverloads constructor(
 
     init {
         paint.style = Paint.Style.FILL
+        paint.textAlign = Paint.Align.CENTER
+
         setupParkingLayout()
+
+
+
+        // Center the map around the Exit sign initially
+        val exitCenterX = exitSign.centerX().toFloat()
+        val exitCenterY = exitSign.centerY().toFloat()
+
+        // Adjust these additional offsets to control how far to the top-left you want to move the view
+        val additionalOffsetX = 900f // Adjust this to move further left (increase value for more left)
+        val additionalOffsetY = 1600f // Adjust this to move further up (increase value for more up)
+
+        // Calculate offsets with additional adjustments to position near the top-left corner of the Exit sign
+        offsetX = (width / 2 - exitCenterX) + additionalOffsetX
+        offsetY = (height / 2 - exitCenterY) + additionalOffsetY
+
+        // Ensure offsets are within the bounds
+        offsetX = offsetX.coerceIn(-maxOffsetX, maxOffsetX)
+        offsetY = offsetY.coerceIn(-maxOffsetY, maxOffsetY)
     }
 
     private fun setupParkingLayout() {
@@ -85,6 +121,7 @@ class ParkingLotView @JvmOverloads constructor(
             }
         }
 
+
         // Final road after the last group
         parkingSpaces.add(Rect(startX - 20, currentY, startX + cols * (spaceWidth + horizontalAisleSpacing), currentY + verticalRoadHeight))
         currentY += verticalRoadHeight // Move down for the last row of parking spaces
@@ -93,14 +130,13 @@ class ParkingLotView @JvmOverloads constructor(
         for (col in 0 until cols) {
             val left = startX + col * (spaceWidth + horizontalAisleSpacing)
             parkingSpaces.add(Rect(left, currentY, left + spaceWidth, currentY + spaceHeight))
-
         }
 
         // Define the position for the left column of parking spaces
         val leftColumnStartX = startX - spaceHeight - 100 // Align closely with the left road
         var leftColumnY = startY + spaceHeight + verticalAisleSpacing // Skip the top space for a blank area
 
-// Add parking spaces from top to bottom until reaching the bottom of the left road
+        // Add parking spaces from top to bottom until reaching the bottom of the left road
         while (leftColumnY + spaceWidth <= currentY) {
             // Create each parking space with original dimensions (rotated)
             val left = leftColumnStartX
@@ -113,20 +149,100 @@ class ParkingLotView @JvmOverloads constructor(
             // Move down for the next parking space
             leftColumnY += spaceWidth + verticalAisleSpacing
         }
+        // Add roads to the list of road rectangles
+        parkingSpaces.forEach { space ->
+            if (space.width() >200) {
+                roadRectangles.add(space)
+            }
+        }
 
         // Update the positions of the entry and exit signs based on the current layout
-        entrySign.set(startX-150, startY-200 , startX + 50, startY -100)
-        exitSign.set(startX + (cols * (spaceWidth + horizontalAisleSpacing)) - 100, currentY, startX + (cols * (spaceWidth + horizontalAisleSpacing)), currentY + 50)
-
-
+        entrySign.set(startX - 150, startY - 200, startX + 50, startY - 100)
+        exitSign.set(3300,2200,3500,2300)
+        buildingSign.set(1600,2200,1900,2300)
 
         // Calculate the maximum offsets based on the total layout
         maxOffsetX = ((cols * (spaceWidth + horizontalAisleSpacing)) * scaleFactor) - width / scaleFactor
         maxOffsetY = (currentY * scaleFactor) - height / scaleFactor
 
-
-
+        // Add the same layout on the right side of the right road
+        addRightSideParkingLayout()
     }
+
+    private fun addRightSideParkingLayout() {
+        val rightStartX = startX + (cols * (spaceWidth + horizontalAisleSpacing)) + 65 + horizontalAisleSpacing // Position for the right layout
+        var rightCurrentY = startY // Reset Y position for the right layout
+
+        // Start adding parking spaces for the right side
+        for (col in 0 until cols) {
+            val left = rightStartX + col * (spaceWidth + horizontalAisleSpacing)
+            parkingSpaces.add(Rect(left, rightCurrentY, left + spaceWidth, rightCurrentY + spaceHeight))
+        }
+        rightCurrentY += spaceHeight // Move down for the road below the first row
+
+        // Continue the same pattern as before
+        for (i in 0 until 3) { // Same number of groups of two rows of parking spaces
+            // Road after one row of parking spaces
+            parkingSpaces.add(Rect(rightStartX - 20, rightCurrentY, rightStartX + cols * (spaceWidth + horizontalAisleSpacing), rightCurrentY + verticalRoadHeight))
+            rightCurrentY += verticalRoadHeight // Move down for the next rows
+
+            // Two rows of parking spaces
+            for (j in 0 until 2) {
+                for (col in 0 until cols) {
+                    val left = rightStartX + col * (spaceWidth + horizontalAisleSpacing)
+                    parkingSpaces.add(Rect(left, rightCurrentY, left + spaceWidth, rightCurrentY + spaceHeight))
+                }
+                rightCurrentY += spaceHeight // Move down for the next row of parking spaces
+                if (j == 0) {
+                    rightCurrentY += verticalAisleSpacing // Add gap after the first row of parking spaces
+                }
+            }
+        }
+
+        // Final road after the last group on the right side
+        parkingSpaces.add(Rect(rightStartX - 20, rightCurrentY, rightStartX + cols * (spaceWidth + horizontalAisleSpacing), rightCurrentY + verticalRoadHeight))
+        rightCurrentY += verticalRoadHeight // Move down for the last row of parking spaces
+
+        // Last row of parking spaces on the right
+        for (col in 0 until cols) {
+            val left = rightStartX + col * (spaceWidth + horizontalAisleSpacing)
+            parkingSpaces.add(Rect(left, rightCurrentY, left + spaceWidth, rightCurrentY + spaceHeight))
+        }
+
+        // Define the position for the right vertical column of parking spaces
+        val rightColumnStartX = rightStartX +(10*160) +80// Adjust to align with the right road
+        var rightColumnY = startY + spaceHeight + verticalAisleSpacing // Skip the top space for a blank area
+
+        // Add parking spaces from top to bottom until reaching the bottom of the right road
+        while (rightColumnY + spaceWidth <= rightCurrentY) {
+            // Create each parking space with original dimensions (rotated)
+            val left = rightColumnStartX
+            val top = rightColumnY
+            val right = left + spaceHeight // Width is `spaceHeight` to make it horizontal
+            val bottom = top + spaceWidth  // Height is `spaceWidth`
+
+            parkingSpaces.add(Rect(left, top, right, bottom))
+
+            // Move down for the next parking space
+            rightColumnY += spaceWidth + verticalAisleSpacing
+        }
+
+        // Update max offset X to accommodate the new layout on the right
+        maxOffsetX = ((rightStartX + cols * (spaceWidth + horizontalAisleSpacing)) * scaleFactor) - width / scaleFactor
+    }
+
+
+    private fun getParkingId(index: Int): String {
+        // Prefix "A" for all parking spaces and increment the ID sequentially
+        return "A${index + 1}"
+    }
+
+
+
+
+
+
+
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -134,22 +250,75 @@ class ParkingLotView @JvmOverloads constructor(
         canvas.translate(offsetX, offsetY)
         canvas.scale(scaleFactor, scaleFactor)
 
-        // Draw Entry and Exit signs
-        paint.color = Color.GREEN
-        canvas.drawRect(entrySign, paint)
+        // Draw Entry Sign
+        paint.color = Color.RED // Fill color for entry sign
+        paint.style = Paint.Style.FILL
+        canvas.drawRoundRect(entrySign.left.toFloat(), entrySign.top.toFloat(), entrySign.right.toFloat(), entrySign.bottom.toFloat(), borderRadius, borderRadius, paint)
+
+        // Draw red border for Entry Sign
+        paint.color = Color.RED // Border color for entry sign
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 8f // Border thickness
+        canvas.drawRoundRect(entrySign.left.toFloat(), entrySign.top.toFloat(), entrySign.right.toFloat(), entrySign.bottom.toFloat(), borderRadius, borderRadius, paint)
+
+        // Draw text for Entry Sign
+        paint.style = Paint.Style.FILL
+        paint.color = Color.DKGRAY
         paint.textSize = 60f
-        paint.color = Color.WHITE
-        canvas.drawText("Entry", startX -110f, startY-140f, paint)
+        canvas.drawText("Exit", entrySign.centerX().toFloat(), entrySign.centerY().toFloat() + 10, paint) // Center text in the entry sign
 
+        // Draw Exit Sign
+        paint.color = Color.GREEN // Fill color for exit sign
+        paint.style = Paint.Style.FILL
+        canvas.drawRoundRect(exitSign.left.toFloat(), exitSign.top.toFloat(), exitSign.right.toFloat(), exitSign.bottom.toFloat(), borderRadius, borderRadius, paint)
 
+        // Draw green border for Exit Sign
+        paint.color = Color.GREEN // Border color for exit sign
+        paint.style = Paint.Style.STROKE
+        canvas.drawRoundRect(exitSign.left.toFloat(), exitSign.top.toFloat(), exitSign.right.toFloat(), exitSign.bottom.toFloat(), borderRadius, borderRadius, paint)
 
-        // Draw Parking Spaces
+        // Draw text for Exit Sign
+        paint.style = Paint.Style.FILL
+        paint.color = Color.DKGRAY
+        canvas.drawText("Entry", exitSign.centerX().toFloat(), exitSign.centerY().toFloat() + 10, paint) // Center text in the exit sign
+
+        // Draw Building Sign
+        paint.color = Color.YELLOW // Fill color for building sign
+        paint.style = Paint.Style.FILL
+        canvas.drawRoundRect(buildingSign.left.toFloat(), buildingSign.top.toFloat(), buildingSign.right.toFloat(), buildingSign.bottom.toFloat(), borderRadius, borderRadius, paint)
+
+        // Draw yellow border for Building Sign
+        paint.color = Color.YELLOW // Border color for building sign
+        paint.style = Paint.Style.STROKE
+        canvas.drawRoundRect(buildingSign.left.toFloat(), buildingSign.top.toFloat(), buildingSign.right.toFloat(), buildingSign.bottom.toFloat(), borderRadius, borderRadius, paint)
+
+        // Draw text for Building Sign
+        paint.style = Paint.Style.FILL
+        paint.color = Color.DKGRAY
+        canvas.drawText("Building", buildingSign.centerX().toFloat(), buildingSign.centerY().toFloat() + 10, paint) // Center text in the building sign
+
+        // Draw Parking Spaces and IDs
+        paint.textSize = 40f // Increase text size for visibility
+        paint.color = Color.DKGRAY // Use darker color for text
+        paint.setShadowLayer(4f, 2f, 2f, Color.BLACK) // Add shadow for better contrast
+
         parkingSpaces.forEachIndexed { index, space ->
-            // Change color of the first row of parking spaces to black
+            // Draw the parking space
 
-                paint.color = Color.GREEN // Other parking spaces
-
+            when (spaceVM.get(getParkingId(index))?.spaceStatus) {
+                "Available" -> paint.color = Color.GREEN
+                "Occupied" -> paint.color = Color.RED
+                "Reserved" -> paint.color = Color.YELLOW
+                else -> paint.color = Color.GRAY // Default color if status is unknown
+            }
             canvas.drawRect(space, paint)
+
+            // Draw parking ID in the center
+            paint.color = Color.DKGRAY
+            val parkingId = getParkingId(index)
+            val centerX = space.centerX().toFloat()
+            val centerY = space.centerY().toFloat() + 10 // Offset slightly for better centering
+            canvas.drawText(parkingId, centerX, centerY, paint)
         }
 
         // Draw Roads (between groups)
@@ -164,23 +333,63 @@ class ParkingLotView @JvmOverloads constructor(
         // Draw vertical road on the left side
         paint.color = Color.LTGRAY
         val leftRoad = Rect(
-            startX-100,
+            startX - 100,
             startY,
-            startX -20,
+            startX - 20,
             currentY
         )
         canvas.drawRect(leftRoad, paint)
 
-        // Draw vertical road on the right side with width 80
-        val rightRoad = Rect(
+        // Draw vertical road on the center
+        val centerRoad = Rect(
             startX + (cols * (spaceWidth + horizontalAisleSpacing)),
-            startY+200,
+            startY + 200,
             startX + (cols * (spaceWidth + horizontalAisleSpacing)) + 80,
-            currentY
+            currentY + 200
+        )
+        canvas.drawRect(centerRoad, paint)
+
+        // Draw vertical road on the right side
+        val rightRoad = Rect(
+            startX + ((cols +cols) * (spaceWidth + horizontalAisleSpacing)) + 100,
+            startY + 200,
+            startX + ((cols +cols)* (spaceWidth + horizontalAisleSpacing)) + 180,
+            currentY + 200
         )
         canvas.drawRect(rightRoad, paint)
 
+        // Clear shadow layer after drawing text
+        paint.setShadowLayer(0f, 0f, 0f, Color.BLACK)
+
         canvas.restore()
+    }
+
+    private fun handleParkingSpaceClick(x: Float, y: Float) {
+        // Check if the touch coordinates intersect with any road rectangles
+        roadRectangles.forEach { road ->
+            if (road.contains(((x - offsetX) / scaleFactor).toInt(),
+                    ((y - offsetY) / scaleFactor).toInt())) {
+                // If the touch is on a road, return without processing parking spaces
+                return
+            }
+        }
+
+        // Check for each parking space if the touch coordinates intersect
+        parkingSpaces.forEachIndexed { index, space ->
+            if (space.contains(((x - offsetX) / scaleFactor).toInt(),
+                    ((y - offsetY) / scaleFactor).toInt())) {
+                // Start a new activity and pass the spaceID
+                if(space.width()<=200){
+                    val spaceID = getParkingId(index)
+                    nav.navigate(
+                        R.id.parkingSpaceDetailsFragment, bundleOf(
+                            "spaceID" to spaceID
+                        )
+                    )
+                }
+
+            }
+        }
     }
 
 
@@ -191,13 +400,22 @@ class ParkingLotView @JvmOverloads constructor(
             MotionEvent.ACTION_DOWN -> {
                 lastTouchX = event.x
                 lastTouchY = event.y
-                isDragging = true
+                isDragging = false // Initialize dragging state as false
             }
             MotionEvent.ACTION_MOVE -> {
-                if (isDragging) {
-                    val dx = event.x - lastTouchX
-                    val dy = event.y - lastTouchY
+                val dx = event.x - lastTouchX
+                val dy = event.y - lastTouchY
 
+                // Calculate the distance moved
+                val distance = Math.sqrt((dx * dx + dy * dy).toDouble()).toFloat()
+
+                // Define a threshold for movement to distinguish between a click and drag
+                val dragThreshold = 10f // Adjust this value as needed
+
+                if (distance > dragThreshold) {
+                    isDragging = true // Set dragging to true if the distance exceeds the threshold
+
+                    // Update offsets for dragging
                     offsetX = (offsetX + dx).coerceIn(-maxOffsetX, maxOffsetX)
                     offsetY = (offsetY + dy).coerceIn(-maxOffsetY, maxOffsetY)
 
@@ -208,16 +426,13 @@ class ParkingLotView @JvmOverloads constructor(
                 }
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                if (!isDragging) {
+                    // Only handle click if it was not a drag
+                    handleParkingSpaceClick(event.x, event.y)
+                }
                 isDragging = false
             }
         }
         return true
     }
 }
-
-
-
-
-
-
-
