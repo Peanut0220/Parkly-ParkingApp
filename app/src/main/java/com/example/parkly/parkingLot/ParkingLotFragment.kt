@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -17,17 +19,15 @@ class ParkingLotFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        // Initialize the ViewModel
         spaceVM = ViewModelProvider(this).get(ParkingSpaceViewModel::class.java)
 
-        // Inflate your view (change R.layout.your_layout to your actual layout resource)
-        val view = inflater.inflate(R.layout., container, false)
+        // Inflate your layout
+        val view = inflater.inflate(R.layout.fragment_parking_lot, container, false)
 
-        // Initialize ParkingLotView and pass the ViewModel
-        parkingLotView = ParkingLotView(requireContext(), null, spaceVM)
-
-        // Add your ParkingLotView to the layout
-        val layout = view.findViewById<LinearLayout>(R.id.your_linear_layout)
-        layout.addView(parkingLotView)
+        // Reference ParkingLotView by ID and set the ViewModel
+        parkingLotView = view.findViewById(R.id.parkingLotView)
+        parkingLotView.setViewModel(spaceVM)
 
         return view
 

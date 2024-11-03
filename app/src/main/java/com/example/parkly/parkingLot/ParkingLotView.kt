@@ -23,7 +23,10 @@ import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
 class ParkingLotView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : View(context, attrs) {
-    private val spaceVM: ParkingSpaceViewModel
+    private var spaceVM: ParkingSpaceViewModel? = null
+    fun setViewModel(viewModel: ParkingSpaceViewModel) {
+        this.spaceVM = viewModel
+    }
     private val nav by lazy { findNavController() }
     private val parkingSpaces = mutableListOf<Rect>()
     private val roadRectangles = mutableListOf<Rect>()
@@ -305,7 +308,7 @@ class ParkingLotView @JvmOverloads constructor(
         parkingSpaces.forEachIndexed { index, space ->
             // Draw the parking space
 
-            when (spaceVM.get(getParkingId(index))?.spaceStatus) {
+            when (spaceVM?.get(getParkingId(index))?.spaceStatus) {
                 "Available" -> paint.color = Color.GREEN
                 "Occupied" -> paint.color = Color.RED
                 "Reserved" -> paint.color = Color.YELLOW
