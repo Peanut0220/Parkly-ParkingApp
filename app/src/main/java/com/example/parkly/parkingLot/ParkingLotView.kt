@@ -385,7 +385,7 @@ class ParkingLotView @JvmOverloads constructor(
                 if(space.width()<=200){
                     val spaceID = getParkingId(index)
                     nav.navigate(
-                        R.id.parkingSpaceDetailsFragment, bundleOf(
+                        R.id.action_parkingLotFragment_to_parkingSpaceDetailsFragment, bundleOf(
                             "spaceID" to spaceID
                         )
                     )

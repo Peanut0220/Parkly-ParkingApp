@@ -148,7 +148,9 @@
             android:id="@+id/action_settingFragment_to_profileUpdateFragment"
             app:destination="@id/profileUpdateFragment"
             app:enterAnim="@anim/enter"
-            app:exitAnim="@anim/exit" />
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
         <action
             android:id="@+id/action_settingFragment_to_changePasswordFragment"
             app:destination="@id/changePasswordFragment"
@@ -331,7 +333,11 @@
         android:label="Parking Lot">
         <action
             android:id="@+id/action_parkingLotFragment_to_parkingSpaceDetailsFragment"
-            app:destination="@id/parkingSpaceDetailsFragment" />
+            app:destination="@id/parkingSpaceDetailsFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
 
     <fragment

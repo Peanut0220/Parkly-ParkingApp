@@ -6,9 +6,9 @@ android:layout_height="match_parent"
 android:orientation="vertical">
 
 <!-- Replace FrameLayout with ParkingLotView directly -->
-<com.example.parkly.ParkingLotView
-    android:id="@+id/parkingLotView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    <com.example.parkly.ParkingLotView
+        android:id="@+id/parkingLotView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
