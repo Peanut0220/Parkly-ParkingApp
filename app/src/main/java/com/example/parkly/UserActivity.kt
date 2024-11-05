@@ -13,6 +13,7 @@ import com.example.parkly.data.viewmodel.InterviewViewModel
 import com.example.parkly.data.viewmodel.JobApplicationViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.ActivityUserBinding
+import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
 
 import com.google.firebase.database.FirebaseDatabase
 
@@ -26,6 +27,7 @@ class UserActivity : AppCompatActivity() {
     private val jobAppVM: JobApplicationViewModel by viewModels()
     private val companyVM: CompanyViewModel by viewModels()
     private val userVM: UserViewModel by viewModels()
+    private val spaceVM: ParkingSpaceViewModel by viewModels()
     private val interviewVM: InterviewViewModel by viewModels()
     private lateinit var userId: String
 
@@ -35,6 +37,7 @@ class UserActivity : AppCompatActivity() {
         companyVM.init()
         jobAppVM.init()
         interviewVM.init()
+        spaceVM.init()
 
 
         super.onCreate(savedInstanceState)
@@ -70,6 +73,7 @@ class UserActivity : AppCompatActivity() {
                 R.id.changePasswordFragment,
                 R.id.postDetailsFragment,
                 R.id.postCommentFragment,
+                R.id.parkingSpaceDetailsFragment,
             )
 
             val isBottomNavVisible = !hideBottomNavDestinations.contains(destination.id)
