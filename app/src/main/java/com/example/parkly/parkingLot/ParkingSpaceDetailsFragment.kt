@@ -29,6 +29,7 @@ class ParkingSpaceDetailsFragment : Fragment() {
         binding.topAppBar.setNavigationOnClickListener {
             nav.navigateUp()
         }
+        binding.btnParkIn.setOnClickListener { nav.navigate(R.id.action_parkingSpaceDetailsFragment_to_parkInFragment) }
         val space = spaceVM.get(spaceID)
         if (space != null) {
             if(space.spaceStatus == "Available"){

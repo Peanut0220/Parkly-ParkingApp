@@ -58,6 +58,9 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.0")
     implementation("io.getstream:avatarview-coil:1.0.4")
 
+
+
+
     //swipe to refresh
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 
@@ -80,8 +83,8 @@ dependencies {
 
     //mapbox
     implementation("com.mapbox.search:mapbox-search-android-ui:1.2.0")
-
-
+    implementation("com.google.mlkit:object-detection:17.0.0")
+    implementation("com.google.mlkit:image-labeling:17.0.7")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.android.support:cardview-v7:28.0.0")

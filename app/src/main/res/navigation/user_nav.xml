@@ -343,6 +343,19 @@
     <fragment
         android:id="@+id/parkingSpaceDetailsFragment"
         android:name="com.example.parkly.ParkingSpaceDetailsFragment"
-        android:label="Parking Space Details" />
+        android:label="Parking Space Details" >
+        <action
+            android:id="@+id/action_parkingSpaceDetailsFragment_to_parkInFragment"
+            app:destination="@id/parkInFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/parkInFragment"
+        android:name="com.example.parkly.parkingLot.ParkInFragment"
+        android:label="fragment_park_in"
+        tools:layout="@layout/fragment_park_in" />
 
 </navigation>

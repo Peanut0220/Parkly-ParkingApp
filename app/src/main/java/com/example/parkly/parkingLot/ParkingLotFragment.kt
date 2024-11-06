@@ -29,6 +29,8 @@ class ParkingLotFragment : Fragment() {
         parkingLotView = view.findViewById(R.id.parkingLotView)
         parkingLotView.setViewModel(spaceVM)
 
+
+
         return view
 
     }
