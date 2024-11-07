@@ -74,6 +74,7 @@ class UserActivity : AppCompatActivity() {
                 R.id.postDetailsFragment,
                 R.id.postCommentFragment,
                 R.id.parkingSpaceDetailsFragment,
+                R.id.parkInFragment
             )
 
             val isBottomNavVisible = !hideBottomNavDestinations.contains(destination.id)

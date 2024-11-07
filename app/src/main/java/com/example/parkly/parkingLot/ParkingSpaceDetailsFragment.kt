@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.Fragment
@@ -35,17 +36,24 @@ class ParkingSpaceDetailsFragment : Fragment() {
             if(space.spaceStatus == "Available"){
                 binding.spaceStatus.text ="Available"
                 binding.spaceStatus.setTextColor(Color.GREEN)
+                binding.btnViewProfile.visibility = GONE
+                binding.carImage.visibility = GONE
             }else if(space.spaceStatus == "Occupied"){
                 binding.spaceStatus.text ="Occupied"
                 binding.spaceStatus.setTextColor(Color.RED)
             }else if(space.spaceStatus =="Reserved"){
                 binding.spaceStatus.text ="Reserved"
                 binding.spaceStatus.setTextColor(Color.rgb(179, 131, 27))
+                binding.btnViewProfile.visibility = GONE
+                binding.carImage.visibility = GONE
             }else{
                 binding.spaceStatus.text ="Available"
                 binding.spaceStatus.setTextColor(Color.GREEN)
+                binding.btnViewProfile.visibility = GONE
+                binding.carImage.visibility = GONE
             }
         }
+
 
 
         binding.spaceID.text = spaceID

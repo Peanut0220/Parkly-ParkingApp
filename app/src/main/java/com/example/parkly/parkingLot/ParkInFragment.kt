@@ -12,8 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.parkly.R
 import com.example.parkly.databinding.FragmentParkInBinding
 import com.google.mlkit.vision.common.InputImage
@@ -31,6 +33,7 @@ class ParkInFragment : Fragment() {
     private val CAMERA_REQUEST_CODE = 100
     private lateinit var binding: FragmentParkInBinding
     private lateinit var imageUri: Uri
+    private val nav by lazy { findNavController() }
 
     // Create the object detector with default options
     private val objectDetector by lazy {
@@ -47,6 +50,11 @@ class ParkInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentParkInBinding.inflate(inflater, container, false)
+
+
+        binding.topAppBar.setNavigationOnClickListener {
+            nav.navigateUp()
+        }
         return binding.root
     }
 
@@ -84,7 +92,7 @@ class ParkInFragment : Fragment() {
                         label.text.contains("Bumper", ignoreCase = true)) {
 
                         // Adjust confidence as needed
-                        if (label.confidence > 0.82) {
+                        if (label.confidence > 0.85) {
                             carFrontDetected = true
                             break
                         }
