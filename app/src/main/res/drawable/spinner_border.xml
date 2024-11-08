@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- res/drawable/spinner_background.xml -->
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item><layer-list>
+        <item>
+            <shape>
+                <solid
+                    android:color="@android:color/white">
+                </solid>
 
-    <!-- Border and background -->
-    <item>
-        <shape>
-            <solid android:color="#FFFFFF" /> <!-- Background color -->
-            <stroke
-                android:width="2dp"
-                android:color="#FF5722" /> <!-- Border color and width -->
-            <corners android:radius="8dp" /> <!-- Optional: Rounded corners -->
-        </shape>
-    </item>
+                <corners android:radius="3dp" />
 
-    <!-- Dropdown arrow icon on the right -->
-    <item android:right="8dp" android:gravity="end|center_vertical">
-        <bitmap
-            android:src="@drawable/ic_arrow_down"
-           android:gravity="center" />
-    </item>
-</layer-list>
+                <padding
+                    android:bottom="10dp"
+                    android:left="10dp"
+                    android:right="10dp"
+                    android:top="10dp" />
+                <stroke
+                    android:width="2dp"
+                    android:color="@android:color/darker_gray"/>
+            </shape>
+        </item>
+        <item android:drawable="@drawable/baseline_arrow_drop_down_24"             android:gravity="right">         </item>
+    </layer-list></item>
+</selector>
