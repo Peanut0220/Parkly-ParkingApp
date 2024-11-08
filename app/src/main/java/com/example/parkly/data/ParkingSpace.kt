@@ -2,6 +2,7 @@ package com.example.parkly.data
 
 import com.google.firebase.firestore.Blob
 import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.Exclude
 
 data class ParkingSpace(
     val spaceID: String="",

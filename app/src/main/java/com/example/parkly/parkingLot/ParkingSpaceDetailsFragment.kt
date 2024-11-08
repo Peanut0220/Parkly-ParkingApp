@@ -11,10 +11,15 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.parkly.community.viewmodel.VehicleViewModel
+import com.example.parkly.data.viewmodel.ParkingRecordViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentParkingSpaceDetailsBinding
 import com.example.parkly.databinding.FragmentPostDetailsBinding
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
+import com.example.parkly.util.setImageBlob
+import com.example.parkly.util.toBitmap
+import io.getstream.avatarview.coil.loadImage
 
 class ParkingSpaceDetailsFragment : Fragment() {
 
@@ -22,6 +27,7 @@ class ParkingSpaceDetailsFragment : Fragment() {
     private lateinit var binding: FragmentParkingSpaceDetailsBinding
     private val nav by lazy { findNavController() }
     private val spaceVM: ParkingSpaceViewModel by activityViewModels()
+    private val recordVM: ParkingRecordViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +54,13 @@ class ParkingSpaceDetailsFragment : Fragment() {
             }else if(space.spaceStatus == "Occupied"){
                 binding.spaceStatus.text ="Occupied"
                 binding.spaceStatus.setTextColor(Color.RED)
+                binding.carImage.setImageBlob( space.currentCarImage)
+                binding.currentVehicle.text =recordVM.get(space.currentRecordID)?.vehicleNumber
+                binding.btnViewProfile.setOnClickListener {  findNavController().navigate(
+                    R.id.action_parkingSpaceDetailsFragment_to_userProfileFragment, bundleOf(
+                        "userID" to space.currentUserID
+                    )
+                )}
             }else if(space.spaceStatus =="Reserved"){
                 binding.spaceStatus.text ="Reserved"
                 binding.spaceStatus.setTextColor(Color.rgb(179, 131, 27))
@@ -60,6 +73,8 @@ class ParkingSpaceDetailsFragment : Fragment() {
                 binding.carImage.visibility = GONE
             }
         }
+
+
 
 
 

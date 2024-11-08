@@ -32,6 +32,7 @@ class ParkingSpaceViewModel(val app: Application) : AndroidViewModel(app){
 
     fun get(spaceID: String) = getAll().find { it.spaceID == spaceID }
 
+
     fun set(space: ParkingSpace) {
         PARKINGSPACES.document().set(space)
     }

@@ -151,6 +151,7 @@ class ParkInFragment : Fragment() {
     private fun submit() {
         val record = createRecordObject()
 
+
         if (binding.capturedImageView ==null) {
             snackbar("Please capture your car.")
             return
@@ -160,7 +161,8 @@ class ParkInFragment : Fragment() {
                 onPositiveClick = { _, _ ->
                     lifecycleScope.launch {
                         recordVM.set(record)
-                        spaceVM.
+                        val space = updateSpaceObject()
+                        spaceVM.update(space)
                     }
 
 
@@ -190,7 +192,10 @@ class ParkInFragment : Fragment() {
         return ParkingSpace(
             spaceID = spaceID,
             currentCarImage = binding.capturedImageView.cropToBlob(binding.capturedImageView.getDrawable().getIntrinsicWidth(),binding.capturedImageView.getDrawable().getIntrinsicHeight()),
-            currentRecordID = recordVM.get
+            currentRecordID = recordVM.getLatestBySpace(spaceID)?.recordID ?: "",
+            spaceStatus = "Occupied",
+            currentUserID = userVM.getUserLD().value!!.uid,
+            updatedAt = DateTime.now().millis
         )
     }
 

@@ -131,6 +131,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/materialDivider5" />
 
                 <TextView
+                    android:id="@+id/currentVehicle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
