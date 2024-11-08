@@ -9,6 +9,7 @@ data class ParkingSpace(
     var currentCarImage: Blob = Blob.fromBytes(ByteArray(0)),
     var spaceStatus: String = "Available",
     var currentRecordID: String = "",
+    var updatedAt: Long =0
 ) {
     // No-argument constructor is created by default due to Kotlin's data class
 }

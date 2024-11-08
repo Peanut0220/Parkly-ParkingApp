@@ -3,6 +3,7 @@ package com.example.parkly.parkingLot.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.example.parkly.data.ParkingRecord
 import com.example.parkly.data.ParkingSpace
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Firebase
@@ -33,6 +34,10 @@ class ParkingSpaceViewModel(val app: Application) : AndroidViewModel(app){
 
     fun set(space: ParkingSpace) {
         PARKINGSPACES.document().set(space)
+    }
+
+    fun update(space: ParkingSpace) {
+        PARKINGSPACES.document(space.spaceID).set(space)
     }
 
     // Function to create multiple parking spaces
@@ -74,6 +79,8 @@ class ParkingSpaceViewModel(val app: Application) : AndroidViewModel(app){
         // Batch set all ParkingSpace objects to Firestore
 
     }
+
+
 
 
 

@@ -9,8 +9,11 @@
     <string name="create_account">Create an Account</string>
     <string name="sign_in_with_google">SIGN IN WITH GOOGLE</string>
     <string name="confirm">CONFIRM</string>
+    <string name="add">ADD</string>
     <string name="upcoming">Upcoming</string>
     <string name="history">History</string>
+    <string name="vehicle_number">Vehicle Number</string>
+    <string name="vehicle_model">Vehicle Model</string>
     <string name="post">Post</string>
     <string name="parkin">Park In</string>
     <string name="edit_profile">Edit Profile</string>

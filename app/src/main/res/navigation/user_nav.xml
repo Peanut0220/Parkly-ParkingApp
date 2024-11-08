@@ -356,6 +356,19 @@
         android:id="@+id/parkInFragment"
         android:name="com.example.parkly.parkingLot.ParkInFragment"
         android:label="fragment_park_in"
-        tools:layout="@layout/fragment_park_in" />
+        tools:layout="@layout/fragment_park_in" >
+        <action
+            android:id="@+id/action_parkInFragment_to_addVehicleFragment"
+            app:destination="@id/addVehicleFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/addVehicleFragment"
+        android:name="com.example.parkly.profile.view.AddVehicleFragment"
+        android:label="fragment_add_vehicle"
+        tools:layout="@layout/fragment_add_vehicle" />
 
 </navigation>

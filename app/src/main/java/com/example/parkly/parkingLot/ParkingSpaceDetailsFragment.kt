@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.core.graphics.ColorUtils
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -30,7 +31,13 @@ class ParkingSpaceDetailsFragment : Fragment() {
         binding.topAppBar.setNavigationOnClickListener {
             nav.navigateUp()
         }
-        binding.btnParkIn.setOnClickListener { nav.navigate(R.id.action_parkingSpaceDetailsFragment_to_parkInFragment) }
+        binding.btnParkIn.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_parkingSpaceDetailsFragment_to_parkInFragment, bundleOf(
+                    "spaceID" to binding.spaceID.text
+                )
+            )
+        }
         val space = spaceVM.get(spaceID)
         if (space != null) {
             if(space.spaceStatus == "Available"){

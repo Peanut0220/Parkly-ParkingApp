@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.parkly.community.viewmodel.VehicleViewModel
 import com.example.parkly.data.viewmodel.CompanyViewModel
 import com.example.parkly.data.viewmodel.InterviewViewModel
 import com.example.parkly.data.viewmodel.JobApplicationViewModel
@@ -29,6 +30,7 @@ class UserActivity : AppCompatActivity() {
     private val userVM: UserViewModel by viewModels()
     private val spaceVM: ParkingSpaceViewModel by viewModels()
     private val interviewVM: InterviewViewModel by viewModels()
+    private val vehicleVM: VehicleViewModel by viewModels()
     private lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +40,7 @@ class UserActivity : AppCompatActivity() {
         jobAppVM.init()
         interviewVM.init()
         spaceVM.init()
+        vehicleVM.init()
 
 
         super.onCreate(savedInstanceState)
@@ -74,7 +77,8 @@ class UserActivity : AppCompatActivity() {
                 R.id.postDetailsFragment,
                 R.id.postCommentFragment,
                 R.id.parkingSpaceDetailsFragment,
-                R.id.parkInFragment
+                R.id.parkInFragment,
+                R.id.addVehicleFragment
             )
 
             val isBottomNavVisible = !hideBottomNavDestinations.contains(destination.id)
