@@ -22,6 +22,8 @@ import com.example.parkly.data.viewmodel.JobViewModel
 import com.example.parkly.util.dialogProfileNotComplete
 import com.example.parkly.util.getToken
 import com.google.android.material.search.SearchView
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 
@@ -48,6 +50,7 @@ class HomeFragment : Fragment(), BottomSheetListener {
         binding.loadingLayout.visibility = View.VISIBLE
         binding.btnSavedJob.visibility = View.VISIBLE
         getGreeting()
+
 
         userVM.getUserLD().observe(viewLifecycleOwner) {
             if (it == null) {

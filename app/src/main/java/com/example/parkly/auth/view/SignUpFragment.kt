@@ -45,7 +45,6 @@ class SignUpFragment : Fragment() {
             if (it) {
                 lifecycleScope.launch {
                     val user = userVM.getAuth()
-                    user.type = type
                     userVM.set(user)
                 }
                 nav.navigateUp()

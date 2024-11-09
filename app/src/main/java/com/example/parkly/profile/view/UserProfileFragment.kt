@@ -1,6 +1,7 @@
 package com.example.parkly.profile.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.example.parkly.profile.tab.TabMyPostListFragment
 import com.example.parkly.util.createChatroom
 import com.example.parkly.util.isChatRoomExist
 import com.example.parkly.util.message
+import com.example.parkly.util.snackbar
 import com.example.parkly.util.toBitmap
 import com.google.android.material.tabs.TabLayoutMediator
 import io.getstream.avatarview.coil.loadImage
@@ -60,21 +62,25 @@ class UserProfileFragment : Fragment() {
             }
 
             binding.btnMessage.setOnClickListener {
+
                 val userId = userVM.getAuth().uid
                 val otherId = user.uid
                 var chatRoomId = userId + "_" + otherId
+
                 CoroutineScope(Dispatchers.Main).launch {
+
                     val isExist = withContext(Dispatchers.IO) {
                         isChatRoomExist(chatRoomId)
                     }
+
 
                     if (!isExist) {
                         chatRoomId = otherId + "_" + userId
                         createChatroom(chatRoomId)
                     }
+
                     message(chatRoomId, nav)
                 }
-
             }
 
         }

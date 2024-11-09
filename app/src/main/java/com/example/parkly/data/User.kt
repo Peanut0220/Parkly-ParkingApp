@@ -12,6 +12,6 @@ data class User(
     val avatar: Blob = Blob.fromBytes(ByteArray(0)),
     val ic: String = "",
     val dob: Long = 0,
-    var type: String = "",
+    val type: String = "",
     val token: String = "",
 )

@@ -55,7 +55,8 @@ class UserViewModel(val app: Application) : AndroidViewModel(app) {
                 "avatar", user.avatar,
                 "ic",user.ic,
                 "phone",user.phone,
-                "dob",user.dob
+                "dob",user.dob,
+                "type",user.type
 
             )
             .addOnCompleteListener {

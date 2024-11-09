@@ -49,7 +49,7 @@ import java.util.Date
 import java.util.Locale
 
 private val SERVER_KEY =
-    "AAAAXcttPyk:APA91bGKCDLn2aO98ksp1j0vFskVqfdNKQAihmxM_UMY3Axib2R4czrUq1zYb4ZKsp1T60G_9Nj0Knwf5mHkg0ksrJQNDpPZK1ooME0CSX1RSN2CZisjlLru0hk3FYiTEsnAXSWsDlzt"
+    "11fdde5e45bfdbc45b6fb11c82d2f3d394a327"
 
 fun sendPushNotification(title: String, message: String, receiverToken: String) {
     val jsonObject = JSONObject()
@@ -70,23 +70,24 @@ fun sendPushNotification(title: String, message: String, receiverToken: String) 
 }
 
 //create chat room
-fun isChatRoomExist(chatRoomId: String): Boolean {
-    val chatRoomsRef = FirebaseDatabase.getInstance().getReference("chatRooms")
-    val dataSnapshot = runBlocking {
-        chatRoomsRef.get().await()
-    }
+suspend fun isChatRoomExist(chatRoomId: String): Boolean {
 
+    val chatRoomsRef = FirebaseDatabase.getInstance("https://advanceparkingapp-3ec88-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("chatRooms")
+    Log.d("ChatRoomCheck", "Checking chat room ID:1 $chatRoomsRef")
+    // Await directly here without runBlocking
+    val dataSnapshot = chatRoomsRef.get().await()
+    Log.d("ChatRoomCheck", "Checking chat room ID:2")
     var isExist = false
-
     dataSnapshot.children.forEach {
         val thisChatRoomId = it.key.toString()
-        Log.d("KEY", chatRoomId)
+        Log.d("ChatRoomCheck", "Checking chat room ID: $thisChatRoomId")
         if (thisChatRoomId == chatRoomId) {
             isExist = true
+            Log.d("ChatRoomCheck", "Chat room exists: $chatRoomId")
             return@forEach
         }
     }
-    Log.d("RETURN", isExist.toString())
+    Log.d("ChatRoomCheck", "Chat room existence result: $isExist")
     return isExist
 }
 
@@ -119,7 +120,7 @@ fun callApi(jsonObject: JSONObject) {
         .post(body)
         .header(
             "Authorization",
-            "Bearer $SERVER_KEY"
+            "Bearer $SERVER_KEY" // Replace this with your actual key
         )
         .build()
     client.newCall(request).enqueue(object : Callback {

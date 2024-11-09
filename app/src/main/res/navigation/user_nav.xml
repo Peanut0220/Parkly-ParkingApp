@@ -285,7 +285,15 @@
         android:id="@+id/profileUpdateFragment"
         android:name="com.example.parkly.profile.view.ProfileUpdateFragment"
         android:label="fragment_profile_update"
-        tools:layout="@layout/fragment_profile_update" />
+        tools:layout="@layout/fragment_profile_update" >
+        <action
+            android:id="@+id/action_profileUpdateFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
     <fragment
         android:id="@+id/postCommentFragment"
         android:name="com.example.parkly.community.view.PostCommentFragment"

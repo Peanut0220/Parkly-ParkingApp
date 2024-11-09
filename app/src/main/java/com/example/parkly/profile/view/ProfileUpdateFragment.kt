@@ -37,6 +37,7 @@ class ProfileUpdateFragment : Fragment() {
 
     lateinit var binding: FragmentProfileUpdateBinding
     val userVM: UserViewModel by viewModels()
+    private val nav by lazy { findNavController() }
     private var date: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,12 +71,10 @@ class ProfileUpdateFragment : Fragment() {
         }
         setupDateTimePicker()
 
-
-
         userVM.response.observe(viewLifecycleOwner) {
             if (it) {
-                findNavController().navigate(R.id.profileFragment)
                 snackbar("Profile updated successfully!")
+               nav.navigate(R.id.homeFragment)
             }
         }
 
@@ -88,6 +87,7 @@ class ProfileUpdateFragment : Fragment() {
         val phone = binding.edtPhone.text.toString().trim()
         val avatar = binding.avatar.cropToBlob(300, 300)
         val dateText = binding.chipDate.text.toString()
+        val type = "Driver"
         val format = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
 
         val date = format.parse(dateText)
@@ -119,7 +119,7 @@ class ProfileUpdateFragment : Fragment() {
 
         // Proceed with submission if all validations pass
         lifecycleScope.launch {
-            userVM.update(User(name = name, ic = ic, phone = phone, avatar = avatar,dob = dob))
+            userVM.update(User(name = name, ic = ic, phone = phone, avatar = avatar,dob = dob,type = "Driver"))
         }
     }
 
@@ -127,7 +127,7 @@ class ProfileUpdateFragment : Fragment() {
         // Calculate the date 18 years ago from today
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.YEAR, -18)
-        val maxSelectableDate = calendar.timeInMillis
+        val defaultSelectableDate = calendar.timeInMillis
 
         // Calculate yesterday's date to make sure today's date is excluded
         val today = Calendar.getInstance().apply {
@@ -136,12 +136,12 @@ class ProfileUpdateFragment : Fragment() {
 
         val constraint = CalendarConstraints.Builder()
             .setValidator(DateValidatorPointBackward.before(today)) // Only dates strictly before today are selectable
-            .setEnd(maxSelectableDate) // Ensure the end date is 18 years ago
+            .setEnd(today) // Set the end date to yesterday
             .build()
 
         val datePicker = MaterialDatePicker.Builder.datePicker()
             .setTitleText("Select Date")
-            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .setSelection(defaultSelectableDate) // Set default date to 18 years ago
             .setCalendarConstraints(constraint)
             .build()
 

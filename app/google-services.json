@@ -1,47 +1,11 @@
 {
   "project_info": {
     "project_number": "616595542565",
+    "firebase_url": "https://advanceparkingapp-3ec88-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "advanceparkingapp-3ec88",
-    "storage_bucket": "advanceparkingapp-3ec88.appspot.com"
+    "storage_bucket": "advanceparkingapp-3ec88.firebasestorage.app"
   },
   "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:616595542565:android:6ecefa4488b5423ce525cc",
-        "android_client_info": {
-          "package_name": "com.company.parkly"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "616595542565-0vkg8fd0i1p0hlckq21529kt7hlmo095.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.company.parkly",
-            "certificate_hash": "56055a6f5e51b651a3d4111d2e181727fb4ca67f"
-          }
-        },
-        {
-          "client_id": "616595542565-gaeku1h28pvvlgla6hn23n74496aeufc.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyD7kyMrfxzu7Llb-wBtKhPDpV7x2tBLPb8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "616595542565-gaeku1h28pvvlgla6hn23n74496aeufc.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:616595542565:android:bfb4987b7a554bd2e525cc",
@@ -50,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "616595542565-o5go4ks4iu4gchvrbm680668ti6rh409.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.parkly",
+            "certificate_hash": "56055a6f5e51b651a3d4111d2e181727fb4ca67f"
+          }
+        },
         {
           "client_id": "616595542565-gaeku1h28pvvlgla6hn23n74496aeufc.apps.googleusercontent.com",
           "client_type": 3
