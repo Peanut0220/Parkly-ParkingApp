@@ -6,6 +6,7 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
@@ -43,7 +44,11 @@ class MyProfileFragment : Fragment() {
         binding = FragmentMyProfileBinding.inflate(inflater, container, false)
 
 
-
+binding.btnAddVehicle.setOnClickListener{
+    findNavController().navigate(
+        R.id.action_profileFragment_to_addVehicleFragment
+    )
+}
         userVM.getUserLD().observe(viewLifecycleOwner) { user ->
             val avatar =
                 if (user.avatar.toBytes().isEmpty())
