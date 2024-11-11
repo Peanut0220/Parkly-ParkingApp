@@ -39,6 +39,11 @@ class ParkingRecordViewModel(val app: Application) : AndroidViewModel(app){
         .filter { it.spaceID == spaceID }
         .maxByOrNull { it.space.updatedAt }
 
+    fun getLatestByUser(userID: String) = getAll()
+        .filter { it.userID == userID && it.endTime.toInt() == 0}
+        .maxByOrNull { it.startTime }
+
+
     fun set(record: ParkingRecord) {
         PARKINGRECORDS.document().set(record)
     }

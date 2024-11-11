@@ -15,7 +15,7 @@ class VehicleViewModel(val app: Application) : AndroidViewModel(app){
     private val VEHICLES = Firebase.firestore.collection("vehicle")
     private val _vehicleLD = MutableLiveData<List<Vehicle>>()
     private var listener: ListenerRegistration? = null
-    private val required = "* Required"
+    private val required = "* Required (eg: Myvi Red)"
 
     init {
         listener = VEHICLES.addSnapshotListener { snap, _ ->

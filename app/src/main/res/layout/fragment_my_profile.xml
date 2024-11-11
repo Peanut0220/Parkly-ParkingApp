@@ -36,6 +36,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnAddVehicle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/baseline_add_24" />
+
             <io.getstream.avatarview.AvatarView
                 android:id="@+id/avatarView"
                 android:layout_width="64dp"
@@ -89,12 +99,14 @@
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/job" />
+                    android:text="@string/history"
+                    tools:layout_editor_absoluteX="251dp"
+                    tools:layout_editor_absoluteY="130dp" />
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/post"
+                    android:text="@string/vehicle"
                     tools:layout_editor_absoluteX="251dp"
                     tools:layout_editor_absoluteY="130dp" />
 

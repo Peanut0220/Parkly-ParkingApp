@@ -12,6 +12,7 @@ import com.example.parkly.community.viewmodel.VehicleViewModel
 import com.example.parkly.data.viewmodel.CompanyViewModel
 import com.example.parkly.data.viewmodel.InterviewViewModel
 import com.example.parkly.data.viewmodel.JobApplicationViewModel
+import com.example.parkly.data.viewmodel.ParkingRecordViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.ActivityUserBinding
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
@@ -31,6 +32,7 @@ class UserActivity : AppCompatActivity() {
     private val spaceVM: ParkingSpaceViewModel by viewModels()
     private val interviewVM: InterviewViewModel by viewModels()
     private val vehicleVM: VehicleViewModel by viewModels()
+    private val recordVM: ParkingRecordViewModel by viewModels()
     private lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +43,7 @@ class UserActivity : AppCompatActivity() {
         interviewVM.init()
         spaceVM.init()
         vehicleVM.init()
+        recordVM.init()
 
 
         super.onCreate(savedInstanceState)

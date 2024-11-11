@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +42,7 @@ import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
 import com.google.mlkit.vision.objects.DetectedObject
 import com.google.mlkit.vision.objects.ObjectDetection
 import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 
@@ -149,31 +151,45 @@ class ParkInFragment : Fragment() {
     }
 
     private fun submit() {
-        val record = createRecordObject()
 
-
-        if (binding.capturedImageView ==null) {
+        if (binding.capturedImageView.getDrawable() ==null) {
             snackbar("Please capture your car.")
             return
         }
 
-            dialog("Park In", "Are you sure want to park in?",
-                onPositiveClick = { _, _ ->
-                    lifecycleScope.launch {
-                        recordVM.set(record)
-                        val space = updateSpaceObject()
+        if (binding.spinner.selectedItem ==null) {
+            snackbar("Please select one vehicle number.")
+            return
+        }
+
+        val record = createRecordObject()
+
+
+
+        dialog("Park In", "Are you sure you want to park in?",
+            onPositiveClick = { _, _ ->
+                lifecycleScope.launch {
+                    recordVM.set(record) // Save the record first
+delay(1000)
+                    // Fetch the latest record for spaceID after it has been set
+                    val latestRecord = recordVM.getLatestBySpace(spaceID)
+
+                    if (latestRecord != null) {
+                        val space = updateSpaceObject(latestRecord.recordID) // Pass the new recordID
                         spaceVM.update(space)
+                        snackbar("Park In Successfully.")
+                        findNavController().navigate(R.id.homeFragment)
+                    } else {
+                        snackbar("Failed to get latest parking record.")
                     }
-
-
-                    snackbar("Park In Successfully.")
-                    findNavController().navigate(
-                        R.id.homeFragment
-                    )
-                })
+                }
+            }
+        )
 
 
         }
+
+
 
     private fun createRecordObject(): ParkingRecord {
         return ParkingRecord(
@@ -188,16 +204,18 @@ class ParkInFragment : Fragment() {
 
     }
 
-    private fun updateSpaceObject(): ParkingSpace {
+    private fun updateSpaceObject(recordID: String): ParkingSpace {
         return ParkingSpace(
             spaceID = spaceID,
-            currentCarImage = binding.capturedImageView.cropToBlob(binding.capturedImageView.getDrawable().getIntrinsicWidth(),binding.capturedImageView.getDrawable().getIntrinsicHeight()),
-            currentRecordID = recordVM.getLatestBySpace(spaceID)?.recordID ?: "",
+            currentCarImage = binding.capturedImageView.cropToBlob(
+                binding.capturedImageView.drawable.intrinsicWidth,
+                binding.capturedImageView.drawable.intrinsicHeight
+            ),
+            currentRecordID = recordID, // Use the recordID directly
             spaceStatus = "Occupied",
             currentUserID = userVM.getUserLD().value!!.uid,
             updatedAt = DateTime.now().millis
         )
     }
-
 
 }

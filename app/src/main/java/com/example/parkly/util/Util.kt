@@ -73,21 +73,18 @@ fun sendPushNotification(title: String, message: String, receiverToken: String) 
 suspend fun isChatRoomExist(chatRoomId: String): Boolean {
 
     val chatRoomsRef = FirebaseDatabase.getInstance("https://advanceparkingapp-3ec88-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("chatRooms")
-    Log.d("ChatRoomCheck", "Checking chat room ID:1 $chatRoomsRef")
     // Await directly here without runBlocking
     val dataSnapshot = chatRoomsRef.get().await()
-    Log.d("ChatRoomCheck", "Checking chat room ID:2")
     var isExist = false
     dataSnapshot.children.forEach {
         val thisChatRoomId = it.key.toString()
-        Log.d("ChatRoomCheck", "Checking chat room ID: $thisChatRoomId")
+
         if (thisChatRoomId == chatRoomId) {
             isExist = true
-            Log.d("ChatRoomCheck", "Chat room exists: $chatRoomId")
+
             return@forEach
         }
     }
-    Log.d("ChatRoomCheck", "Chat room existence result: $isExist")
     return isExist
 }
 

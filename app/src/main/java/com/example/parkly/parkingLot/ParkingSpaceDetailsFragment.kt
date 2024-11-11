@@ -2,9 +2,12 @@ package com.example.parkly
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.graphics.ColorUtils
 import androidx.core.os.bundleOf
@@ -28,6 +31,7 @@ class ParkingSpaceDetailsFragment : Fragment() {
     private val nav by lazy { findNavController() }
     private val spaceVM: ParkingSpaceViewModel by activityViewModels()
     private val recordVM: ParkingRecordViewModel by activityViewModels()
+    private val userVM: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +49,10 @@ class ParkingSpaceDetailsFragment : Fragment() {
             )
         }
         val space = spaceVM.get(spaceID)
+
         if (space != null) {
+            Log.d("OK",""+space.currentRecordID)
+            Log.d("OK",""+recordVM.get(space.currentRecordID))
             if(space.spaceStatus == "Available"){
                 binding.spaceStatus.text ="Available"
                 binding.spaceStatus.setTextColor(Color.GREEN)
@@ -61,11 +68,13 @@ class ParkingSpaceDetailsFragment : Fragment() {
                         "userID" to space.currentUserID
                     )
                 )}
+                binding.btnParkIn.isEnabled = false
             }else if(space.spaceStatus =="Reserved"){
                 binding.spaceStatus.text ="Reserved"
                 binding.spaceStatus.setTextColor(Color.rgb(179, 131, 27))
                 binding.btnViewProfile.visibility = GONE
                 binding.carImage.visibility = GONE
+                binding.btnParkIn.isEnabled = false
             }else{
                 binding.spaceStatus.text ="Available"
                 binding.spaceStatus.setTextColor(Color.GREEN)
@@ -74,6 +83,15 @@ class ParkingSpaceDetailsFragment : Fragment() {
             }
         }
 
+        val latestRecords = recordVM.getLatestByUser(userVM.getAuth().uid)
+        if (latestRecords != null) {
+            // No ParkingRecord found, go to the first condition
+            binding.btnParkIn.isEnabled = false
+            binding.cannotPark.visibility = VISIBLE
+        }
+        if(latestRecords?.spaceID == spaceID){
+            binding.cannotPark.text = "You have already parked in this spot"
+        }
 
 
 

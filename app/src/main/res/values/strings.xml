@@ -8,6 +8,7 @@
     <string name="welcome_back">Welcome Back</string>
     <string name="create_account">Create an Account</string>
     <string name="sign_in_with_google">SIGN IN WITH GOOGLE</string>
+    <string name="no_vehicle">You haven\'t add any vehicle yet.</string>
     <string name="confirm">CONFIRM</string>
     <string name="add">ADD</string>
     <string name="upcoming">Upcoming</string>
@@ -19,10 +20,13 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="setting">Setting</string>
     <string name="searchbar_hint">Search</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="reservation">Reservation</string>
     <string name="searchview_hint">Search Job, Company</string>
     <string name="description">Description</string>
     <string name="forget_password">Forget Password</string>
     <string name="got_account_sentence">Already have an account ?</string>
+    <string name="cannotPark">You have already parked in another spot.</string>
     <string name="no_account_sentence">You don\'t have an account yet?</string>
     <string name="password_and_security">Password and security</string>
     <string name="personal_information">Personal information</string>
