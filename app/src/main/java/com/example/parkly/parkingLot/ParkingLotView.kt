@@ -42,6 +42,7 @@ class ParkingLotView @JvmOverloads constructor(
     private var isDragging = false
     private val borderPaint = Paint() // Paint for borders
     private val borderRadius = 20f // Radius for rounded corners
+    val parkingLotView = findViewById<ParkingLotView>(R.id.parkingLotView)
 
     // Layout configuration variables
     private val cols = 10 // Parking spaces per row
@@ -73,6 +74,7 @@ class ParkingLotView @JvmOverloads constructor(
 
         setupParkingLayout()
 
+        invalidate()
 
 
         // Center the map around the Exit sign initially
@@ -90,6 +92,7 @@ class ParkingLotView @JvmOverloads constructor(
         // Ensure offsets are within the bounds
         offsetX = offsetX.coerceIn(-maxOffsetX, maxOffsetX)
         offsetY = offsetY.coerceIn(-maxOffsetY, maxOffsetY)
+        parkingLotView.invalidate()
     }
 
     private fun setupParkingLayout() {
@@ -170,6 +173,7 @@ class ParkingLotView @JvmOverloads constructor(
 
         // Add the same layout on the right side of the right road
         addRightSideParkingLayout()
+        invalidate()
     }
 
     private fun addRightSideParkingLayout() {
@@ -232,6 +236,7 @@ class ParkingLotView @JvmOverloads constructor(
 
         // Update max offset X to accommodate the new layout on the right
         maxOffsetX = ((rightStartX + cols * (spaceWidth + horizontalAisleSpacing)) * scaleFactor) - width / scaleFactor
+        invalidate()
     }
 
 
@@ -365,6 +370,7 @@ class ParkingLotView @JvmOverloads constructor(
         paint.setShadowLayer(0f, 0f, 0f, Color.BLACK)
 
         canvas.restore()
+        invalidate()
     }
 
     private fun handleParkingSpaceClick(x: Float, y: Float) {

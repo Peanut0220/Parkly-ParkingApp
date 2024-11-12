@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.parkly.R
@@ -19,6 +20,10 @@ import com.example.parkly.databinding.FragmentTabMyJobBinding
 import com.example.parkly.databinding.FragmentTabVehicleBinding
 import com.example.parkly.profile.adapter.MyJobAdapter
 import com.example.parkly.profile.adapter.VehicleAdapter
+import com.example.parkly.util.dialog
+import com.example.parkly.util.snackbar
+import kotlinx.coroutines.launch
+import org.joda.time.DateTime
 
 class TabVehicleFragment : Fragment() {
 
@@ -66,10 +71,26 @@ class TabVehicleFragment : Fragment() {
     private fun initAdapter() {
         adapter = VehicleAdapter { holder, vehicle ->
             holder.binding.btnEdit.setOnClickListener {
-
+                // Handle edit action
+                findNavController().navigate(
+                    R.id.action_profileFragment_to_addVehicleFragment, bundleOf(
+                        "vehicleID" to vehicle.vehicleID
+                    )
+                )
             }
             holder.binding.btnDelete.setOnClickListener {
-
+// Handle delete action
+                val oriVehicle = vehicleVM.get(vehicle.vehicleID)
+                if (oriVehicle != null) {
+                    val updatedVehicle = oriVehicle.copy(deletedAt = DateTime.now().millis)
+                    dialog("Delete Vehicle", "Are you sure want to delete this vehicle ?",
+                        onPositiveClick = { _, _ ->
+                            lifecycleScope.launch {
+                                vehicleVM.update(updatedVehicle)
+                            }
+                            snackbar("Vehicle Deleted Successfully.")
+                        })
+                }
             }
 
         }

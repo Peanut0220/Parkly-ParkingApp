@@ -1,6 +1,7 @@
 package com.example.parkly.profile.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -53,6 +54,7 @@ class AddVehicleFragment : Fragment() {
         if(vehicleID != ""){
             var vehicle = vehicleVM.get(vehicleID)
             binding.topAppBar.title ="Edit Vehicle"
+            binding.btnPost.text = "Edit"
             if (vehicle != null) {
                 binding.edtVehicle.setText(vehicle.vehicleNumber)
                 binding.edtVehicleModel.setText(vehicle.vehicleModel)
@@ -100,7 +102,7 @@ class AddVehicleFragment : Fragment() {
             return
         }
 
-        if(isEditing == true){
+        if(isEditing){
             dialog("Edit Vehicle", "Are you sure want to submit this edit ?",
                 onPositiveClick = { _, _ ->
                     lifecycleScope.launch {
@@ -126,12 +128,15 @@ class AddVehicleFragment : Fragment() {
         }}
 
     private fun creatVehicleObject(isEditing: Boolean,vehicle: Vehicle?): Vehicle {
+        if (vehicle != null) {
+            Log.d("OK",vehicle.vehicleID)
+        }
         return Vehicle(
+
             vehicleID = if (isEditing) vehicleID else "",
             vehicleNumber = binding.edtVehicle.text.toString().trim(),
             vehicleModel = binding.edtVehicleModel.text.toString().trim(),
-            createdAt = if (isEditing) binding.createdAt.text.toString()
-                .toLong() else DateTime.now().millis,
+            createdAt = if (isEditing) vehicle?.createdAt.toString().toLong() else DateTime.now().millis,
             userID = userVM.getUserLD().value!!.uid,
             updatedAt = if (isEditing) DateTime.now().millis else 0,
             deletedAt = 0
