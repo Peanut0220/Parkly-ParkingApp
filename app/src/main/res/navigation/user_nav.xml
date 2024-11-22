@@ -78,6 +78,13 @@
             app:exitAnim="@anim/exit"
             app:popEnterAnim="@anim/pop_enter"
             app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_eventFragment_to_addReservationFragment"
+            app:destination="@id/addReservationFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -392,5 +399,9 @@
         android:name="com.example.parkly.profile.view.AddVehicleFragment"
         android:label="fragment_add_vehicle"
         tools:layout="@layout/fragment_add_vehicle" />
+    <fragment
+        android:id="@+id/addReservationFragment"
+        android:name="com.example.parkly.reservation.view.AddReservationFragment"
+        android:label="AddReservationFragment" />
 
 </navigation>

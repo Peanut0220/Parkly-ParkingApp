@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.navigation.fragment.findNavController
 import com.example.parkly.R
 import com.example.parkly.databinding.FragmentEventBinding
 
@@ -32,6 +33,11 @@ class EventFragment : Fragment() {
         val adapter = MyPagerAdapter(childFragmentManager)
         binding.tabContent.adapter = adapter
         binding.tab.setupWithViewPager(binding.tabContent)
+        binding.btnAddReservation.setOnClickListener{
+            findNavController().navigate(
+                R.id.action_eventFragment_to_addReservationFragment
+            )
+        }
     }
 
     class MyPagerAdapter(fm: FragmentManager) :

@@ -16,6 +16,7 @@
     <string name="vehicle_number">Vehicle Number</string>
     <string name="vehicle_model">Vehicle Model</string>
     <string name="post">Post</string>
+    <string name="reserve">Reserve</string>
     <string name="parkin">Park In</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="setting">Setting</string>

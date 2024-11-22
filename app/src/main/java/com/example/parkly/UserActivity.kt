@@ -16,6 +16,7 @@ import com.example.parkly.data.viewmodel.ParkingRecordViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.ActivityUserBinding
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
+import com.example.parkly.reservation.viewmodel.ReservationViewModel
 
 import com.google.firebase.database.FirebaseDatabase
 
@@ -33,6 +34,7 @@ class UserActivity : AppCompatActivity() {
     private val interviewVM: InterviewViewModel by viewModels()
     private val vehicleVM: VehicleViewModel by viewModels()
     private val recordVM: ParkingRecordViewModel by viewModels()
+    private val reservationVM: ReservationViewModel by viewModels()
     private lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +46,9 @@ class UserActivity : AppCompatActivity() {
         spaceVM.init()
         vehicleVM.init()
         recordVM.init()
+        reservationVM.init()
+
+
 
 
         super.onCreate(savedInstanceState)
@@ -81,7 +86,8 @@ class UserActivity : AppCompatActivity() {
                 R.id.postCommentFragment,
                 R.id.parkingSpaceDetailsFragment,
                 R.id.parkInFragment,
-                R.id.addVehicleFragment
+                R.id.addVehicleFragment,
+                R.id.addReservationFragment
             )
 
             val isBottomNavVisible = !hideBottomNavDestinations.contains(destination.id)

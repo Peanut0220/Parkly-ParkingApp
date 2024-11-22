@@ -8,6 +8,16 @@
     android:layout_height="match_parent"
     tools:context=".interview.EventFragment">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddReservation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/baseline_add_24" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
@@ -22,9 +32,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            app:title="@string/interview"
-            app:titleTextColor="@color/md_theme_light_onPrimary"
-            />
+            app:title="@string/reservation"
+            app:titleTextColor="@color/md_theme_light_onPrimary" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -43,7 +52,7 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/upcoming" />
+            android:text="@string/accepted" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
