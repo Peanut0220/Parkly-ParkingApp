@@ -91,6 +91,7 @@ class UserActivity : AppCompatActivity() {
             )
 
             val isBottomNavVisible = !hideBottomNavDestinations.contains(destination.id)
+
             //TransitionManager.beginDelayedTransition(binding.root as ViewGroup)
 
             Handler(Looper.getMainLooper()).postDelayed({
@@ -104,6 +105,9 @@ class UserActivity : AppCompatActivity() {
 
     }
 
+    fun setBottomNavigationVisibility(isVisible: Boolean) {
+        binding.bottomNavigation.visibility = if (isVisible) View.VISIBLE else View.GONE
+    }
     fun setOnlineStatus(userId: String, isOnline: Boolean) {
         val onlineStatusRef = FirebaseDatabase.getInstance().getReference("onlineStatus")
         onlineStatusRef.child(userId).get().addOnSuccessListener { snapshot ->

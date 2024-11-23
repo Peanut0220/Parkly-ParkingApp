@@ -1,6 +1,8 @@
 package com.example.parkly
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,29 +11,50 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.parkly.databinding.FragmentParkingLotBinding
+import com.example.parkly.databinding.FragmentParkingSpaceDetailsBinding
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
+import com.example.parkly.util.toast
 
 class ParkingLotFragment : Fragment() {
     private lateinit var spaceVM: ParkingSpaceViewModel
     private lateinit var parkingLotView: ParkingLotView
+    private val nav by lazy { findNavController() }
+    private val action by lazy { arguments?.getString("action") ?: "" }
+    private lateinit var binding: FragmentParkingLotBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        // Use FragmentParkingLotBinding to inflate the layout
+        binding = FragmentParkingLotBinding.inflate(inflater, container, false)
 
         // Initialize the ViewModel
         spaceVM = ViewModelProvider(this).get(ParkingSpaceViewModel::class.java)
 
-        // Inflate your layout
-        val view = inflater.inflate(R.layout.fragment_parking_lot, container, false)
+        // Handle action-based UI adjustments
+        if (action == "reserve") {
+            binding.topAppBar.setNavigationOnClickListener {
+                nav.navigateUp()
+            }
+        } else {
+            binding.appBar.visibility = View.GONE
+            binding.topAppBar.visibility = View.GONE
+        }
 
-        // Reference ParkingLotView by ID and set the ViewModel
-        parkingLotView = view.findViewById(R.id.parkingLotView)
+        // Show or hide the bottom navigation bar based on `action`
+        val activity = requireActivity() as UserActivity
+        Handler(Looper.getMainLooper()).postDelayed({
+            activity.setBottomNavigationVisibility(action != "reserve")
+        }, 50)
+
+        // Reference ParkingLotView and set ViewModel
+        parkingLotView = binding.parkingLotView
         parkingLotView.setViewModel(spaceVM)
 
-
-
-        return view
-
+        return binding.root
     }
 }
+

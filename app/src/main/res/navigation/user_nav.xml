@@ -402,6 +402,14 @@
     <fragment
         android:id="@+id/addReservationFragment"
         android:name="com.example.parkly.reservation.view.AddReservationFragment"
-        android:label="AddReservationFragment" />
+        android:label="AddReservationFragment" >
+        <action
+            android:id="@+id/action_addReservationFragment_to_parkingLotFragment"
+            app:destination="@id/parkingLotFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
 
 </navigation>

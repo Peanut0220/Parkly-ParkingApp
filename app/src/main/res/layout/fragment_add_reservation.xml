@@ -53,6 +53,120 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/lblInfo"
+                        android:layout_width="366dp"
+                        android:layout_height="140dp"
+                        android:layout_marginEnd="24dp"
+                        android:scrollbars="vertical"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="1500"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/subtitle2"
+                        app:layout_constraintTop_toBottomOf="@+id/tips2"
+                        app:placeholderText="Elaborate Your Reason">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:scrollbars="vertical" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/subtitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/reason"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="@id/subtitle"
+                        app:layout_constraintTop_toBottomOf="@+id/btnUpload" />
+
+                    <TextView
+                        android:id="@+id/tips2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/required"
+                        android:textAppearance="?attr/textAppearanceLabelMedium"
+                        app:layout_constraintStart_toStartOf="@id/subtitle2"
+                        app:layout_constraintTop_toBottomOf="@id/subtitle2" />
+
+                    <Button
+                        android:id="@+id/btnUpload"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/upload"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/file"
+                        app:strokeColor="@color/m3_text_button_foreground_color_selector" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/file"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginTop="15dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/subtitle">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <!-- Media -->
+                            <ImageView
+                                android:id="@+id/file_logo"
+                                android:layout_width="38dp"
+                                android:layout_height="46dp"
+                                android:layout_marginVertical="16dp"
+                                android:layout_marginStart="24dp"
+                                android:scaleType="centerCrop"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/logo_pdf" />
+
+
+                            <!-- Title, secondary and supporting text -->
+                            <TextView
+                                android:id="@+id/file_name"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="16dp"
+                                android:text="Sample.pdf"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/file_logo"
+                                app:layout_constraintTop_toTopOf="@id/file_logo" />
+
+                            <TextView
+                                android:id="@+id/file_size"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="988 kB"
+                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                app:layout_constraintStart_toStartOf="@id/file_name"
+                                app:layout_constraintTop_toBottomOf="@id/file_name" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
                     <io.getstream.avatarview.AvatarView
                         android:id="@+id/avatarView"
                         android:layout_width="58dp"
@@ -140,7 +254,7 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="16dp"
                                 android:layout_marginBottom="16dp"
-                                android:text="Start Time"
+                                android:text="Start Time (Only Hour)"
                                 android:textAppearance="?attr/textAppearanceBodyLarge"
                                 android:textSize="18sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -186,7 +300,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="24dp"
-                                android:text="Set Time"
+                                android:text="Set Duration"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -210,46 +324,17 @@
                         app:layout_constraintStart_toStartOf="parent"
                         tools:layout_editor_absoluteY="558dp" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/lblVideo"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/subtitle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginTop="16dp"
-                        android:hint="Add video conferencing"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/supported"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/materialDivider4"
-                        app:startIconDrawable="@drawable/baseline_videocam_24">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edtVideo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/txt_message"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginTop="16dp"
-                        android:hint="Description"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lblVideo"
-                        app:startIconDrawable="@drawable/baseline_message_24">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edtRemark"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textMultiLine" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
+                        app:layout_constraintTop_toBottomOf="@+id/materialDivider4" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -265,7 +350,7 @@
             android:layout_height="58dp"
             android:layout_marginHorizontal="64dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/SUBMIT"
+            android:text="@string/select_space"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
