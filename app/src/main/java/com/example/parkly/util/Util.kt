@@ -154,6 +154,40 @@ fun Fragment.snackbar(text: String) {
     Snackbar.make(view!!, text, Snackbar.LENGTH_SHORT).show()
 }
 
+fun View.snackbar(text: String, duration: Int = Snackbar.LENGTH_SHORT) {
+    Snackbar.make(this, text, duration).show()
+}
+
+fun View.dialog(
+    title: String,
+    msg: String,
+    txtNegative: String? = "No",
+    txtPositive: String? = "Yes",
+    onNegativeClick: ((DialogInterface, Int) -> Unit)? = null,
+    onPositiveClick: ((DialogInterface, Int) -> Unit)? = null
+) {
+    val builder = MaterialAlertDialogBuilder(context!!)
+        .setTitle(title)
+        .setMessage(msg)
+    if (onNegativeClick != null) {
+        builder.setNegativeButton(txtNegative) { dialog, which ->
+            onNegativeClick(dialog, which)
+        }
+    } else {
+        builder.setNegativeButton(txtNegative, null)
+    }
+
+    if (onPositiveClick != null) {
+        builder.setPositiveButton(txtPositive) { dialog, which ->
+            onPositiveClick(dialog, which)
+        }
+    } else {
+        builder.setPositiveButton(txtPositive, null)
+    }
+
+    builder.show()
+}
+
 fun Fragment.dialog(
     title: String,
     msg: String,

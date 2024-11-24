@@ -7,6 +7,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.parkly.R
 import com.example.parkly.data.Interview
+import com.example.parkly.data.JobApplication
 import com.example.parkly.data.Pdf
 import com.example.parkly.data.Reservation
 import com.example.parkly.data.Time
@@ -30,6 +32,7 @@ import com.example.parkly.databinding.FragmentScheduleInterviewBinding
 import com.example.parkly.data.viewmodel.JobViewModel
 import com.example.parkly.databinding.FragmentAddReservationBinding
 import com.example.parkly.reservation.viewmodel.ReservationViewModel
+import com.example.parkly.util.JobApplicationState
 import com.example.parkly.util.dialog
 import com.example.parkly.util.disable
 import com.example.parkly.util.displayDate
@@ -70,6 +73,7 @@ class AddReservationFragment : Fragment() {
     private var fileUri: Uri? = null
     private val nav by lazy { findNavController() }
 
+    private var startTime: Int = 0
     private var date: Long = 0
 
     override fun onCreateView(
@@ -97,6 +101,7 @@ class AddReservationFragment : Fragment() {
         setupDateTimePicker()
 
 
+
         return binding.root
     }
 
@@ -105,23 +110,31 @@ class AddReservationFragment : Fragment() {
 
     private fun submit() {
 
-//        if (date == 0L || binding.chipStartTime.text=="Set Time"||binding.chipEndTime.text=="Set Duration") {
-//            toast("Please select date and time.")
-//            return
-//        }
-//        if(binding.edtInfo.text.toString()==""){
-//            toast("Please provide reason.")
-//            return
-//        }
-//
-//        if (fileUri == null) {
-//            toast("Please Upload Your Supported File!")
-//            return
-//        }
+        if (date == 0L || binding.chipStartTime.text=="Set Time"||binding.chipEndTime.text=="Set Duration") {
+            toast("Please select date and time.")
+            return
+        }
+        if(binding.edtInfo.text.toString()==""){
+            toast("Please provide reason.")
+            return
+        }
+
+        if (fileUri == null) {
+            toast("Please Upload Your Supported File!")
+            return
+        }
+
+
 
         findNavController().navigate(
             R.id.action_addReservationFragment_to_parkingLotFragment, bundleOf(
-                "action" to "reserve"
+                "action" to "reserve",
+                "date" to date,
+                "startTime" to startTime,
+                "duration" to binding.chipEndTime.text,
+                "fileUri" to fileUri.toString(),
+                "fileName" to binding.fileName.text.toString(),
+                "reason" to binding.edtInfo.text.toString()
             )
         )
 
@@ -171,6 +184,7 @@ class AddReservationFragment : Fragment() {
         startTimePicker.addOnPositiveButtonClickListener {
             val selectedHour = startTimePicker.hour
             binding.chipStartTime.text = String.format("%02d:00", selectedHour) // Force minutes to 00
+            startTime = selectedHour
         }
     }
 

@@ -41,6 +41,8 @@ class ParkingSpaceViewModel(val app: Application) : AndroidViewModel(app){
         PARKINGSPACES.document(space.spaceID).set(space)
     }
 
+
+
     // Function to create multiple parking spaces
     fun createParkingSpaces() {
         val parkingSpaces = mutableListOf<ParkingSpace>()
