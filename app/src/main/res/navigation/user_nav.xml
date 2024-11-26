@@ -68,7 +68,7 @@
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
-        android:name="com.example.parkly.interview.EventFragment"
+        android:name="com.example.parkly.reservation.view.EventFragment"
         android:label="fragment_event"
         tools:layout="@layout/fragment_event" >
         <action

@@ -15,7 +15,7 @@ import com.example.parkly.data.viewmodel.InterviewViewModel
 import com.example.parkly.data.viewmodel.JobApplicationViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentTabHistoryInterviewBinding
-import com.example.parkly.interview.adapter.InterviewHistoryAdapter
+import com.example.parkly.reservation.adapter.InterviewHistoryAdapter
 import com.example.parkly.data.viewmodel.JobViewModel
 
 import org.joda.time.DateTime

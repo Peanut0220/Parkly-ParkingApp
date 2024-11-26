@@ -17,7 +17,7 @@ import com.example.parkly.data.viewmodel.InterviewViewModel
 import com.example.parkly.data.viewmodel.JobApplicationViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentTabUpcomingInterviewBinding
-import com.example.parkly.interview.adapter.InterviewAdapter
+import com.example.parkly.reservation.adapter.InterviewAdapter
 import com.example.parkly.data.viewmodel.JobViewModel
 import com.example.parkly.util.combineDateTime
 import com.example.parkly.util.toast

@@ -1,4 +1,4 @@
-package com.example.parkly.interview.adapter
+package com.example.parkly.reservation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
