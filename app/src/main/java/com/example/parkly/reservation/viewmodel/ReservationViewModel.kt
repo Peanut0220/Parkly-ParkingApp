@@ -11,6 +11,7 @@ import com.example.parkly.data.Pdf
 import com.example.parkly.data.Reservation
 import com.example.parkly.data.Vehicle
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
+import com.example.parkly.util.JobApplicationState
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Blob
@@ -69,6 +70,12 @@ class ReservationViewModel(val app: Application) : AndroidViewModel(app){
             response.value = it.message.toString()
         }.await()
     }
+
+    fun updateStatus(reservationID: String,status: String){
+        RESERVATIONS.document(reservationID).update("status",status.toString())
+    }
+
+
 
 
 

@@ -69,9 +69,8 @@ class TabPendingReservationFragment : Fragment() {
         val adapter = ReservationAdapter{ h, f ->
             h.binding.root.setOnClickListener {
                     nav.navigate(
-                        R.id.addReservationFragment, bundleOf(
-                            "interviewID" to f.id,
-                            "action" to "EDIT"
+                        R.id.action_eventFragment_to_reservationDetailsFragment, bundleOf(
+                            "reservationID" to f.id
                         )
                     )
             }
