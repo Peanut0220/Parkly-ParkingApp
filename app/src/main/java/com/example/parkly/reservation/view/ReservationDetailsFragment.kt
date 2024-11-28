@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ import com.example.parkly.data.viewmodel.JobViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentApplicantDetailsBinding
 import com.example.parkly.databinding.FragmentReservationDetailsBinding
+import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
 import com.example.parkly.reservation.viewmodel.ReservationViewModel
 import com.example.parkly.util.JobApplicationState
 import com.example.parkly.util.createChatroom
@@ -45,12 +47,9 @@ class ReservationDetailsFragment : Fragment() {
 
     private val userVM: UserViewModel by activityViewModels()
     private val reservationVM: ReservationViewModel by activityViewModels()
-    private val jobAppVM: JobApplicationViewModel by viewModels()
-    private val jobVM: JobViewModel by activityViewModels()
-    private val companyVM: CompanyViewModel by activityViewModels()
+    private val spaceVM: ParkingSpaceViewModel by activityViewModels()
     private lateinit var binding: FragmentReservationDetailsBinding
     private val nav by lazy { findNavController() }
-    private val jobAppID by lazy { arguments?.getString("jobAppID") ?: "" }
     private val reservationID by lazy { arguments?.getString("reservationID") ?: "" }
 
 
@@ -88,7 +87,7 @@ class ReservationDetailsFragment : Fragment() {
             binding.lblDate.text = "${displayDate(reservation.date)}"
             binding.startTime.text =
                 formatTime(reservation.startTime)
-            binding.endTime.text = formatTime(reservation.startTime+reservation.duration)
+            binding.endTime.text = formatTime(reservation.startTime + reservation.duration)
 
             binding.file.setOnClickListener {
                 nav.navigate(
@@ -99,83 +98,115 @@ class ReservationDetailsFragment : Fragment() {
                 )
             }
 
-            /*
-            * Button Function
-            * =======================================
-            * */
+            //status color
             when (reservation.status) {
-                "Approved","Rejected","Cancelled","Expired" -> {
+                "Approved", "Rejected", "Cancelled", "Expired" -> {
                     binding.btnReject.visibility = View.GONE
                     binding.btnAccept.visibility = View.GONE
                     binding.status.text = reservation.status
-                    when(reservation.status){
-                        "Approved"->{
+                    when (reservation.status) {
+                        "Approved" -> {
                             binding.status.setTextColor(Color.GREEN)
                         }
-                        "Rejected"->{
+
+                        "Rejected" -> {
                             binding.status.setTextColor(Color.RED)
+                            binding.btnCancel.visibility = View.GONE
                         }
-                        "Cancelled"->{
+
+                        "Cancelled" -> {
                             binding.status.setTextColor(Color.RED)
+                            binding.btnCancel.visibility = View.GONE
                         }
-                        "Expired"->{
+
+                        "Expired" -> {
                             binding.status.setTextColor(Color.RED)
+                            binding.btnCancel.visibility = View.GONE
                         }
                     }
                 }
 
-                "Pending"-> {
+                "Pending" -> {
                     binding.status.text = reservation.status
                     binding.status.setTextColor(Color.rgb(179, 131, 27))
                 }
 
             }
 
-            binding.btnAccept.setOnClickListener {
-                dialog("Approve Reservation ", "Are you sure to APPROVE?",
-                    onPositiveClick = { _, _ ->
-                        reservationVM.updateStatus(reservation.id,"Approved")
 
-                        sendPushNotification(
-                            "Reservation APPROVED!",
-                            "Your applied reservation for ${reservation.spaceID} has been approved.",
-                            reservation.user.token
-                        )
-                    })
-            }
-            binding.btnReject.setOnClickListener {
-                dialog("Reject Reservation", "Are you sure to REJECT?",
-                    onPositiveClick = { _, _ ->
-                        reservationVM.updateStatus(reservation.id,"Rejected")
+            if (userVM.get(userVM.getAuth().uid)!!.type== "Driver") {
+                binding.horizontalScrollView3.visibility = View.VISIBLE
+                binding.horizontalScrollView2.visibility = View.GONE
+                binding.horizontalScrollView.visibility = View.GONE
 
-                        sendPushNotification(
-                            "Opps... Reservation REJECTED.",
-                            "Your applied reservation for ${reservation.spaceID} has been rejected.",
-                            reservation.user.token
-                        )
-                    })
+                //Cancel button
+                binding.btnCancel.setOnClickListener {
+                    dialog("Cancel Reservation ", "Are you sure to Cancel?",
+                        onPositiveClick = { _, _ ->
+                            reservationVM.updateStatus(reservation.id, "Cancelled")
 
-            }
-
-
-            binding.btnMessage.setOnClickListener {
-                //the ids
-                val userId = userVM.getAuth().uid
-                val otherId = reservation.userID
-                var chatRoomId = userId + "_" + otherId
-                CoroutineScope(Dispatchers.Main).launch {
-                    val isExist = withContext(Dispatchers.IO) {
-                        isChatRoomExist(chatRoomId)
-                    }
-
-                    if (!isExist) {
-                        chatRoomId = otherId + "_" + userId
-                        createChatroom(chatRoomId)
-                    }
-                    message(chatRoomId, nav)
+                            snackbar("Your applied reservation for ${reservation.spaceID} has been cancelled.")
+                        })
                 }
-            }
 
+            }else if(userVM.get(userVM.getAuth().uid)!!.type == "Admin"){
+                binding.horizontalScrollView3.visibility = View.GONE
+                binding.horizontalScrollView2.visibility = View.VISIBLE
+                binding.horizontalScrollView.visibility = View.VISIBLE
+
+                //Accept button
+                binding.btnAccept.setOnClickListener {
+                    dialog("Approve Reservation ", "Are you sure to APPROVE?",
+                        onPositiveClick = { _, _ ->
+                            reservationVM.updateStatus(reservation.id, "Approved")
+
+                            sendPushNotification(
+                                "Reservation APPROVED!",
+                                "Your applied reservation for ${reservation.spaceID} has been approved.",
+                                reservation.user.token
+                            )
+                        })
+                }
+
+                //Reject button
+                binding.btnReject.setOnClickListener {
+                    dialog("Reject Reservation", "Are you sure to REJECT?",
+                        onPositiveClick = { _, _ ->
+                            reservationVM.updateStatus(reservation.id, "Rejected")
+
+                            sendPushNotification(
+                                "Opps... Reservation REJECTED.",
+                                "Your applied reservation for ${reservation.spaceID} has been rejected.",
+                                reservation.user.token
+                            )
+                        })
+
+                }
+
+
+                //To send user message
+                binding.btnMessage.setOnClickListener {
+                    //the ids
+                    val userId = userVM.getAuth().uid
+                    val otherId = reservation.userID
+                    var chatRoomId = userId + "_" + otherId
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val isExist = withContext(Dispatchers.IO) {
+                            isChatRoomExist(chatRoomId)
+                        }
+
+                        if (!isExist) {
+                            chatRoomId = otherId + "_" + userId
+                            createChatroom(chatRoomId)
+                        }
+                        message(chatRoomId, nav)
+                    }
+                }
+            }else{
+                binding.horizontalScrollView3.visibility = View.GONE
+                binding.horizontalScrollView2.visibility = View.GONE
+                binding.horizontalScrollView.visibility = View.GONE
+            }
 
         }
 

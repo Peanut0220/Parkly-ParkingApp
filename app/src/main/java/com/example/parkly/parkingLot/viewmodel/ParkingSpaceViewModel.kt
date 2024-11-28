@@ -41,6 +41,10 @@ class ParkingSpaceViewModel(val app: Application) : AndroidViewModel(app){
         PARKINGSPACES.document(space.spaceID).set(space)
     }
 
+    fun updateBySpaceID(spaceID: String) {
+        PARKINGSPACES.document(spaceID).update("status","Reserved")
+    }
+
 
 
     // Function to create multiple parking spaces

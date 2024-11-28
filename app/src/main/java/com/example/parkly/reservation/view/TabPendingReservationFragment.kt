@@ -96,15 +96,15 @@ if(filterstatus =="Pending"){
         list.filter {
             it.status == "Pending"
         }
-}else if(filterstatus == "Accepted"){
+}else if(filterstatus == "Approved"){
     reservationList =
         list.filter {
-            it.status == "Accepted"
+            it.status == "Approved"
         }
 }else{
     reservationList =
         list.filter {
-            it.status != "Accepted" &&
+            it.status != "Approved" &&
             it.status != "Pending"
         }
 }

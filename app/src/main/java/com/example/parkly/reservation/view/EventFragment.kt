@@ -49,7 +49,7 @@ class EventFragment : Fragment() {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> TabPendingReservationFragment.newInstance("Pending", "VIEW")
-                1 -> TabPendingReservationFragment.newInstance("Accepted", "VIEW")
+                1 -> TabPendingReservationFragment.newInstance("Approved", "VIEW")
                 2 -> TabPendingReservationFragment.newInstance("History", "VIEW")
                 else -> throw Exception()
             }

@@ -39,7 +39,7 @@ class ReservationAdapter(
 
 if(reservation.status =="Pending"){
     holder.binding.lblStatus.setTextColor(Color.rgb(179, 131, 27))
-}else if(reservation.status =="Accepted"){
+}else if(reservation.status =="Approved"){
     holder.binding.lblStatus.setTextColor(Color.GREEN)
 }else
     holder.binding.lblStatus.setTextColor(Color.RED)
