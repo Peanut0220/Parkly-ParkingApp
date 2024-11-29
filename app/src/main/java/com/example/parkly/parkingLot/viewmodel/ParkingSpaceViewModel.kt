@@ -42,7 +42,7 @@ class ParkingSpaceViewModel(val app: Application) : AndroidViewModel(app){
     }
 
     fun updateBySpaceID(spaceID: String) {
-        PARKINGSPACES.document(spaceID).update("status","Reserved")
+        PARKINGSPACES.document(spaceID).update("spaceStatus","Reserved")
     }
 
 

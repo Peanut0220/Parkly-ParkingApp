@@ -30,19 +30,25 @@ class ReservationAdapter(
     class ViewHolder(val binding: ItemReservationBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(ItemReservationBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        ViewHolder(
+            ItemReservationBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val reservation = getItem(position)
         Log.d("TAG", "onBindViewHolder: ")
         val prev = if (position > 0) getItem(position - 1) else null
 
-if(reservation.status =="Pending"){
-    holder.binding.lblStatus.setTextColor(Color.rgb(179, 131, 27))
-}else if(reservation.status =="Approved"){
-    holder.binding.lblStatus.setTextColor(Color.GREEN)
-}else
-    holder.binding.lblStatus.setTextColor(Color.RED)
+        if (reservation.status == "Pending") {
+            holder.binding.lblStatus.setTextColor(Color.rgb(179, 131, 27))
+        } else if (reservation.status == "Approved") {
+            holder.binding.lblStatus.setTextColor(Color.GREEN)
+        } else
+            holder.binding.lblStatus.setTextColor(Color.RED)
 
         holder.binding.lblStatus.text = reservation.status
 
@@ -53,8 +59,8 @@ if(reservation.status =="Pending"){
 
 
         holder.binding.startTime.text =
-           formatTime(reservation.startTime)
-        holder.binding.endTime.text = formatTime(reservation.startTime+reservation.duration)
+            formatTime(reservation.startTime)
+        holder.binding.endTime.text = formatTime(reservation.startTime + reservation.duration)
 
         fn(holder, reservation)
     }

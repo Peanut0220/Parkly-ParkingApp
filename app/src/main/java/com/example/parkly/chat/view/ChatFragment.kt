@@ -15,6 +15,8 @@ import com.example.parkly.data.Chat
 import com.example.parkly.data.ChatMessage
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentChatBinding
+import com.example.parkly.util.createChatroom
+import com.example.parkly.util.isChatRoomExist
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -47,6 +49,27 @@ class ChatFragment : Fragment() {
         binding = FragmentChatBinding.inflate(inflater, container, false)
 
         chatList.clear()
+
+        binding.btnHelp.setOnClickListener {
+            val userId = userVM.getAuth().uid
+            val otherId = "7KJGtkutf7fU8DcuJEdFhdhZMsp2"
+            var chatRoomId = userId + "_" + otherId
+
+            CoroutineScope(Dispatchers.Main).launch {
+
+                val isExist = withContext(Dispatchers.IO) {
+                    isChatRoomExist(chatRoomId)
+                }
+
+
+                if (!isExist) {
+                    chatRoomId = otherId + "_" + userId
+                    createChatroom(chatRoomId)
+                }
+
+                com.example.parkly.util.message(chatRoomId, nav)
+            }
+        }
 
         adapter = ChatAdapter { holder, chat ->
             holder.binding.chat.setOnClickListener { message(chat.id) }

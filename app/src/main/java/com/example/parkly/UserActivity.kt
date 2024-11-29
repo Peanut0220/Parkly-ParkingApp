@@ -19,6 +19,7 @@ import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
 import com.example.parkly.reservation.viewmodel.ReservationViewModel
 
 import com.google.firebase.database.FirebaseDatabase
+import java.util.Calendar
 
 class UserActivity : AppCompatActivity() {
 
@@ -47,8 +48,6 @@ class UserActivity : AppCompatActivity() {
         vehicleVM.init()
         recordVM.init()
         reservationVM.init()
-
-
 
 
         super.onCreate(savedInstanceState)

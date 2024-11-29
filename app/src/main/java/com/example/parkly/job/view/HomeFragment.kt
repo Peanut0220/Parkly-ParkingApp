@@ -19,6 +19,8 @@ import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentHomeBinding
 import com.example.parkly.job.adapter.JobAdapter
 import com.example.parkly.data.viewmodel.JobViewModel
+import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
+import com.example.parkly.reservation.viewmodel.ReservationViewModel
 import com.example.parkly.util.dialogProfileNotComplete
 import com.example.parkly.util.getToken
 import com.google.android.material.search.SearchView
@@ -26,6 +28,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.database
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import java.util.Calendar
 
 class HomeFragment : Fragment(), BottomSheetListener {
 
@@ -33,6 +36,8 @@ class HomeFragment : Fragment(), BottomSheetListener {
     private lateinit var adapter: JobAdapter
     private lateinit var svAdapter: JobAdapter
     private val nav by lazy { findNavController() }
+    private val reservationVM: ReservationViewModel by activityViewModels()
+    private val spaceVM: ParkingSpaceViewModel by activityViewModels()
     private val jobVM: JobViewModel by activityViewModels()
     private val userVM: UserViewModel by activityViewModels()
     private val companyVM: CompanyViewModel by activityViewModels()
@@ -41,6 +46,7 @@ class HomeFragment : Fragment(), BottomSheetListener {
     private var chipWorkplaceState = mutableListOf<String>()
     private var chipSalaryState = mutableListOf("0", "999999")
     private var isSearching = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,14 +75,16 @@ class HomeFragment : Fragment(), BottomSheetListener {
             }
 
             binding.username.text = it.name
-
-            //-----------------------------------------------------------
-            // Company
-            if (!userVM.isUserDataComplete(it)) {
-                dialogProfileNotComplete(
-                    nav
-                )
+            var isDialogShown = false
+            // Check if the dialog has already been shown
+            if (!userVM.isUserDataComplete(it) && !isDialogShown) {
+                isDialogShown = true
+                dialogProfileNotComplete(nav)
             }
+
+
+
+
 
 
             binding.btnSavedJob.visibility = View.VISIBLE

@@ -39,23 +39,30 @@ class ParkingLotView @JvmOverloads constructor(
     private lateinit var reservationVM: ReservationViewModel
     private lateinit var userVM: UserViewModel
     private var lifecycleOwner: LifecycleOwner? = null
-    private var Action =""
-    private var Date= 0L
-    private var StartTime =0
-    private var Duration =""
-    private var FileUri =""
-    private var Reason =""
-    private var FileName =""
+    private var Action = ""
+    private var Date = 0L
+    private var StartTime = 0
+    private var Duration = ""
+    private var FileUri = ""
+    private var Reason = ""
+    private var FileName = ""
+
     // Set ViewModels
-    fun setViewModel(viewModel1: ParkingSpaceViewModel, viewModel2: ReservationViewModel,viewModel3:UserViewModel) {
+    fun setViewModel(
+        viewModel1: ParkingSpaceViewModel,
+        viewModel2: ReservationViewModel,
+        viewModel3: UserViewModel
+    ) {
         this.spaceVM = viewModel1
         this.reservationVM = viewModel2
         this.userVM = viewModel3
 
         // Optionally observe data here, utilizing the lifecycle owner
         lifecycleOwner?.let { owner ->
-            spaceVM!!.getParkingSpaceLD().observe(owner) { /* Handle ParkingSpaceViewModel data updates */ }
-            reservationVM!!.getreservationLD().observe(owner) { /* Handle ReservationViewModel data updates */ }
+            spaceVM!!.getParkingSpaceLD()
+                .observe(owner) { /* Handle ParkingSpaceViewModel data updates */ }
+            reservationVM!!.getreservationLD()
+                .observe(owner) { /* Handle ReservationViewModel data updates */ }
             userVM!!.getUserLD().observe(owner) { /* Handle ReservationViewModel data updates */ }
         }
     }
@@ -66,14 +73,24 @@ class ParkingLotView @JvmOverloads constructor(
 
         // Rebind existing ViewModel observers when LifecycleOwner is set
         if (::spaceVM.isInitialized && ::reservationVM.isInitialized) {
-            spaceVM!!.getParkingSpaceLD().observe(owner) { /* Handle ParkingSpaceViewModel data updates */ }
-            reservationVM!!.getreservationLD().observe(owner) { /* Handle ReservationViewModel data updates */ }
+            spaceVM!!.getParkingSpaceLD()
+                .observe(owner) { /* Handle ParkingSpaceViewModel data updates */ }
+            reservationVM!!.getreservationLD()
+                .observe(owner) { /* Handle ReservationViewModel data updates */ }
             userVM!!.getUserLD().observe(owner) { /* Handle ReservationViewModel data updates */ }
         }
     }
 
     // Set parameters safely and update internal state
-    fun setParameters(action: String, date: Long, startTime: Int, duration: String, fileUri: String, reason: String,fileName: String) {
+    fun setParameters(
+        action: String,
+        date: Long,
+        startTime: Int,
+        duration: String,
+        fileUri: String,
+        reason: String,
+        fileName: String
+    ) {
         // Update only if parameters are not empty or default
         if (action.isNotEmpty() || date != 0L || startTime != 0 || duration.isNotEmpty() || fileUri.isNotEmpty() || reason.isNotEmpty()) {
             Action = action
@@ -119,14 +136,15 @@ class ParkingLotView @JvmOverloads constructor(
     private var currentY = startY // Initialize currentY at the start position
 
 
-    private val scaleGestureDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-        override fun onScale(detector: ScaleGestureDetector): Boolean {
-            scaleFactor *= detector.scaleFactor
-            scaleFactor = scaleFactor.coerceIn(0.5f, 3f) // Set minimum zoom level to 0.5f
-            invalidate()
-            return true
-        }
-    })
+    private val scaleGestureDetector =
+        ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                scaleFactor *= detector.scaleFactor
+                scaleFactor = scaleFactor.coerceIn(0.5f, 3f) // Set minimum zoom level to 0.5f
+                invalidate()
+                return true
+            }
+        })
 
     init {
         paint.style = Paint.Style.FILL
@@ -142,7 +160,8 @@ class ParkingLotView @JvmOverloads constructor(
         val exitCenterY = exitSign.centerY().toFloat()
 
         // Adjust these additional offsets to control how far to the top-left you want to move the view
-        val additionalOffsetX = 900f // Adjust this to move further left (increase value for more left)
+        val additionalOffsetX =
+            900f // Adjust this to move further left (increase value for more left)
         val additionalOffsetY = 1600f // Adjust this to move further up (increase value for more up)
 
         // Calculate offsets with additional adjustments to position near the top-left corner of the Exit sign
@@ -158,7 +177,12 @@ class ParkingLotView @JvmOverloads constructor(
     private fun setupParkingLayout() {
         // Entry and exit sign setup
         entrySign.set(startX, startY, startX + 100, startY + 50)
-        exitSign.set(startX + (cols * (spaceWidth + horizontalAisleSpacing)) - 100, startY, startX + (cols * (spaceWidth + horizontalAisleSpacing)), startY + 50)
+        exitSign.set(
+            startX + (cols * (spaceWidth + horizontalAisleSpacing)) - 100,
+            startY,
+            startX + (cols * (spaceWidth + horizontalAisleSpacing)),
+            startY + 50
+        )
 
         // Start with one row of parking spaces (black)
         for (col in 0 until cols) {
@@ -171,14 +195,28 @@ class ParkingLotView @JvmOverloads constructor(
         val totalGroups = 3 // Number of groups of two rows of parking spaces
         for (i in 0 until totalGroups) {
             // Road after one row of parking spaces
-            parkingSpaces.add(Rect(startX - 20, currentY, startX + cols * (spaceWidth + horizontalAisleSpacing), currentY + verticalRoadHeight))
+            parkingSpaces.add(
+                Rect(
+                    startX - 20,
+                    currentY,
+                    startX + cols * (spaceWidth + horizontalAisleSpacing),
+                    currentY + verticalRoadHeight
+                )
+            )
             currentY += verticalRoadHeight // Move down for the next rows
 
             // Two rows of parking spaces
             for (j in 0 until 2) {
                 for (col in 0 until cols) {
                     val left = startX + col * (spaceWidth + horizontalAisleSpacing)
-                    parkingSpaces.add(Rect(left, currentY, left + spaceWidth, currentY + spaceHeight))
+                    parkingSpaces.add(
+                        Rect(
+                            left,
+                            currentY,
+                            left + spaceWidth,
+                            currentY + spaceHeight
+                        )
+                    )
                 }
                 currentY += spaceHeight // Move down for the next row of parking spaces
                 if (j == 0) {
@@ -189,7 +227,14 @@ class ParkingLotView @JvmOverloads constructor(
 
 
         // Final road after the last group
-        parkingSpaces.add(Rect(startX - 20, currentY, startX + cols * (spaceWidth + horizontalAisleSpacing), currentY + verticalRoadHeight))
+        parkingSpaces.add(
+            Rect(
+                startX - 20,
+                currentY,
+                startX + cols * (spaceWidth + horizontalAisleSpacing),
+                currentY + verticalRoadHeight
+            )
+        )
         currentY += verticalRoadHeight // Move down for the last row of parking spaces
 
         // Last row of parking spaces
@@ -200,7 +245,8 @@ class ParkingLotView @JvmOverloads constructor(
 
         // Define the position for the left column of parking spaces
         val leftColumnStartX = startX - spaceHeight - 100 // Align closely with the left road
-        var leftColumnY = startY + spaceHeight + verticalAisleSpacing // Skip the top space for a blank area
+        var leftColumnY =
+            startY + spaceHeight + verticalAisleSpacing // Skip the top space for a blank area
 
         // Add parking spaces from top to bottom until reaching the bottom of the left road
         while (leftColumnY + spaceWidth <= currentY) {
@@ -217,18 +263,19 @@ class ParkingLotView @JvmOverloads constructor(
         }
         // Add roads to the list of road rectangles
         parkingSpaces.forEach { space ->
-            if (space.width() >200) {
+            if (space.width() > 200) {
                 roadRectangles.add(space)
             }
         }
 
         // Update the positions of the entry and exit signs based on the current layout
         entrySign.set(startX - 150, startY - 200, startX + 50, startY - 100)
-        exitSign.set(3300,2200,3500,2300)
-        buildingSign.set(1600,2200,1900,2300)
+        exitSign.set(3300, 2200, 3500, 2300)
+        buildingSign.set(1600, 2200, 1900, 2300)
 
         // Calculate the maximum offsets based on the total layout
-        maxOffsetX = ((cols * (spaceWidth + horizontalAisleSpacing)) * scaleFactor) - width / scaleFactor
+        maxOffsetX =
+            ((cols * (spaceWidth + horizontalAisleSpacing)) * scaleFactor) - width / scaleFactor
         maxOffsetY = (currentY * scaleFactor) - height / scaleFactor
 
         // Add the same layout on the right side of the right road
@@ -237,27 +284,49 @@ class ParkingLotView @JvmOverloads constructor(
     }
 
     private fun addRightSideParkingLayout() {
-        val rightStartX = startX + (cols * (spaceWidth + horizontalAisleSpacing)) + 65 + horizontalAisleSpacing // Position for the right layout
+        val rightStartX =
+            startX + (cols * (spaceWidth + horizontalAisleSpacing)) + 65 + horizontalAisleSpacing // Position for the right layout
         var rightCurrentY = startY // Reset Y position for the right layout
 
         // Start adding parking spaces for the right side
         for (col in 0 until cols) {
             val left = rightStartX + col * (spaceWidth + horizontalAisleSpacing)
-            parkingSpaces.add(Rect(left, rightCurrentY, left + spaceWidth, rightCurrentY + spaceHeight))
+            parkingSpaces.add(
+                Rect(
+                    left,
+                    rightCurrentY,
+                    left + spaceWidth,
+                    rightCurrentY + spaceHeight
+                )
+            )
         }
         rightCurrentY += spaceHeight // Move down for the road below the first row
 
         // Continue the same pattern as before
         for (i in 0 until 3) { // Same number of groups of two rows of parking spaces
             // Road after one row of parking spaces
-            parkingSpaces.add(Rect(rightStartX - 20, rightCurrentY, rightStartX + cols * (spaceWidth + horizontalAisleSpacing), rightCurrentY + verticalRoadHeight))
+            parkingSpaces.add(
+                Rect(
+                    rightStartX - 20,
+                    rightCurrentY,
+                    rightStartX + cols * (spaceWidth + horizontalAisleSpacing),
+                    rightCurrentY + verticalRoadHeight
+                )
+            )
             rightCurrentY += verticalRoadHeight // Move down for the next rows
 
             // Two rows of parking spaces
             for (j in 0 until 2) {
                 for (col in 0 until cols) {
                     val left = rightStartX + col * (spaceWidth + horizontalAisleSpacing)
-                    parkingSpaces.add(Rect(left, rightCurrentY, left + spaceWidth, rightCurrentY + spaceHeight))
+                    parkingSpaces.add(
+                        Rect(
+                            left,
+                            rightCurrentY,
+                            left + spaceWidth,
+                            rightCurrentY + spaceHeight
+                        )
+                    )
                 }
                 rightCurrentY += spaceHeight // Move down for the next row of parking spaces
                 if (j == 0) {
@@ -267,18 +336,33 @@ class ParkingLotView @JvmOverloads constructor(
         }
 
         // Final road after the last group on the right side
-        parkingSpaces.add(Rect(rightStartX - 20, rightCurrentY, rightStartX + cols * (spaceWidth + horizontalAisleSpacing), rightCurrentY + verticalRoadHeight))
+        parkingSpaces.add(
+            Rect(
+                rightStartX - 20,
+                rightCurrentY,
+                rightStartX + cols * (spaceWidth + horizontalAisleSpacing),
+                rightCurrentY + verticalRoadHeight
+            )
+        )
         rightCurrentY += verticalRoadHeight // Move down for the last row of parking spaces
 
         // Last row of parking spaces on the right
         for (col in 0 until cols) {
             val left = rightStartX + col * (spaceWidth + horizontalAisleSpacing)
-            parkingSpaces.add(Rect(left, rightCurrentY, left + spaceWidth, rightCurrentY + spaceHeight))
+            parkingSpaces.add(
+                Rect(
+                    left,
+                    rightCurrentY,
+                    left + spaceWidth,
+                    rightCurrentY + spaceHeight
+                )
+            )
         }
 
         // Define the position for the right vertical column of parking spaces
-        val rightColumnStartX = rightStartX +(10*160) +80// Adjust to align with the right road
-        var rightColumnY = startY + spaceHeight + verticalAisleSpacing // Skip the top space for a blank area
+        val rightColumnStartX = rightStartX + (10 * 160) + 80// Adjust to align with the right road
+        var rightColumnY =
+            startY + spaceHeight + verticalAisleSpacing // Skip the top space for a blank area
 
         // Add parking spaces from top to bottom until reaching the bottom of the right road
         while (rightColumnY + spaceWidth <= rightCurrentY) {
@@ -295,7 +379,8 @@ class ParkingLotView @JvmOverloads constructor(
         }
 
         // Update max offset X to accommodate the new layout on the right
-        maxOffsetX = ((rightStartX + cols * (spaceWidth + horizontalAisleSpacing)) * scaleFactor) - width / scaleFactor
+        maxOffsetX =
+            ((rightStartX + cols * (spaceWidth + horizontalAisleSpacing)) * scaleFactor) - width / scaleFactor
         invalidate()
     }
 
@@ -304,12 +389,6 @@ class ParkingLotView @JvmOverloads constructor(
         // Prefix "A" for all parking spaces and increment the ID sequentially
         return "A${index + 1}"
     }
-
-
-
-
-
-
 
 
     override fun onDraw(canvas: Canvas) {
@@ -321,49 +400,112 @@ class ParkingLotView @JvmOverloads constructor(
         // Draw Entry Sign
         paint.color = Color.RED // Fill color for entry sign
         paint.style = Paint.Style.FILL
-        canvas.drawRoundRect(entrySign.left.toFloat(), entrySign.top.toFloat(), entrySign.right.toFloat(), entrySign.bottom.toFloat(), borderRadius, borderRadius, paint)
+        canvas.drawRoundRect(
+            entrySign.left.toFloat(),
+            entrySign.top.toFloat(),
+            entrySign.right.toFloat(),
+            entrySign.bottom.toFloat(),
+            borderRadius,
+            borderRadius,
+            paint
+        )
 
         // Draw red border for Entry Sign
         paint.color = Color.RED // Border color for entry sign
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 8f // Border thickness
-        canvas.drawRoundRect(entrySign.left.toFloat(), entrySign.top.toFloat(), entrySign.right.toFloat(), entrySign.bottom.toFloat(), borderRadius, borderRadius, paint)
+        canvas.drawRoundRect(
+            entrySign.left.toFloat(),
+            entrySign.top.toFloat(),
+            entrySign.right.toFloat(),
+            entrySign.bottom.toFloat(),
+            borderRadius,
+            borderRadius,
+            paint
+        )
 
         // Draw text for Entry Sign
         paint.style = Paint.Style.FILL
         paint.color = Color.DKGRAY
         paint.textSize = 60f
-        canvas.drawText("Exit", entrySign.centerX().toFloat(), entrySign.centerY().toFloat() + 10, paint) // Center text in the entry sign
+        canvas.drawText(
+            "Exit",
+            entrySign.centerX().toFloat(),
+            entrySign.centerY().toFloat() + 10,
+            paint
+        ) // Center text in the entry sign
 
         // Draw Exit Sign
         paint.color = Color.GREEN // Fill color for exit sign
         paint.style = Paint.Style.FILL
-        canvas.drawRoundRect(exitSign.left.toFloat(), exitSign.top.toFloat(), exitSign.right.toFloat(), exitSign.bottom.toFloat(), borderRadius, borderRadius, paint)
+        canvas.drawRoundRect(
+            exitSign.left.toFloat(),
+            exitSign.top.toFloat(),
+            exitSign.right.toFloat(),
+            exitSign.bottom.toFloat(),
+            borderRadius,
+            borderRadius,
+            paint
+        )
 
         // Draw green border for Exit Sign
         paint.color = Color.GREEN // Border color for exit sign
         paint.style = Paint.Style.STROKE
-        canvas.drawRoundRect(exitSign.left.toFloat(), exitSign.top.toFloat(), exitSign.right.toFloat(), exitSign.bottom.toFloat(), borderRadius, borderRadius, paint)
+        canvas.drawRoundRect(
+            exitSign.left.toFloat(),
+            exitSign.top.toFloat(),
+            exitSign.right.toFloat(),
+            exitSign.bottom.toFloat(),
+            borderRadius,
+            borderRadius,
+            paint
+        )
 
         // Draw text for Exit Sign
         paint.style = Paint.Style.FILL
         paint.color = Color.DKGRAY
-        canvas.drawText("Entry", exitSign.centerX().toFloat(), exitSign.centerY().toFloat() + 10, paint) // Center text in the exit sign
+        canvas.drawText(
+            "Entry",
+            exitSign.centerX().toFloat(),
+            exitSign.centerY().toFloat() + 10,
+            paint
+        ) // Center text in the exit sign
 
         // Draw Building Sign
         paint.color = Color.YELLOW // Fill color for building sign
         paint.style = Paint.Style.FILL
-        canvas.drawRoundRect(buildingSign.left.toFloat(), buildingSign.top.toFloat(), buildingSign.right.toFloat(), buildingSign.bottom.toFloat(), borderRadius, borderRadius, paint)
+        canvas.drawRoundRect(
+            buildingSign.left.toFloat(),
+            buildingSign.top.toFloat(),
+            buildingSign.right.toFloat(),
+            buildingSign.bottom.toFloat(),
+            borderRadius,
+            borderRadius,
+            paint
+        )
 
         // Draw yellow border for Building Sign
         paint.color = Color.YELLOW // Border color for building sign
         paint.style = Paint.Style.STROKE
-        canvas.drawRoundRect(buildingSign.left.toFloat(), buildingSign.top.toFloat(), buildingSign.right.toFloat(), buildingSign.bottom.toFloat(), borderRadius, borderRadius, paint)
+        canvas.drawRoundRect(
+            buildingSign.left.toFloat(),
+            buildingSign.top.toFloat(),
+            buildingSign.right.toFloat(),
+            buildingSign.bottom.toFloat(),
+            borderRadius,
+            borderRadius,
+            paint
+        )
 
         // Draw text for Building Sign
         paint.style = Paint.Style.FILL
         paint.color = Color.DKGRAY
-        canvas.drawText("Building", buildingSign.centerX().toFloat(), buildingSign.centerY().toFloat() + 10, paint) // Center text in the building sign
+        canvas.drawText(
+            "Building",
+            buildingSign.centerX().toFloat(),
+            buildingSign.centerY().toFloat() + 10,
+            paint
+        ) // Center text in the building sign
 
         // Draw Parking Spaces and IDs
         paint.textSize = 40f // Increase text size for visibility
@@ -395,10 +537,11 @@ class ParkingLotView @JvmOverloads constructor(
             parkingSpaces.forEachIndexed { index, space ->
 
 
-                    // Fetch all reservations and filter by the specific parking space ID
-                    val filteredReservations = reservations?.filter { it.spaceID == getParkingId(index) && it.status!="Expired"}
+                // Fetch all reservations and filter by the specific parking space ID
+                val filteredReservations =
+                    reservations?.filter { it.spaceID == getParkingId(index) && it.status != "Expired" }
                 if (filteredReservations != null) {
-                    if(filteredReservations.isNotEmpty()) {
+                    if (filteredReservations.isNotEmpty()) {
                         // Parse the start and end time parameters
                         val startParam = StartTime
                         val endParam = when (Duration) {
@@ -417,12 +560,10 @@ class ParkingLotView @JvmOverloads constructor(
                         // Safely update the paint color based on conflict detection
                         paint.color = if (hasConflict) Color.RED else Color.GREEN
 
-                    }else{
+                    } else {
                         paint.color = Color.GREEN
                     }
                 }
-
-
 
 
                 // Draw the parking space rectangle
@@ -468,9 +609,9 @@ class ParkingLotView @JvmOverloads constructor(
 
         // Draw vertical road on the right side
         val rightRoad = Rect(
-            startX + ((cols +cols) * (spaceWidth + horizontalAisleSpacing)) + 100,
+            startX + ((cols + cols) * (spaceWidth + horizontalAisleSpacing)) + 100,
             startY + 200,
-            startX + ((cols +cols)* (spaceWidth + horizontalAisleSpacing)) + 180,
+            startX + ((cols + cols) * (spaceWidth + horizontalAisleSpacing)) + 180,
             currentY + 200
         )
         canvas.drawRect(rightRoad, paint)
@@ -485,8 +626,11 @@ class ParkingLotView @JvmOverloads constructor(
     private fun handleParkingSpaceClick(x: Float, y: Float) {
         // Check if the touch coordinates intersect with any road rectangles
         roadRectangles.forEach { road ->
-            if (road.contains(((x - offsetX) / scaleFactor).toInt(),
-                    ((y - offsetY) / scaleFactor).toInt())) {
+            if (road.contains(
+                    ((x - offsetX) / scaleFactor).toInt(),
+                    ((y - offsetY) / scaleFactor).toInt()
+                )
+            ) {
                 // If the touch is on a road, return without processing parking spaces
                 return
             }
@@ -513,15 +657,16 @@ class ParkingLotView @JvmOverloads constructor(
 
                 }
             }
-        }else{
+        } else {
             val reservations = reservationVM?.getAll()
             // Action is not empty, check for reservation conflicts
             parkingSpaces.forEachIndexed { index, space ->
 
                 // Fetch all reservations and filter by the specific parking space ID
-                val filteredReservations = reservations?.filter { it.spaceID == getParkingId(index) && it.status!="Expired"}
+                val filteredReservations =
+                    reservations?.filter { it.spaceID == getParkingId(index) && it.status != "Expired" }
                 if (filteredReservations != null) {
-                    if(filteredReservations.isNotEmpty()) {
+                    if (filteredReservations.isNotEmpty()) {
                         // Parse the start and end time parameters
                         val startParam = StartTime
                         val endParam = when (Duration) {
@@ -559,9 +704,10 @@ class ParkingLotView @JvmOverloads constructor(
                                         onPositiveClick = { _, _ ->
                                             lifecycleOwner?.lifecycleScope?.launch {
                                                 val fileUriString = FileUri
-                                                val fileUri = fileUriString?.let { Uri.parse(it) } // Convert back to Uri if not null
+                                                val fileUri =
+                                                    fileUriString?.let { Uri.parse(it) } // Convert back to Uri if not null
 
-                                                reservationVM?.uploadFile(fileUri!!, FileName )
+                                                reservationVM?.uploadFile(fileUri!!, FileName)
                                             }
 
                                             lifecycleOwner?.let {
@@ -570,14 +716,14 @@ class ParkingLotView @JvmOverloads constructor(
                                                     if (it.equals(Pdf())) return@observe
 
                                                     val reservation = Reservation(
-                                                        id="",
+                                                        id = "",
                                                         userID = userVM.getAuth().uid,
-                                                        spaceID=spaceID,
+                                                        spaceID = spaceID,
                                                         file = it,
-                                                        reason =Reason,
+                                                        reason = Reason,
                                                         date = Date,
-                                                        startTime =StartTime,
-                                                        duration=finalDuration,
+                                                        startTime = StartTime,
+                                                        duration = finalDuration,
                                                         status = "Pending",
                                                         createdAt = DateTime.now().millis
                                                     )
@@ -598,7 +744,7 @@ class ParkingLotView @JvmOverloads constructor(
                         }
 
 
-                    }else{
+                    } else {
                         if (space.contains(
                                 ((x - offsetX) / scaleFactor).toInt(),
                                 ((y - offsetY) / scaleFactor).toInt()
@@ -619,9 +765,10 @@ class ParkingLotView @JvmOverloads constructor(
                                     onPositiveClick = { _, _ ->
                                         lifecycleOwner?.lifecycleScope?.launch {
                                             val fileUriString = FileUri
-                                            val fileUri = fileUriString?.let { Uri.parse(it) } // Convert back to Uri if not null
+                                            val fileUri =
+                                                fileUriString?.let { Uri.parse(it) } // Convert back to Uri if not null
 
-                                            reservationVM?.uploadFile(fileUri!!, FileName )
+                                            reservationVM?.uploadFile(fileUri!!, FileName)
                                         }
 
                                         lifecycleOwner?.let {
@@ -630,14 +777,14 @@ class ParkingLotView @JvmOverloads constructor(
                                                 if (it.equals(Pdf())) return@observe
 
                                                 val reservation = Reservation(
-                                                    id="",
+                                                    id = "",
                                                     userID = userVM.getAuth().uid,
-                                                    spaceID=spaceID,
+                                                    spaceID = spaceID,
                                                     file = it,
-                                                    reason =Reason,
+                                                    reason = Reason,
                                                     date = Date,
-                                                    startTime =StartTime,
-                                                    duration=finalDuration,
+                                                    startTime = StartTime,
+                                                    duration = finalDuration,
                                                     status = "Pending",
                                                     createdAt = DateTime.now().millis
                                                 )
@@ -656,8 +803,9 @@ class ParkingLotView @JvmOverloads constructor(
                         }
                     }
                 }
+            }
         }
-    }}
+    }
 
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -669,6 +817,7 @@ class ParkingLotView @JvmOverloads constructor(
                 lastTouchY = event.y
                 isDragging = false // Initialize dragging state as false
             }
+
             MotionEvent.ACTION_MOVE -> {
                 val dx = event.x - lastTouchX
                 val dy = event.y - lastTouchY
@@ -692,6 +841,7 @@ class ParkingLotView @JvmOverloads constructor(
                     invalidate()
                 }
             }
+
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 if (!isDragging) {
                     // Only handle click if it was not a drag

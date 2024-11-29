@@ -14,7 +14,7 @@ data class Reservation(
     val date: Long = 0,
     val startTime: Int = 0,
     val duration: Int =0,
-    val status: String = "",
+    var status: String = "",
     val createdAt: Long = DateTime.now().millis
 ) {
     @get:Exclude

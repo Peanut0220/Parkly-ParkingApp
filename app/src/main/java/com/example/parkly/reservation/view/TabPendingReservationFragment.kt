@@ -3,6 +3,7 @@ package com.example.parkly.reseration.view
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,7 @@ import com.example.parkly.util.combineDateTime
 import com.example.parkly.util.toast
 import org.joda.time.DateTime
 import java.lang.Exception
+import java.util.Calendar
 
 class TabPendingReservationFragment : Fragment() {
 
@@ -66,13 +68,18 @@ class TabPendingReservationFragment : Fragment() {
     ): View {
         binding = FragmentTabPendingReservationBinding.inflate(inflater, container, false)
 
-        val adapter = ReservationAdapter{ h, f ->
+
+
+
+
+
+        val adapter = ReservationAdapter { h, f ->
             h.binding.root.setOnClickListener {
-                    nav.navigate(
-                        R.id.action_eventFragment_to_reservationDetailsFragment, bundleOf(
-                            "reservationID" to f.id
-                        )
+                nav.navigate(
+                    R.id.action_eventFragment_to_reservationDetailsFragment, bundleOf(
+                        "reservationID" to f.id
                     )
+                )
             }
         }
 
@@ -85,29 +92,31 @@ class TabPendingReservationFragment : Fragment() {
         )
 
         reservationVM.getreservationLD().observe(viewLifecycleOwner) { list ->
-            if (list.isEmpty()) {
+            var reservationList = emptyList<Reservation>()
+            reservationList = list.filter { it.userID == userVM.getAuth().uid }
+            if (reservationList.isEmpty()) {
                 binding.tabReservation.visibility = View.INVISIBLE
                 binding.tabNoApplicant.visibility = View.VISIBLE
                 return@observe
             }
-            var reservationList = emptyList<Reservation>()
-if(filterstatus =="Pending"){
-    reservationList =
-        list.filter {
-            it.status == "Pending"
-        }
-}else if(filterstatus == "Approved"){
-    reservationList =
-        list.filter {
-            it.status == "Approved"
-        }
-}else{
-    reservationList =
-        list.filter {
-            it.status != "Approved" &&
-            it.status != "Pending"
-        }
-}
+
+            if (filterstatus == "Pending") {
+                reservationList =
+                    list.filter {
+                        it.status == "Pending"
+                    }
+            } else if (filterstatus == "Approved") {
+                reservationList =
+                    list.filter {
+                        it.status == "Approved"
+                    }
+            } else {
+                reservationList =
+                    list.filter {
+                        it.status != "Approved" &&
+                                it.status != "Pending"
+                    }
+            }
 
             binding.numApplicant.text = reservationList.size.toString() + " reservation(s)"
             if (reservationList.isEmpty()) {
