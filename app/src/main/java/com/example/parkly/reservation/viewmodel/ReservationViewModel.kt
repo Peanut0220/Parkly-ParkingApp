@@ -75,6 +75,10 @@ class ReservationViewModel(val app: Application) : AndroidViewModel(app){
         RESERVATIONS.document(reservationID).update("status",status.toString())
     }
 
+    fun getBySpaceID(spaceID: String): Reservation? {
+        return getAll().find { it.spaceID == spaceID }
+    }
+
 
 
 

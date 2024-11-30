@@ -27,12 +27,14 @@ import com.example.parkly.R
 import com.example.parkly.community.viewmodel.VehicleViewModel
 import com.example.parkly.data.ParkingRecord
 import com.example.parkly.data.ParkingSpace
+import com.example.parkly.data.Reservation
 import com.example.parkly.data.User
 import com.example.parkly.data.Vehicle
 import com.example.parkly.data.viewmodel.ParkingRecordViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentParkInBinding
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
+import com.example.parkly.reservation.viewmodel.ReservationViewModel
 import com.example.parkly.util.cropToBlob
 import com.example.parkly.util.dialog
 import com.example.parkly.util.snackbar
@@ -45,6 +47,7 @@ import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import java.util.Calendar
 
 
 class ParkInFragment : Fragment() {
@@ -55,6 +58,7 @@ class ParkInFragment : Fragment() {
     private lateinit var binding: FragmentParkInBinding
     private val vehicleVM: VehicleViewModel by activityViewModels()
     private val recordVM: ParkingRecordViewModel by activityViewModels()
+    private val reservationVM: ReservationViewModel by activityViewModels()
     private val spaceVM: ParkingSpaceViewModel by activityViewModels()
     private val userVM: UserViewModel by activityViewModels()
     private val nav by lazy { findNavController() }
@@ -151,43 +155,47 @@ class ParkInFragment : Fragment() {
     }
 
     private fun submit() {
-
-        if (binding.capturedImageView.getDrawable() ==null) {
+        if (binding.capturedImageView.drawable == null) {
             snackbar("Please capture your car.")
             return
         }
 
-        if (binding.spinner.selectedItem ==null) {
+        if (binding.spinner.selectedItem == null) {
             snackbar("Please select one vehicle number.")
             return
         }
 
-        val record = createRecordObject()
+        lifecycleScope.launch {
+
+            val record = createRecordObject()
+
+            dialog("Park In", "Are you sure you want to park in?",
+                onPositiveClick = { _, _ ->
+                    lifecycleScope.launch {
+                        // Save the parking record
+                        recordVM.set(record)
+                        delay(1000)
+
+                        // Fetch the latest record
+                        val latestRecord = recordVM.getLatestBySpace(spaceID)
+
+                        if (latestRecord != null) {
+                            checkForReservation(spaceID)
+                            val space = updateSpaceObject(latestRecord.recordID) // Update space
+                            spaceVM.update(space)
 
 
 
-        dialog("Park In", "Are you sure you want to park in?",
-            onPositiveClick = { _, _ ->
-                lifecycleScope.launch {
-                    recordVM.set(record) // Save the record first
-delay(1000)
-                    // Fetch the latest record for spaceID after it has been set
-                    val latestRecord = recordVM.getLatestBySpace(spaceID)
-
-                    if (latestRecord != null) {
-                        val space = updateSpaceObject(latestRecord.recordID) // Pass the new recordID
-                        spaceVM.update(space)
-                        snackbar("Park In Successfully.")
-                        findNavController().navigate(R.id.homeFragment)
-                    } else {
-                        snackbar("Failed to get latest parking record.")
+                            snackbar("Park In Successfully.")
+                            findNavController().navigate(R.id.homeFragment)
+                        } else {
+                            snackbar("Failed to get the latest parking record.")
+                        }
                     }
                 }
-            }
-        )
-
-
+            )
         }
+    }
 
 
 
@@ -217,5 +225,41 @@ delay(1000)
             updatedAt = DateTime.now().millis
         )
     }
+
+    private fun checkForReservation(spaceID: String) {
+        val currentTime = System.currentTimeMillis()
+
+        // Get today's date without the time part
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = currentTime
+        val todayYear = calendar.get(Calendar.YEAR)
+        val todayMonth = calendar.get(Calendar.MONTH)
+        val todayDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val reservations = reservationVM.getAll().filter { it.spaceID == spaceID && it.status == "Approved" }
+
+        reservations.forEach { reservation ->
+            // Extract the reservation date components
+            val reservationCalendar = Calendar.getInstance()
+            reservationCalendar.timeInMillis = reservation.date
+            val reservationYear = reservationCalendar.get(Calendar.YEAR)
+            val reservationMonth = reservationCalendar.get(Calendar.MONTH)
+            val reservationDay = reservationCalendar.get(Calendar.DAY_OF_MONTH)
+
+            // Check if the reservation date matches today's date
+            if (reservationYear == todayYear && reservationMonth == todayMonth && reservationDay == todayDay) {
+                // Calculate the reservation start and end times
+                val reservationStartTime = reservation.date + (reservation.startTime * 60 * 60 * 1000)
+                val reservationEndTime = reservationStartTime + (reservation.duration * 60 * 60 * 1000)
+
+                // Check if the current time is within the valid reservation time window
+                if (currentTime in (reservationStartTime - 60 * 60 * 1000) until reservationEndTime) {
+                    reservationVM.updateStatus(reservation.id, "Used")
+                }
+            }
+        }
+    }
+
+
 
 }

@@ -100,7 +100,7 @@ class ReservationDetailsFragment : Fragment() {
 
             //status color
             when (reservation.status) {
-                "Approved", "Rejected", "Cancelled", "Expired" -> {
+                "Approved", "Rejected", "Cancelled", "Expired","Used" -> {
                     binding.btnReject.visibility = View.GONE
                     binding.btnAccept.visibility = View.GONE
                     binding.status.text = reservation.status
@@ -123,6 +123,11 @@ class ReservationDetailsFragment : Fragment() {
                             binding.status.setTextColor(Color.RED)
                             binding.btnCancel.visibility = View.GONE
                         }
+                        "Used" -> {
+                            binding.status.setTextColor(Color.RED)
+                            binding.btnCancel.visibility = View.GONE
+                        }
+
                     }
                 }
 

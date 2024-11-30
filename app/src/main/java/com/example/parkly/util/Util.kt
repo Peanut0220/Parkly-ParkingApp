@@ -110,14 +110,14 @@ fun createChatroom(chatRoomId: String) {
 fun callApi(jsonObject: JSONObject) {
     val JSON: MediaType = "application/json".toMediaType()
     val client = OkHttpClient()
-    val url = "https://fcm.googleapis.com/fcm/send"
+    val url = "https://fcm.googleapis.com/v1/projects/myproject-b5ae1/messages:send"
     val body = RequestBody.create(JSON, jsonObject.toString())
     val request = Request.Builder()
         .url(url)
         .post(body)
         .header(
             "Authorization",
-            "Bearer $SERVER_KEY" // Replace this with your actual key
+            "Bearer $SERVER_KEY"
         )
         .build()
     client.newCall(request).enqueue(object : Callback {

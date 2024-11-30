@@ -20,9 +20,11 @@ import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentParkingSpaceDetailsBinding
 import com.example.parkly.databinding.FragmentPostDetailsBinding
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
+import com.example.parkly.reservation.viewmodel.ReservationViewModel
 import com.example.parkly.util.setImageBlob
 import com.example.parkly.util.toBitmap
 import io.getstream.avatarview.coil.loadImage
+import java.util.Calendar
 
 class ParkingSpaceDetailsFragment : Fragment() {
 
@@ -31,6 +33,7 @@ class ParkingSpaceDetailsFragment : Fragment() {
     private val nav by lazy { findNavController() }
     private val spaceVM: ParkingSpaceViewModel by activityViewModels()
     private val recordVM: ParkingRecordViewModel by activityViewModels()
+    private val reservationVM: ReservationViewModel by activityViewModels()
     private val userVM: UserViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -69,12 +72,42 @@ class ParkingSpaceDetailsFragment : Fragment() {
                     )
                 )}
                 binding.btnParkIn.isEnabled = false
-            }else if(space.spaceStatus =="Reserved"){
-                binding.spaceStatus.text ="Reserved"
+            }else if (space.spaceStatus == "Reserved") {
+                binding.spaceStatus.text = "Reserved"
                 binding.spaceStatus.setTextColor(Color.rgb(179, 131, 27))
                 binding.btnViewProfile.visibility = GONE
                 binding.carImage.visibility = GONE
-                binding.btnParkIn.isEnabled = false
+
+                val currentTime = System.currentTimeMillis()
+                val currentReservation = reservationVM.getBySpaceID(spaceID) // Fetch reservation by spaceID
+
+                if (currentReservation != null && currentReservation.status == "Approved" && currentReservation.userID == userVM.getAuth().uid) {
+                    // Combine date and start time to calculate the reservation start time
+                    val calendar = Calendar.getInstance()
+                    calendar.timeInMillis = currentReservation.date // Reservation date
+                    calendar.add(Calendar.HOUR_OF_DAY, currentReservation.startTime) // Add start time (in hours)
+                    val reservationStartTime = calendar.timeInMillis
+
+                    // Calculate the reservation end time
+                    calendar.add(Calendar.HOUR_OF_DAY, currentReservation.duration)
+                    val reservationEndTime = calendar.timeInMillis
+
+                    // Check if current time is within 1 hour before the start time until the end time
+                    val oneHourBeforeStartTime = reservationStartTime - (60 * 60 * 1000) // 1 hour in milliseconds
+                    if (currentTime in oneHourBeforeStartTime until reservationEndTime
+                    ) {
+                        binding.btnParkIn.isEnabled = true // Enable button if the user made the reservation
+                        binding.cannotPark.visibility = INVISIBLE
+                    } else {
+                        binding.btnParkIn.isEnabled = false // Disable button otherwise
+                        binding.cannotPark.visibility = VISIBLE
+                        binding.cannotPark.text = "You cannot park here at this time."
+                    }
+                } else {
+                    binding.btnParkIn.isEnabled = false // Disable button if reservation is not approved
+                    binding.cannotPark.visibility = VISIBLE
+                    binding.cannotPark.text = "This space is reserved by another user."
+                }
             }else{
                 binding.spaceStatus.text ="Available"
                 binding.spaceStatus.setTextColor(Color.GREEN)
@@ -82,6 +115,9 @@ class ParkingSpaceDetailsFragment : Fragment() {
                 binding.carImage.visibility = GONE
             }
         }
+
+        //if reservation
+
 
         val latestRecords = recordVM.getLatestByUser(userVM.getAuth().uid)
         if (latestRecords != null) {
@@ -92,8 +128,6 @@ class ParkingSpaceDetailsFragment : Fragment() {
         if(latestRecords?.spaceID == spaceID){
             binding.cannotPark.text = "You have already parked in this spot"
         }
-
-
 
 
         binding.spaceID.text = spaceID

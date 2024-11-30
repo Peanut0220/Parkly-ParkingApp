@@ -92,8 +92,11 @@ class TabPendingReservationFragment : Fragment() {
         )
 
         reservationVM.getreservationLD().observe(viewLifecycleOwner) { list ->
-            var reservationList = emptyList<Reservation>()
-            reservationList = list.filter { it.userID == userVM.getAuth().uid }
+            var reservationList = list
+            if(userVM.get(userVM.getAuth().uid)?.type  =="Driver"){
+                reservationList = list.filter { it.userID == userVM.getAuth().uid }
+        }
+
             if (reservationList.isEmpty()) {
                 binding.tabReservation.visibility = View.INVISIBLE
                 binding.tabNoApplicant.visibility = View.VISIBLE

@@ -128,6 +128,14 @@ class ParkingLotFragment : Fragment() {
             ) {
                 reservationVM.updateStatus(reservation.id, "Expired") // Update the reservation in the database
             }
+
+            // If the reservation end time has passed, reset the space to "Available"
+            if (reservationEndTime < currentTime) {
+                val space = spaceVM.get(reservation.spaceID)
+                if (space?.spaceStatus == "Reserved") {
+                    spaceVM.updateStatus(reservation.spaceID, "Available") // Reset space status
+                }
+            }
         }
 
         // Second part: Update reservations within the next hour to "Reserved"
@@ -144,13 +152,14 @@ class ParkingLotFragment : Fragment() {
 
             // Check if the reservation is within the next hour and status is "Approved"
             if (reservationStartTime in currentTime until oneHourLater &&
-                spaceVM.get(reservation.spaceID)?.spaceStatus != "Reserved" &&
+                (spaceVM.get(reservation.spaceID)?.spaceStatus != "Reserved" && spaceVM.get(reservation.spaceID)?.spaceStatus!="Occupied")&&
                 reservation.status == "Approved"
             ) {
-                spaceVM.updateBySpaceID(reservation.spaceID) // Update the space status
+                spaceVM.updateBySpaceID(reservation.spaceID) // Update the space status to "Reserved"
             }
         }
     }
+
 
 
 }
