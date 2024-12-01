@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.parkly.R
 import com.example.parkly.data.Company
 import com.example.parkly.data.SaveJob
@@ -19,10 +20,16 @@ import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentHomeBinding
 import com.example.parkly.job.adapter.JobAdapter
 import com.example.parkly.data.viewmodel.JobViewModel
+import com.example.parkly.data.viewmodel.ParkingRecordViewModel
+import com.example.parkly.job.adapter.RecordAdapter
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
+import com.example.parkly.profile.adapter.VehicleAdapter
 import com.example.parkly.reservation.viewmodel.ReservationViewModel
+import com.example.parkly.util.convertToLocalMillisLegacy
+import com.example.parkly.util.dialog
 import com.example.parkly.util.dialogProfileNotComplete
 import com.example.parkly.util.getToken
+import com.example.parkly.util.snackbar
 import com.google.android.material.search.SearchView
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
@@ -33,18 +40,15 @@ import java.util.Calendar
 class HomeFragment : Fragment(), BottomSheetListener {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var adapter: JobAdapter
+    private lateinit var adapter: RecordAdapter
     private lateinit var svAdapter: JobAdapter
     private val nav by lazy { findNavController() }
     private val reservationVM: ReservationViewModel by activityViewModels()
+    private val recordVM: ParkingRecordViewModel by activityViewModels()
     private val spaceVM: ParkingSpaceViewModel by activityViewModels()
     private val jobVM: JobViewModel by activityViewModels()
     private val userVM: UserViewModel by activityViewModels()
     private val companyVM: CompanyViewModel by activityViewModels()
-    private var chipPositionState = mutableListOf<String>()
-    private var chipJobTypeState = mutableListOf<String>()
-    private var chipWorkplaceState = mutableListOf<String>()
-    private var chipSalaryState = mutableListOf("0", "999999")
     private var isSearching = false
 
 
@@ -56,7 +60,7 @@ class HomeFragment : Fragment(), BottomSheetListener {
         binding.loadingLayout.visibility = View.VISIBLE
 
         getGreeting()
-
+setAdapter()
 
         userVM.getUserLD().observe(viewLifecycleOwner) {
             if (it == null) {
@@ -83,61 +87,18 @@ class HomeFragment : Fragment(), BottomSheetListener {
             }
 
 
+            recordVM.getParkingRecordLD().observe(viewLifecycleOwner) { recordList ->
+                if (userVM.getUserLD().value == null) return@observe
+                binding.loadingLayout.visibility = View.GONE
+                var filteredRecordList = recordList.filter { it.userID == userVM.getAuth().uid && it.endTime == 0L}
+                if (filteredRecordList.isEmpty()) return@observe
 
-
-
-
-            //-----------------------------------------------------------
-            // Show Job List & Save Job
-            adapter = setAdapter(it)
-            svAdapter = setAdapter(it)
-
-            binding.rvJobCard.adapter = adapter
-
-
-            jobVM.updateResult()
-            jobVM.reloadJob()
-        }
-
-        jobVM.getJobsLD().observe(viewLifecycleOwner) { jobList ->
-            if (userVM.getUserLD().value == null) return@observe
-            binding.loadingLayout.visibility = View.GONE
-            if (jobList.isEmpty()) return@observe
-
-            companyVM.getCompaniesLD().observe(viewLifecycleOwner) { company ->
-                if (company != null)
-                    jobList.forEach { job ->
-                        job.company = companyVM.get(job.companyID) ?: Company()
-                    }
+                adapter.submitList(filteredRecordList)
             }
 
-
-            var sortedJobList = jobList.sortedByDescending { job ->
-                job.createdAt
-            }.filter { it.deletedAt == 0L }
+            binding.rv.adapter = adapter
 
 
-            adapter.submitList(sortedJobList)
-        }
-
-        jobVM.getResultLD().observe(viewLifecycleOwner) { jobList ->
-            if (userVM.getUserLD().value == null) return@observe
-            if (jobList.isEmpty() && !isSearching) return@observe
-
-            companyVM.getCompaniesLD().observe(viewLifecycleOwner) { company ->
-                if (company != null)
-                    jobList.forEach { job ->
-                        job.company = companyVM.get(job.companyID) ?: Company()
-                    }
-            }
-
-
-            var sortedJobList = jobList.sortedByDescending { job ->
-                job.createdAt
-            }
-
-
-            svAdapter.submitList(sortedJobList)
         }
 
 
@@ -145,80 +106,30 @@ class HomeFragment : Fragment(), BottomSheetListener {
         // Refresh
         binding.refresh.setOnRefreshListener {
             adapter.notifyDataSetChanged()
-            svAdapter.notifyDataSetChanged()
             binding.refresh.isRefreshing = false
         }
         //-----------------------------------------------------------
         // Search And Filter
 
 
-
-
         return binding.root
     }
 
-    private fun setAdapter(it: User): JobAdapter {
-        return JobAdapter { holder, job ->
-            holder.binding.root.setOnClickListener { detail(job.jobID) }
-            if (true) {
-                holder.binding.bookmark.visibility = View.VISIBLE
-                val saveJob = jobVM.getSaveJobByUser(it.uid)
-                saveJob.forEach { jobs ->
-                    if (jobs.jobID == job.jobID) {
-                        holder.binding.bookmark.isChecked = true
-                    }
-                }
-                holder.binding.bookmark.setOnCheckedChangeListener { _, _ ->
-                    val saveJob = SaveJob(
-                        id = it.uid + "_" + job.jobID,
-                        userID = it.uid,
-                        jobID = job.jobID,
-                    )
-                    if (holder.binding.bookmark.isChecked) {
-                        jobVM.saveJob(saveJob)
-                    } else {
-                        jobVM.unsaveJob(saveJob.id)
-                    }
-                }
+    private fun setAdapter() {
+        adapter = RecordAdapter { holder, record ->
+            holder.binding.btnPay.setOnClickListener {
+                // Handle edit action
+                findNavController().navigate(
+                    R.id.action_profileFragment_to_addVehicleFragment
+                )
             }
+
         }
+        binding.rv.adapter = adapter
     }
 
     private fun updateUI() {
 
-       /* if (userVM.isEnterprise()) {
-            binding.homeTitle.text = resources.getString(R.string.your_posted_job)
-            binding.btnSavedJob.text = resources.getString(R.string.Archived)
-            binding.btnSavedJob.setOnClickListener {
-                nav.navigate(R.id.action_homeFragment_to_archivedJobFragment)
-            }
-            binding.btnPostJob.visibility = View.VISIBLE
-            binding.btnPostJob.setOnClickListener {
-                if (!userVM.isCompanyRegistered()) {
-                    dialogCompanyNotRegister(
-                        userVM.isEnterprise() && !userVM.isCompanyRegistered(),
-                        nav
-                    )
-                    return@setOnClickListener
-                }
-                nav.navigate(R.id.action_homeFragment_to_postJobFragment)
-            }
-        } else {
-            binding.homeTitle.text = resources.getString(R.string.recent_job_list)
-            binding.btnSavedJob.text = resources.getString(R.string.saved_job)
-            binding.btnSavedJob.setOnClickListener {
-                nav.navigate(R.id.action_homeFragment_to_savedJobFragment)
-            }
-        }*/
-    }
-
-
-    private fun detail(jobID: String) {
-        nav.navigate(
-            R.id.jobDetailsFragment, bundleOf(
-                "jobID" to jobID
-            )
-        )
     }
 
     private fun getGreeting() {

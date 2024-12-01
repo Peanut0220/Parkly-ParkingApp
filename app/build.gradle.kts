@@ -26,6 +26,8 @@ android {
             )
         }
     }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -90,5 +92,8 @@ dependencies {
     implementation("com.android.support:cardview-v7:28.0.0")
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    //paypal
+    implementation ("com.paypal.checkout:android-sdk:0.112.2")
 
 }

@@ -79,14 +79,14 @@
                         android:text="Current Parking Record"
                         android:textAppearance="?attr/textAppearanceTitleLarge"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@id/rv_job_card"
+                        app:layout_constraintBottom_toTopOf="@id/rv"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/welcome_card" />
 
                     <!-- NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). -->
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_job_card"
+                        android:id="@+id/rv"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:scrollbars="vertical"
@@ -105,7 +105,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/rv_job_card"
+                        app:layout_constraintTop_toTopOf="@+id/rv"
                         app:layout_constraintVertical_bias="1.0">
 
                         <com.google.android.material.progressindicator.CircularProgressIndicator
