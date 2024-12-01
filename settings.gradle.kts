@@ -1,5 +1,5 @@
-val username = ""
-val password = ""
+val username = "paypal_sgerritz"
+val password = "AKCp8jQ8tAahqpT5JjZ4FRP2mW7GMoFZ674kGqHmupTesKeAY2G8NcmPKLuTxTGkKjDLRzDUQ"
 pluginManagement {
     repositories {
         google()
