@@ -20,6 +20,7 @@ import com.example.parkly.databinding.FragmentParkingLotBinding
 import com.example.parkly.databinding.FragmentParkingSpaceDetailsBinding
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
 import com.example.parkly.reservation.viewmodel.ReservationViewModel
+import com.example.parkly.util.convertToLocalMillisLegacy
 import com.example.parkly.util.dialog
 import com.example.parkly.util.snackbar
 import com.example.parkly.util.toast
@@ -113,14 +114,17 @@ class ParkingLotFragment : Fragment() {
         reservationList.forEach { reservation ->
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = reservation.date // Date in milliseconds (e.g., Nov 29, 2024, 00:00:00)
-
+            Log.d("ok", "1. $calendar")
             // Add startTime (in hours) to the calendar
             calendar.add(Calendar.HOUR_OF_DAY, reservation.startTime)
             val reservationStartTime = calendar.timeInMillis
-
+            Log.d("ok", "2. $calendar")
             // Add duration (in hours) to the start time
             calendar.add(Calendar.HOUR_OF_DAY, reservation.duration)
             val reservationEndTime = calendar.timeInMillis
+            Log.d("ok", "3. $calendar")
+            Log.d("ok",  ""+(reservationEndTime < currentTime))
+
 
             // Check if the status is "Pending" or "Approved" and the reservation is expired
             if ((reservation.status == "Pending" || reservation.status == "Approved") &&

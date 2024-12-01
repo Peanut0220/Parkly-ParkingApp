@@ -39,14 +39,19 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.Response
 import org.joda.time.DateTime
+import org.joda.time.Instant
 import org.joda.time.LocalTime
 import org.joda.time.format.DateTimeFormat
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 private val SERVER_KEY =
     "11fdde5e45bfdbc45b6fb11c82d2f3d394a327"
@@ -105,6 +110,33 @@ fun createChatroom(chatRoomId: String) {
             chatRoomsRef.child(chatRoomId).setValue(true)
         }
     }
+}
+
+
+fun convertToLocalMillisLegacy(gmtMillis: Long, timeZone: String): Long {
+    val calendar = Calendar.getInstance(TimeZone.getTimeZone(timeZone)) // Set target time zone
+    calendar.timeInMillis = gmtMillis // Set GMT time
+    return calendar.timeInMillis // Get adjusted time in millis
+}
+
+fun getMidnightMillis(dateInMillis: Long): Long {
+    // Create a Calendar instance
+    val calendar = Calendar.getInstance()
+
+    // Set the time zone to your local time zone (e.g., Asia/Kuala_Lumpur)
+    calendar.timeZone = TimeZone.getTimeZone("Asia/Kuala_Lumpur")
+
+    // Set the calendar to the input date
+    calendar.timeInMillis = dateInMillis
+
+    // Set the time to 12:00 AM (start of the day)
+    calendar.set(Calendar.HOUR_OF_DAY, 0)
+    calendar.set(Calendar.MINUTE, 0)
+    calendar.set(Calendar.SECOND, 0)
+    calendar.set(Calendar.MILLISECOND, 0)
+
+    // Return the time in milliseconds
+    return calendar.timeInMillis
 }
 
 fun callApi(jsonObject: JSONObject) {

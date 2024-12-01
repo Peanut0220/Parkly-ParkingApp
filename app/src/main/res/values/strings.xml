@@ -167,6 +167,7 @@
     <string name="TimeToSleep">Time To Sleep,</string>
     <string name="no_save_job">You do not save any job.</string>
     <string name="no_archived_job">You do not archive any job.</string>
+    <string name="pay">Pay</string>
     <string name="done">Done</string>
     <string name="update">Update</string>
     <string name="complete_your_profile">Complete Your Profile</string>

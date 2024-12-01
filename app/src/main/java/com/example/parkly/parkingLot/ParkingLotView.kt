@@ -24,11 +24,13 @@ import com.example.parkly.data.Reservation
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
 import com.example.parkly.reservation.viewmodel.ReservationViewModel
+import com.example.parkly.util.convertToLocalMillisLegacy
 import com.example.parkly.util.dialog
 import com.example.parkly.util.snackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.example.parkly.util.dialog
+import com.example.parkly.util.getMidnightMillis
 import org.joda.time.DateTime
 
 
@@ -721,11 +723,11 @@ class ParkingLotView @JvmOverloads constructor(
                                                         spaceID = spaceID,
                                                         file = it,
                                                         reason = Reason,
-                                                        date = Date,
+                                                        date = getMidnightMillis(Date),
                                                         startTime = StartTime,
                                                         duration = finalDuration,
                                                         status = "Pending",
-                                                        createdAt = DateTime.now().millis
+                                                        createdAt = convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur")
                                                     )
 
                                                     lifecycleOwner!!.lifecycleScope.launch {
@@ -782,11 +784,11 @@ class ParkingLotView @JvmOverloads constructor(
                                                     spaceID = spaceID,
                                                     file = it,
                                                     reason = Reason,
-                                                    date = Date,
+                                                    date = getMidnightMillis(Date),
                                                     startTime = StartTime,
                                                     duration = finalDuration,
                                                     status = "Pending",
-                                                    createdAt = DateTime.now().millis
+                                                    createdAt = convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur")
                                                 )
 
                                                 lifecycleOwner!!.lifecycleScope.launch {

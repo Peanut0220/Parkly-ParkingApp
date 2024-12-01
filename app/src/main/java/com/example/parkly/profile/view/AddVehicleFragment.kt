@@ -18,6 +18,7 @@ import com.example.parkly.data.Vehicle
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentAddPostBinding
 import com.example.parkly.databinding.FragmentAddVehicleBinding
+import com.example.parkly.util.convertToLocalMillisLegacy
 import com.example.parkly.util.cropToBlob
 import com.example.parkly.util.dialog
 import com.example.parkly.util.setImageBlob
@@ -136,9 +137,9 @@ class AddVehicleFragment : Fragment() {
             vehicleID = if (isEditing) vehicleID else "",
             vehicleNumber = binding.edtVehicle.text.toString().trim(),
             vehicleModel = binding.edtVehicleModel.text.toString().trim(),
-            createdAt = if (isEditing) vehicle?.createdAt.toString().toLong() else DateTime.now().millis,
+            createdAt = if (isEditing) vehicle?.createdAt.toString().toLong() else convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur"),
             userID = userVM.getUserLD().value!!.uid,
-            updatedAt = if (isEditing) DateTime.now().millis else 0,
+            updatedAt = if (isEditing) convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur") else 0,
             deletedAt = 0
         )
 

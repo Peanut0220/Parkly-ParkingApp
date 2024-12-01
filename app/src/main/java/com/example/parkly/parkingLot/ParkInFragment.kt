@@ -35,6 +35,7 @@ import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentParkInBinding
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
 import com.example.parkly.reservation.viewmodel.ReservationViewModel
+import com.example.parkly.util.convertToLocalMillisLegacy
 import com.example.parkly.util.cropToBlob
 import com.example.parkly.util.dialog
 import com.example.parkly.util.snackbar
@@ -204,7 +205,7 @@ class ParkInFragment : Fragment() {
             recordID = "",
             spaceID = spaceID,
             userID = userVM.getUserLD().value!!.uid,
-            startTime = DateTime.now().millis,
+            startTime = convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur"),
             endTime = 0,
             carImage = binding.capturedImageView.cropToBlob(binding.capturedImageView.getDrawable().getIntrinsicWidth(),binding.capturedImageView.getDrawable().getIntrinsicHeight()),
             vehicleNumber = binding.spinner.selectedItem.toString()
@@ -222,7 +223,7 @@ class ParkInFragment : Fragment() {
             currentRecordID = recordID, // Use the recordID directly
             spaceStatus = "Occupied",
             currentUserID = userVM.getUserLD().value!!.uid,
-            updatedAt = DateTime.now().millis
+            updatedAt = convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur")
         )
     }
 

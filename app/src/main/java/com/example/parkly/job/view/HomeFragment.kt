@@ -54,7 +54,7 @@ class HomeFragment : Fragment(), BottomSheetListener {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.loadingLayout.visibility = View.VISIBLE
-        binding.btnSavedJob.visibility = View.VISIBLE
+
         getGreeting()
 
 
@@ -86,8 +86,6 @@ class HomeFragment : Fragment(), BottomSheetListener {
 
 
 
-
-            binding.btnSavedJob.visibility = View.VISIBLE
 
             //-----------------------------------------------------------
             // Show Job List & Save Job
@@ -214,38 +212,6 @@ class HomeFragment : Fragment(), BottomSheetListener {
         }*/
     }
 
-
-    private fun clearFilter() {
-        chipPositionState = emptyList<String>().toMutableList()
-        chipJobTypeState = emptyList<String>().toMutableList()
-        chipWorkplaceState = emptyList<String>().toMutableList()
-        chipSalaryState = mutableListOf("0", "999999")
-        isSearching = false
-    }
-
-    private fun chipPosition() {
-        val bottomSheetFragment = PositionBottomSheetFragment(chipPositionState)
-        bottomSheetFragment.setListener(this, BottomSheetListener.Type.POSITION)
-        bottomSheetFragment.show(parentFragmentManager, PositionBottomSheetFragment.TAG)
-    }
-
-    private fun chipJobType() {
-        val bottomSheetFragment = JobTypeBottomSheetFragment(chipJobTypeState)
-        bottomSheetFragment.setListener(this, BottomSheetListener.Type.JOB_TYPE)
-        bottomSheetFragment.show(parentFragmentManager, JobTypeBottomSheetFragment.TAG)
-    }
-
-    private fun chipWorkplace() {
-        val bottomSheetFragment = WorkplaceBottomSheetFragment(chipWorkplaceState)
-        bottomSheetFragment.setListener(this, BottomSheetListener.Type.WORKPLACE)
-        bottomSheetFragment.show(parentFragmentManager, WorkplaceBottomSheetFragment.TAG)
-    }
-
-    private fun chipSalary() {
-        val bottomSheetFragment = SalaryBottomSheetFragment(chipSalaryState)
-        bottomSheetFragment.setListener(this, BottomSheetListener.Type.SALARY)
-        bottomSheetFragment.show(parentFragmentManager, SalaryBottomSheetFragment.TAG)
-    }
 
     private fun detail(jobID: String) {
         nav.navigate(

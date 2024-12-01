@@ -20,6 +20,7 @@ import com.example.parkly.databinding.FragmentTabMyJobBinding
 import com.example.parkly.databinding.FragmentTabVehicleBinding
 import com.example.parkly.profile.adapter.MyJobAdapter
 import com.example.parkly.profile.adapter.VehicleAdapter
+import com.example.parkly.util.convertToLocalMillisLegacy
 import com.example.parkly.util.dialog
 import com.example.parkly.util.snackbar
 import kotlinx.coroutines.launch
@@ -82,7 +83,7 @@ class TabVehicleFragment : Fragment() {
 // Handle delete action
                 val oriVehicle = vehicleVM.get(vehicle.vehicleID)
                 if (oriVehicle != null) {
-                    val updatedVehicle = oriVehicle.copy(deletedAt = DateTime.now().millis)
+                    val updatedVehicle = oriVehicle.copy(deletedAt = convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur"))
                     dialog("Delete Vehicle", "Are you sure want to delete this vehicle ?",
                         onPositiveClick = { _, _ ->
                             lifecycleScope.launch {
