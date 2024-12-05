@@ -1,5 +1,4 @@
-val username = "paypal_sgerritz"
-val password = "AKCp8jQ8tAahqpT5JjZ4FRP2mW7GMoFZ674kGqHmupTesKeAY2G8NcmPKLuTxTGkKjDLRzDUQ"
+
 pluginManagement {
     repositories {
         google()
@@ -13,14 +12,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { setUrl("https://jitpack.io") }
         maven { url = uri("https://jcenter.bintray.com") }
-        maven{
-            url = uri("https://cardinalcommerceprod.jfrog.io/artifactory/android")
-            credentials{
-                username =username
-                password = password
-            }
-        }
         maven {
             url = uri("https://api.mapbox.com/downloads/v2/releases/maven")
             credentials.username = "mapbox"

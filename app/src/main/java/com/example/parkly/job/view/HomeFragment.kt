@@ -1,6 +1,9 @@
 package com.example.parkly.job.view
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +14,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.example.parkly.R
+import com.example.parkly.UserActivity
 import com.example.parkly.data.Company
 import com.example.parkly.data.SaveJob
 import com.example.parkly.data.User
@@ -30,12 +38,29 @@ import com.example.parkly.util.dialog
 import com.example.parkly.util.dialogProfileNotComplete
 import com.example.parkly.util.getToken
 import com.example.parkly.util.snackbar
+import com.example.parkly.util.toast
 import com.google.android.material.search.SearchView
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import com.paypal.android.corepayments.CoreConfig
+import com.paypal.android.corepayments.Environment
+import com.paypal.android.corepayments.PayPalSDKError
+import com.paypal.android.paypalwebpayments.PayPalWebCheckoutClient
+import com.paypal.android.paypalwebpayments.PayPalWebCheckoutFundingSource
+import com.paypal.android.paypalwebpayments.PayPalWebCheckoutListener
+import com.paypal.android.paypalwebpayments.PayPalWebCheckoutRequest
+import com.paypal.android.paypalwebpayments.PayPalWebCheckoutResult
+
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import org.json.JSONArray
+import org.json.JSONObject
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment(), BottomSheetListener {
 
@@ -51,6 +76,15 @@ class HomeFragment : Fragment(), BottomSheetListener {
     private val companyVM: CompanyViewModel by activityViewModels()
     private var isSearching = false
 
+    private val clientID =
+        "AaSJpijzVdNOolfOOapbud0UQgbBFIYq-_AlYYHptw67I1R1zErBQjaDXflQabiqNkcUznHSaEoW8TVv"
+    private val secretID =
+        "EOc_hA07fBR2mSQv_tfgbfkIBxIh5EOPZoXFJm4JxSUB3gDAYakwuAIvgFEUpaFTqCqwm3g5z2hw01nE"
+    private val returnUrl = "com.example.parkly://paypalpay"
+    var accessToken = ""
+    private lateinit var uniqueId: String
+    private var orderid = ""
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,8 +93,11 @@ class HomeFragment : Fragment(), BottomSheetListener {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.loadingLayout.visibility = View.VISIBLE
 
+
+
         getGreeting()
 setAdapter()
+
 
         userVM.getUserLD().observe(viewLifecycleOwner) {
             if (it == null) {
@@ -117,14 +154,12 @@ setAdapter()
 
     private fun setAdapter() {
         adapter = RecordAdapter { holder, record ->
-            holder.binding.btnPay.setOnClickListener {
-                // Handle edit action
-                findNavController().navigate(
-                    R.id.action_profileFragment_to_addVehicleFragment
-                )
-            }
 
+            holder.binding.btnPay.setOnClickListener {
+                (activity as? UserActivity)?.startOrder()
+            }
         }
+
         binding.rv.adapter = adapter
     }
 
@@ -142,9 +177,9 @@ setAdapter()
         }
     }
 
+
+
     override fun onValueSelected(value: List<String>, type: BottomSheetListener.Type) {
-
-
 
     }
 }

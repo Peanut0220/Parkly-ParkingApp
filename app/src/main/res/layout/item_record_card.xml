@@ -100,7 +100,6 @@
                     android:textColor="#00FF1A"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/money" />
-
                 <Button
                     android:id="@+id/btnPay"
                     android:layout_width="319dp"
