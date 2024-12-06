@@ -4,11 +4,13 @@ import android.graphics.Color
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parkly.data.Job
 import com.example.parkly.data.ParkingRecord
+import com.example.parkly.data.viewmodel.ParkingRecordViewModel
 import com.example.parkly.databinding.ItemJobCardBinding
 import com.example.parkly.databinding.ItemRecordCardBinding
 import com.example.parkly.util.convertToLocalMillisLegacy
@@ -20,6 +22,7 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 class RecordAdapter(
+
     val fn: (ViewHolder, ParkingRecord) -> Unit = { _, _ -> }
 ) : ListAdapter<ParkingRecord, RecordAdapter.ViewHolder>(Diff) {
 
@@ -34,6 +37,7 @@ class RecordAdapter(
         ViewHolder(ItemRecordCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val record = getItem(position)
         val startTimeMillis = record.startTime // Assuming this is in milliseconds
         val date = Date(startTimeMillis) // Convert to Date object
@@ -88,10 +92,12 @@ class RecordAdapter(
         if (record.endTime == 0L) {
             holder.binding.status.text = "Active"
             holder.binding.status.setTextColor(Color.GREEN)
+
         } else {
             holder.binding.status.text = "Paid"
             holder.binding.status.setTextColor(Color.BLUE)
         }
+
 
         fn(holder, record)
     }

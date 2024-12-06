@@ -208,7 +208,8 @@ class ParkInFragment : Fragment() {
             startTime = convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur"),
             endTime = 0,
             carImage = binding.capturedImageView.cropToBlob(binding.capturedImageView.getDrawable().getIntrinsicWidth(),binding.capturedImageView.getDrawable().getIntrinsicHeight()),
-            vehicleNumber = binding.spinner.selectedItem.toString()
+            vehicleNumber = binding.spinner.selectedItem.toString(),
+            amount=0.00
         )
 
     }

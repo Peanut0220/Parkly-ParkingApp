@@ -13,7 +13,8 @@ data class ParkingRecord(
     val startTime: Long = 0,
     val endTime: Long = 0,
     val carImage: Blob = Blob.fromBytes(ByteArray(0)),
-    val vehicleNumber: String = ""
+    val vehicleNumber: String = "",
+    val amount: Double = 0.00
 ) {
     @get:Exclude
     var user: User = User()

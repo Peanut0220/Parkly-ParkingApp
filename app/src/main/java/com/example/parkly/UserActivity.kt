@@ -18,6 +18,8 @@ import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.example.parkly.community.viewmodel.VehicleViewModel
+import com.example.parkly.data.ParkingRecord
+import com.example.parkly.data.ParkingSpace
 import com.example.parkly.data.viewmodel.CompanyViewModel
 import com.example.parkly.data.viewmodel.InterviewViewModel
 import com.example.parkly.data.viewmodel.JobApplicationViewModel
@@ -27,9 +29,11 @@ import com.example.parkly.databinding.ActivityUserBinding
 import com.example.parkly.job.view.HomeFragment
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
 import com.example.parkly.reservation.viewmodel.ReservationViewModel
+import com.example.parkly.util.convertToLocalMillisLegacy
 import com.example.parkly.util.toast
 
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.Blob
 import com.paypal.android.corepayments.CoreConfig
 import com.paypal.android.corepayments.Environment
 import com.paypal.android.corepayments.PayPalSDKError
@@ -38,6 +42,7 @@ import com.paypal.android.paypalwebpayments.PayPalWebCheckoutFundingSource
 import com.paypal.android.paypalwebpayments.PayPalWebCheckoutListener
 import com.paypal.android.paypalwebpayments.PayPalWebCheckoutRequest
 import com.paypal.android.paypalwebpayments.PayPalWebCheckoutResult
+import org.joda.time.DateTime
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.Calendar
@@ -68,6 +73,7 @@ class UserActivity : AppCompatActivity() {
     var accessToken = ""
     private lateinit var uniqueId: String
     private var orderid = ""
+    private lateinit var currentRecord:ParkingRecord
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //Early data loading
@@ -187,9 +193,9 @@ class UserActivity : AppCompatActivity() {
 
     }
 
-    fun startOrder() {
+    fun startOrder(record: ParkingRecord,totalFee:Double) {
         uniqueId = UUID.randomUUID().toString()
-
+        currentRecord = record
         val orderRequestJson = JSONObject().apply {
             put("intent", "CAPTURE")
             put("purchase_units", JSONArray().apply {
@@ -197,7 +203,7 @@ class UserActivity : AppCompatActivity() {
                     put("reference_id", uniqueId)
                     put("amount", JSONObject().apply {
                         put("currency_code", "MYR")
-                        put("value", "5.00")
+                        put("value", totalFee.toString())
                     })
                 })
             })
@@ -205,7 +211,7 @@ class UserActivity : AppCompatActivity() {
                 put("paypal", JSONObject().apply {
                     put("experience_context", JSONObject().apply {
                         put("payment_method_preference", "IMMEDIATE_PAYMENT_REQUIRED")
-                        put("brand_name", "SH Developer")
+                        put("brand_name", "Parkly")
                         put("locale", "en-US")
                         put("landing_page", "LOGIN")
                         put("shipping_preference", "NO_SHIPPING")
@@ -285,7 +291,25 @@ class UserActivity : AppCompatActivity() {
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject) {
                     Log.d(TAG, "Capture Response : " + response.toString())
-                    Toast.makeText(this@UserActivity, "Payment Successful", Toast.LENGTH_SHORT).show()
+
+                    recordVM.updateEndTime(currentRecord.recordID,
+                        convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur")
+                    ) {
+                        // Callback after update is complete
+                        val updatedSpace = ParkingSpace(
+                            spaceID = currentRecord.spaceID,
+                            currentCarImage = Blob.fromBytes(ByteArray(0)),
+                            currentRecordID = "",
+                            currentUserID = "",
+                            spaceStatus = "Available",
+                            updatedAt = convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur")
+                        )
+                        spaceVM.update(updatedSpace)
+
+                        runOnUiThread {
+                            Toast.makeText(this@UserActivity, "Payment Successful", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
 
                 override fun onError(error: ANError) {

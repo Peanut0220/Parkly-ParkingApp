@@ -128,7 +128,6 @@ setAdapter()
                 if (userVM.getUserLD().value == null) return@observe
                 binding.loadingLayout.visibility = View.GONE
                 var filteredRecordList = recordList.filter { it.userID == userVM.getAuth().uid && it.endTime == 0L}
-                if (filteredRecordList.isEmpty()) return@observe
 
                 adapter.submitList(filteredRecordList)
             }
@@ -153,10 +152,43 @@ setAdapter()
     }
 
     private fun setAdapter() {
-        adapter = RecordAdapter { holder, record ->
 
+
+        adapter = RecordAdapter { holder, record ->
+            val startTimeMillis = record.startTime // Assuming this is in milliseconds
+            val date = Date(startTimeMillis) // Convert to Date object
+            val formatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            val dateFormatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+            val formattedTime = formatter.format(date)
+
+            // Calculate End Time
+            val endTimeMillis = if (record.endTime == 0L) {
+                // Use current time if endTime is not available
+                convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur")
+            } else {
+                record.endTime
+            }
+            // Calculate the difference in milliseconds
+            val durationMillis = endTimeMillis - startTimeMillis
+
+            // Convert milliseconds to hours and minutes
+            val totalMinutes = TimeUnit.MILLISECONDS.toMinutes(durationMillis)
+            val hours = totalMinutes / 60 // Full hours
+            val minutes = totalMinutes % 60 // Remaining minutes
+
+            // Define the rates
+            val firstHourRate = 2.00
+            val subsequentHourRate = 5.00
+
+            // Calculate the total fee
+            val totalFee = if (hours < 1 && minutes > 0) {
+                firstHourRate // Charge for the first hour if it's less than 1 hour
+            } else {
+                firstHourRate + (hours - 1) * subsequentHourRate + if (minutes > 0) subsequentHourRate else 0.0
+            }
+recordVM.updateAmount(record.recordID,totalFee)
             holder.binding.btnPay.setOnClickListener {
-                (activity as? UserActivity)?.startOrder()
+                (activity as? UserActivity)?.startOrder(record, totalFee)
             }
         }
 

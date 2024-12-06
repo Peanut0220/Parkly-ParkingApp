@@ -52,6 +52,24 @@ class ParkingRecordViewModel(val app: Application) : AndroidViewModel(app){
         PARKINGRECORDS.document(record.recordID).set(record)
     }
 
+    fun updateAmount(recordID: String,amount:Double) {
+        PARKINGRECORDS.document(recordID).update("amount",amount)
+    }
+
+    fun updateEndTime(recordID: String, time:Long, callback: () -> Unit) {
+        PARKINGRECORDS.document(recordID).update("endTime", time)
+            .addOnSuccessListener {
+                // Optionally fetch updated records or modify _parkingRecordLD
+                _parkingRecordLD.value = getAll().map { record ->
+                    if (record.recordID == recordID) record.copy(endTime = time) else record
+                }
+                callback()
+            }
+            .addOnFailureListener {
+                // Handle failure
+            }
+    }
+
 
 
 
