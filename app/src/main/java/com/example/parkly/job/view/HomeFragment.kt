@@ -128,6 +128,14 @@ setAdapter()
                 if (userVM.getUserLD().value == null) return@observe
                 binding.loadingLayout.visibility = View.GONE
                 var filteredRecordList = recordList.filter { it.userID == userVM.getAuth().uid && it.endTime == 0L}
+                if(filteredRecordList.isEmpty()){
+                    binding.noRecord.visibility = View.VISIBLE
+                    binding.rv.visibility = View.INVISIBLE
+                }else{
+                    binding.noRecord.visibility = View.GONE
+                    binding.rv.visibility = View.VISIBLE
+                }
+
 
                 adapter.submitList(filteredRecordList)
             }
