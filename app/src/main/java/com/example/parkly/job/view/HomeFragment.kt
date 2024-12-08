@@ -131,9 +131,11 @@ setAdapter()
                 if(filteredRecordList.isEmpty()){
                     binding.noRecord.visibility = View.VISIBLE
                     binding.rv.visibility = View.INVISIBLE
+                    binding.homeTitle.visibility = View.INVISIBLE
                 }else{
                     binding.noRecord.visibility = View.GONE
                     binding.rv.visibility = View.VISIBLE
+                    binding.homeTitle.visibility = View.VISIBLE
                 }
 
 

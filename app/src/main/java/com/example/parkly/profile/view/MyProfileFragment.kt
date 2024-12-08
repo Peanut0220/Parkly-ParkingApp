@@ -19,6 +19,7 @@ import com.example.parkly.databinding.FragmentMyProfileBinding
 import com.example.parkly.util.toBitmap
 import com.example.parkly.profile.tab.TabMyJobFragment
 import com.example.parkly.profile.tab.TabMyPostListFragment
+import com.example.parkly.profile.tab.TabRecordFragment
 import com.example.parkly.profile.tab.TabVehicleFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -34,7 +35,7 @@ class MyProfileFragment : Fragment() {
     private lateinit var binding: FragmentMyProfileBinding
     private var tabItems = arrayOf(
         "My Vehicle",
-        "My Post"
+        "My Record"
     )
 
     override fun onCreateView(
@@ -134,7 +135,7 @@ binding.btnAddVehicle.setOnClickListener{
         override fun createFragment(position: Int): Fragment {
             return when (items[position]) {
                 "My Vehicle" -> TabVehicleFragment()
-                "My Post" -> TabMyPostListFragment()
+                "My Record" -> TabRecordFragment()
                 else -> throw IllegalArgumentException("Invalid tab item: ${items[position]}")
             }
         }

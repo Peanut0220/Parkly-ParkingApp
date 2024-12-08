@@ -18,6 +18,7 @@ import com.example.parkly.data.viewmodel.JobViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentTabMyJobBinding
 import com.example.parkly.databinding.FragmentTabVehicleBinding
+import com.example.parkly.job.adapter.RecordAdapter
 import com.example.parkly.profile.adapter.MyJobAdapter
 import com.example.parkly.profile.adapter.VehicleAdapter
 import com.example.parkly.util.convertToLocalMillisLegacy
@@ -64,6 +65,7 @@ class TabVehicleFragment : Fragment() {
 
             adapter.submitList(vehicleFilteredList)
         }
+        binding.rv.adapter = adapter
 
 
         return binding.root
@@ -80,7 +82,7 @@ class TabVehicleFragment : Fragment() {
                 )
             }
             holder.binding.btnDelete.setOnClickListener {
-// Handle delete action
+            // Handle delete action
                 val oriVehicle = vehicleVM.get(vehicle.vehicleID)
                 if (oriVehicle != null) {
                     val updatedVehicle = oriVehicle.copy(deletedAt = convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur"))
