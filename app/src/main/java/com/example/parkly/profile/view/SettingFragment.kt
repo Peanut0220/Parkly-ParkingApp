@@ -43,8 +43,6 @@ class SettingFragment : Fragment() {
 
         binding.cardPassword.setOnClickListener{ nav.navigate(R.id.action_settingFragment_to_changePasswordFragment) }
 
-        binding.cardCompany.setOnClickListener { nav.navigate(R.id.action_settingFragment_to_signUpEnterpriseFragment) }
-
         binding.cardPersonalInfo.setOnClickListener { nav.navigate(R.id.action_settingFragment_to_profileUpdateFragment) }
 
 
