@@ -80,47 +80,31 @@
                 <Button
                     android:id="@+id/btn_message"
                     style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="28dp"
                     android:text="@string/message"
                     android:textSize="16sp"
                     app:icon="@drawable/round_comment_24"
-                    app:layout_constraintStart_toStartOf="@+id/txtName"
-                    app:layout_constraintTop_toBottomOf="@+id/txtName"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/avatarView"
                     app:strokeColor="@color/m3_text_button_foreground_color_selector" />
 
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayout"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btnCall"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:text="@string/call"
+                    android:textSize="16sp"
+                    app:icon="@drawable/baseline_call_24"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_message">
+                    app:layout_constraintHorizontal_bias="0.38"
+                    app:layout_constraintStart_toEndOf="@+id/btn_message"
+                    app:layout_constraintTop_toTopOf="@+id/btn_message"
+                    app:strokeColor="@color/m3_text_button_foreground_color_selector" />
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Job" />
-
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/post" />
-
-                </com.google.android.material.tabs.TabLayout>
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewPager"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>

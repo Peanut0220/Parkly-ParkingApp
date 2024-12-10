@@ -1,11 +1,18 @@
 package com.example.parkly.profile.view
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -30,14 +37,12 @@ import kotlinx.coroutines.withContext
 class UserProfileFragment : Fragment() {
 
     companion object {
+        private const val REQUEST_CALL_PERMISSION = 1
         fun newInstance() = UserProfileFragment()
     }
 
     private val userVM: UserViewModel by activityViewModels()
     private lateinit var binding: FragmentUserProfileBinding
-    private val tabItems = arrayOf(
-        "Post"
-    )
     private val userID by lazy { requireArguments().getString("userID", "") }
     private val nav by lazy { findNavController() }
 
@@ -58,6 +63,7 @@ class UserProfileFragment : Fragment() {
 
                 binding.txtName.text = it.name
                 binding.avatarView.loadImage(avatar)
+
 
             }
 
@@ -83,6 +89,12 @@ class UserProfileFragment : Fragment() {
                 }
             }
 
+            binding.btnCall.setOnClickListener {
+                val phoneNumber = convertToInternationalNumber(user.phone)// Replace with the number you want to call
+                makeCall(phoneNumber)
+
+            }
+
         }
 
 
@@ -92,32 +104,63 @@ class UserProfileFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        val adapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle, userID)
-        binding.viewPager.adapter = adapter
 
 
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = tabItems[position]
-        }.attach()
+
         return binding.root
     }
 
-    class ViewPagerAdapter(
-        fragmentManager: FragmentManager,
-        lifecycle: Lifecycle,
-        private val userID: String
-    ) :
-        FragmentStateAdapter(fragmentManager, lifecycle) {
-
-        override fun getItemCount(): Int {
-            return 1
+    private fun makeCall(phoneNumber: String) {
+        // Check if the CALL_PHONE permission is granted
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CALL_PHONE)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permission granted, initiate the call
+            val callIntent = Intent(Intent.ACTION_CALL)
+            callIntent.data = Uri.parse("tel:$phoneNumber")
+            startActivity(callIntent)
+        } else {
+            // Request permission
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.CALL_PHONE),
+                REQUEST_CALL_PERMISSION
+            )
         }
+    }
 
-        override fun createFragment(position: Int): Fragment {
-            when (position) {
-                0 -> return TabMyPostListFragment(userID)
-                else -> throw Exception()
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CALL_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, you can retry the call here if necessary
+                Toast.makeText(requireContext(), "Permission granted, retry call", Toast.LENGTH_SHORT).show()
+            } else {
+                // Permission denied
+                Toast.makeText(requireContext(), "Permission denied to make calls", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
+    fun convertToInternationalNumber(localNumber: String): String {
+        // Remove all non-digit characters like '-' or spaces
+        val cleanedNumber = localNumber.replace(Regex("[^\\d]"), "")
+
+        // Check if the number starts with '0'
+        return if (cleanedNumber.startsWith("0")) {
+            // Replace the leading '0' with '60'
+            "60" + cleanedNumber.substring(1)
+        } else {
+            // Return the number as it is if no leading '0' (unexpected case)
+            cleanedNumber
+        }
+    }
+
+
+
+
 }
