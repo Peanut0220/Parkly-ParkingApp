@@ -1,4 +1,4 @@
-package com.example.parkly.job.view
+package com.example.parkly.home.view
 
 interface BottomSheetListener {
 

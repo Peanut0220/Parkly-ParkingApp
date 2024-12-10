@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.example.parkly.community.viewmodel.PostViewModel
+
 import com.example.parkly.data.Pdf
 import com.example.parkly.data.Reservation
 import com.example.parkly.data.viewmodel.UserViewModel

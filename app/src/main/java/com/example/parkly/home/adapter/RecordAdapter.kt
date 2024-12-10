@@ -1,20 +1,14 @@
-package com.example.parkly.job.adapter
+package com.example.parkly.home.adapter
 
 import android.graphics.Color
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.parkly.data.Job
 import com.example.parkly.data.ParkingRecord
-import com.example.parkly.data.viewmodel.ParkingRecordViewModel
-import com.example.parkly.databinding.ItemJobCardBinding
 import com.example.parkly.databinding.ItemRecordCardBinding
 import com.example.parkly.util.convertToLocalMillisLegacy
-import com.example.parkly.util.setImageBlob
 import org.joda.time.DateTime
 import java.text.SimpleDateFormat
 import java.util.Date

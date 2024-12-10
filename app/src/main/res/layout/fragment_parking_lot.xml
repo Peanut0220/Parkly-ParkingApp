@@ -23,7 +23,6 @@
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:minHeight="?attr/actionBarSize"
-                app:menu="@menu/interview_details_menu"
                 app:navigationIcon="@drawable/round_arrow_back_24"
                 app:navigationIconTint="?attr/colorControlNormal"
                 app:title="@string/select_space" />

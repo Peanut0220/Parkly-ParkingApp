@@ -8,15 +8,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.parkly.data.Interview
 import com.example.parkly.data.Reservation
-import com.example.parkly.databinding.ItemInterviewBinding
 import com.example.parkly.databinding.ItemReservationBinding
 import com.example.parkly.util.displayDate
-import com.example.parkly.util.formatTime
-import com.example.parkly.util.toBitmap
-import io.getstream.avatarview.coil.loadImage
-import kotlin.time.Duration.Companion.hours
+
 
 class ReservationAdapter(
     val fn: (ViewHolder, Reservation) -> Unit = { _, _ -> },

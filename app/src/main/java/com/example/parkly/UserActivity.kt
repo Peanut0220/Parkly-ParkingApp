@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.androidnetworking.AndroidNetworking
@@ -20,17 +19,12 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.example.parkly.community.viewmodel.VehicleViewModel
 import com.example.parkly.data.ParkingRecord
 import com.example.parkly.data.ParkingSpace
-import com.example.parkly.data.viewmodel.CompanyViewModel
-import com.example.parkly.data.viewmodel.InterviewViewModel
-import com.example.parkly.data.viewmodel.JobApplicationViewModel
 import com.example.parkly.data.viewmodel.ParkingRecordViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.ActivityUserBinding
-import com.example.parkly.job.view.HomeFragment
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
 import com.example.parkly.reservation.viewmodel.ReservationViewModel
 import com.example.parkly.util.convertToLocalMillisLegacy
-import com.example.parkly.util.toast
 
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.Blob
@@ -45,7 +39,6 @@ import com.paypal.android.paypalwebpayments.PayPalWebCheckoutResult
 import org.joda.time.DateTime
 import org.json.JSONArray
 import org.json.JSONObject
-import java.util.Calendar
 import java.util.UUID
 
 class UserActivity : AppCompatActivity() {
@@ -55,11 +48,8 @@ class UserActivity : AppCompatActivity() {
         supportFragmentManager.findFragmentById(R.id.user_nav_host)!!.findNavController()
     }
 //    private val jobVM: JobViewModel by viewModels()
-    private val jobAppVM: JobApplicationViewModel by viewModels()
-    private val companyVM: CompanyViewModel by viewModels()
     private val userVM: UserViewModel by viewModels()
     private val spaceVM: ParkingSpaceViewModel by viewModels()
-    private val interviewVM: InterviewViewModel by viewModels()
     private val vehicleVM: VehicleViewModel by viewModels()
     private val recordVM: ParkingRecordViewModel by viewModels()
     private val reservationVM: ReservationViewModel by viewModels()
@@ -78,9 +68,6 @@ class UserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         //Early data loading
         userVM.init()
-        companyVM.init()
-        jobAppVM.init()
-        interviewVM.init()
         spaceVM.init()
         vehicleVM.init()
         recordVM.init()

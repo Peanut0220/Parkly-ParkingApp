@@ -20,7 +20,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
-                app:menu="@menu/interview_details_menu"
                 app:navigationIcon="@drawable/round_arrow_back_24"
                 app:navigationIconTint="?attr/colorControlNormal"
                 app:title="@string/reservation" />

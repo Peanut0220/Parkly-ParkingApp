@@ -18,7 +18,6 @@ import com.example.parkly.community.viewmodel.VehicleViewModel
 import com.example.parkly.data.viewmodel.ParkingRecordViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentParkingSpaceDetailsBinding
-import com.example.parkly.databinding.FragmentPostDetailsBinding
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
 import com.example.parkly.reservation.viewmodel.ReservationViewModel
 import com.example.parkly.util.setImageBlob

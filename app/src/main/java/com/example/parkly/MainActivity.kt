@@ -1,6 +1,5 @@
 package com.example.parkly
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -8,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.example.parkly.auth.viewmodel.LoginViewModel
-import com.example.parkly.job.view.HomeFragment
 import com.example.parkly.util.intentWithoutBackstack
 import kotlinx.coroutines.launch
 

@@ -3,7 +3,6 @@ package com.example.parkly.community.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.example.parkly.data.Post
 import com.example.parkly.data.Vehicle
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Firebase

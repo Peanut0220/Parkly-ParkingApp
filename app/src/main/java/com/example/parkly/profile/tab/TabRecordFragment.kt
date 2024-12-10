@@ -6,29 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import com.example.parkly.R
-import com.example.parkly.community.viewmodel.VehicleViewModel
-import com.example.parkly.data.viewmodel.CompanyViewModel
-import com.example.parkly.data.viewmodel.JobApplicationViewModel
-import com.example.parkly.data.viewmodel.JobViewModel
 import com.example.parkly.data.viewmodel.ParkingRecordViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
-import com.example.parkly.databinding.FragmentTabMyJobBinding
 import com.example.parkly.databinding.FragmentTabRecordBinding
-import com.example.parkly.databinding.FragmentTabVehicleBinding
-import com.example.parkly.profile.adapter.MyJobAdapter
-import com.example.parkly.profile.adapter.VehicleAdapter
-import com.example.parkly.util.convertToLocalMillisLegacy
-import com.example.parkly.util.dialog
-import com.example.parkly.util.snackbar
-import kotlinx.coroutines.launch
-import org.joda.time.DateTime
-import com.example.parkly.job.adapter.RecordAdapter
+import com.example.parkly.home.adapter.RecordAdapter
 
 class TabRecordFragment : Fragment() {
 

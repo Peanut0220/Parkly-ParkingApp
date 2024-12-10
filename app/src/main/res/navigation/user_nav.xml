@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.parkly.job.view.HomeFragment"
+        android:name="com.example.parkly.home.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -200,7 +200,7 @@
     </fragment>
     <fragment
         android:id="@+id/jobDetailsFragment"
-        android:name="com.example.parkly.job.view.JobDetailsFragment"
+        android:name="com.example.parkly.home.view.JobDetailsFragment"
         android:label="fragment_job_details"
         tools:layout="@layout/fragment_job_details">
         <action
@@ -238,7 +238,7 @@
     </fragment>
     <fragment
         android:id="@+id/postJobFragment"
-        android:name="com.example.parkly.job.view.PostJobFragment"
+        android:name="com.example.parkly.home.view.PostJobFragment"
         android:label="fragment_post_job"
         tools:layout="@layout/fragment_post_job" >
         <action
@@ -285,12 +285,12 @@
         tools:layout="@layout/activity_main" />
     <fragment
         android:id="@+id/archivedJobFragment"
-        android:name="com.example.parkly.job.view.ArchivedJobFragment"
+        android:name="com.example.parkly.home.view.ArchivedJobFragment"
         android:label="ArchivedJobFragment"
         tools:layout="@layout/fragment_archived_job"/>
     <fragment
         android:id="@+id/savedJobFragment"
-        android:name="com.example.parkly.job.view.SavedJobFragment"
+        android:name="com.example.parkly.home.view.SavedJobFragment"
         android:label="SavedJobFragment"
         tools:layout="@layout/fragment_saved_job"/>
     <fragment

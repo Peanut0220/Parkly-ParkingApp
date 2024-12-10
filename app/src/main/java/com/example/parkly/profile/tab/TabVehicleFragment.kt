@@ -12,14 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.parkly.R
 import com.example.parkly.community.viewmodel.VehicleViewModel
-import com.example.parkly.data.viewmodel.CompanyViewModel
-import com.example.parkly.data.viewmodel.JobApplicationViewModel
-import com.example.parkly.data.viewmodel.JobViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
-import com.example.parkly.databinding.FragmentTabMyJobBinding
 import com.example.parkly.databinding.FragmentTabVehicleBinding
-import com.example.parkly.job.adapter.RecordAdapter
-import com.example.parkly.profile.adapter.MyJobAdapter
 import com.example.parkly.profile.adapter.VehicleAdapter
 import com.example.parkly.util.convertToLocalMillisLegacy
 import com.example.parkly.util.dialog

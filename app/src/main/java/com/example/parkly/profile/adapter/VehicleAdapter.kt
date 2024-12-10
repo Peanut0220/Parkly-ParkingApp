@@ -6,14 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.parkly.data.JobApplication
 import com.example.parkly.data.Vehicle
-import com.example.parkly.databinding.ItemMyAppliedJobBinding
 import com.example.parkly.databinding.ItemMyVehicleBinding
-import com.example.parkly.util.JobApplicationState
-import com.example.parkly.util.displayPostTime
-import com.example.parkly.util.toBitmap
-import io.getstream.avatarview.coil.loadImage
+
 
 class VehicleAdapter(
     val fn: (ViewHolder, Vehicle) -> Unit = { _, _ -> }

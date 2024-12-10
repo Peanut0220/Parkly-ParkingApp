@@ -6,7 +6,6 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
@@ -17,8 +16,6 @@ import com.example.parkly.R
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentMyProfileBinding
 import com.example.parkly.util.toBitmap
-import com.example.parkly.profile.tab.TabMyJobFragment
-import com.example.parkly.profile.tab.TabMyPostListFragment
 import com.example.parkly.profile.tab.TabRecordFragment
 import com.example.parkly.profile.tab.TabVehicleFragment
 import com.google.android.material.tabs.TabLayout

@@ -14,15 +14,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.parkly.R
-import com.example.parkly.data.viewmodel.CompanyViewModel
-import com.example.parkly.data.viewmodel.JobApplicationViewModel
-import com.example.parkly.data.viewmodel.JobViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
-import com.example.parkly.databinding.FragmentApplicantDetailsBinding
 import com.example.parkly.databinding.FragmentReservationDetailsBinding
 import com.example.parkly.parkingLot.viewmodel.ParkingSpaceViewModel
 import com.example.parkly.reservation.viewmodel.ReservationViewModel
-import com.example.parkly.util.JobApplicationState
 import com.example.parkly.util.createChatroom
 import com.example.parkly.util.dialog
 import com.example.parkly.util.displayDate

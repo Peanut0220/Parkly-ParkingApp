@@ -1,9 +1,6 @@
 package com.example.parkly.reseration.view
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,22 +10,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.parkly.R
-import com.example.parkly.data.Reservation
-import com.example.parkly.data.viewmodel.CompanyViewModel
-import com.example.parkly.data.viewmodel.InterviewViewModel
-import com.example.parkly.data.viewmodel.JobApplicationViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
-import com.example.parkly.databinding.FragmentTabUpcomingInterviewBinding
-import com.example.parkly.reservation.adapter.InterviewAdapter
-import com.example.parkly.data.viewmodel.JobViewModel
 import com.example.parkly.databinding.FragmentTabPendingReservationBinding
 import com.example.parkly.reservation.adapter.ReservationAdapter
 import com.example.parkly.reservation.viewmodel.ReservationViewModel
-import com.example.parkly.util.combineDateTime
-import com.example.parkly.util.toast
-import org.joda.time.DateTime
-import java.lang.Exception
-import java.util.Calendar
 
 class TabPendingReservationFragment : Fragment() {
 
@@ -48,7 +33,7 @@ class TabPendingReservationFragment : Fragment() {
 
     private val reservationVM: ReservationViewModel by activityViewModels()
     private val userVM: UserViewModel by activityViewModels()
-    private val jobVM: JobViewModel by activityViewModels()
+
     private lateinit var binding: FragmentTabPendingReservationBinding
     private val nav by lazy { findNavController() }
     private var filterstatus: String? = null

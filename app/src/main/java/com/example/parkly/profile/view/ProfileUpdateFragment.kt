@@ -10,9 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.parkly.R
-import com.example.parkly.data.Time
 import com.example.parkly.data.User
-import com.example.parkly.data.viewmodel.CompanyViewModel
 import com.example.parkly.data.viewmodel.UserViewModel
 import com.example.parkly.databinding.FragmentProfileUpdateBinding
 import com.example.parkly.util.cropToBlob
@@ -21,13 +19,9 @@ import com.example.parkly.util.snackbar
 import com.example.parkly.util.toBitmap
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
-import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import io.getstream.avatarview.coil.loadImage
 import kotlinx.coroutines.launch
-import okhttp3.internal.format
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
