@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">LaunchPad</string>
+    <string name="app_name">Parkly</string>
     <string name="name">Full name</string>
     <string name="phone">Phone</string>
     <string name="email">Email</string>

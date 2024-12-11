@@ -23,6 +23,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "LaunchPad"
+rootProject.name = "Parkly"
 include(":app")
  
