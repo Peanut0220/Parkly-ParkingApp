@@ -685,8 +685,6 @@ class ParkingLotView @JvmOverloads constructor(
                             else -> 4
                         }
 
-
-                        // Check if there is a conflict with any of the filtered reservations
                         val hasConflict = filteredReservations.any { reservation ->
                             reservation.date == Date && // Check if dates match
                                     (reservation.startTime < endParam &&

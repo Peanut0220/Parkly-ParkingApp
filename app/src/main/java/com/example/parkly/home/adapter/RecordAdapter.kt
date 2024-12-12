@@ -47,23 +47,25 @@ class RecordAdapter(
             record.endTime
         }
 
-        // Calculate the difference in milliseconds
-        val durationMillis = endTimeMillis - startTimeMillis
 
-        // Convert milliseconds to hours and minutes
+
+// Calculate the difference in milliseconds (ensure non-negative)
+        val durationMillis = (endTimeMillis - startTimeMillis).coerceAtLeast(0L)
+
+// Convert milliseconds to hours and minutes
         val totalMinutes = TimeUnit.MILLISECONDS.toMinutes(durationMillis)
         val hours = totalMinutes / 60 // Full hours
         val minutes = totalMinutes % 60 // Remaining minutes
 
-        // Define the rates
+// Define the rates
         val firstHourRate = 2.00
         val subsequentHourRate = 5.00
 
-        // Calculate the total fee
-        val totalFee = if (hours < 1 && minutes > 0) {
+// Calculate the total fee
+        var totalFee = if (hours == 0L && minutes > 0||( hours == 0L && minutes.toInt() == 0)) {
             firstHourRate // Charge for the first hour if it's less than 1 hour
         } else {
-            firstHourRate + (hours - 1) * subsequentHourRate + if (minutes > 0) subsequentHourRate else 0.0
+            firstHourRate + (hours - 1).coerceAtLeast(0L) * subsequentHourRate + if (minutes > 0) subsequentHourRate else 0.0
         }
 
 
