@@ -114,26 +114,36 @@ class ParkInFragment : Fragment() {
 
         labeler.process(inputImage)
             .addOnSuccessListener { labels ->
-                var carFrontDetected = false
+                var carDetected = false
+                var bumperDetected = false
+                var wheelDetected = false
+
+                Log.d("ok", labels.toString())
 
                 for (label in labels) {
-                    // Check if detected labels include car-related frontal features
-                    if ((label.text.equals("Car", ignoreCase = true) &&
-                        label.text.contains("Headlight", ignoreCase = true)) ||
-                        label.text.contains("Bumper", ignoreCase = true)) {
-
-                        // Adjust confidence as needed
-                        if (label.confidence > 0.84) {
-                            carFrontDetected = true
-                            break
-                        }
+                    // Check if detected labels include car-related features
+                    if (label.text.equals("Car", ignoreCase = true) && label.confidence > 0.88) {
+                        carDetected = true
+                        Log.d("ok", "Car detected with confidence: ${label.confidence}")
                     }
+
+                    if (label.text.contains("Bumper", ignoreCase = true) && label.confidence > 0.80) {
+                        bumperDetected = true
+                        Log.d("ok", "Bumper detected with confidence: ${label.confidence}")
+                    }
+
+                    if (label.text.contains("Wheel", ignoreCase = true) && label.confidence > 0.6) {
+                        wheelDetected = true
+                        Log.d("ok", "Wheel detected with confidence: ${label.confidence}")
+                    }
+
                 }
 
-                if (carFrontDetected) {
-                    Toast.makeText(requireContext(), "Car front detected, proceed", Toast.LENGTH_SHORT).show()
+                // If both car and bumper are detected with required confidence
+                if (carDetected && bumperDetected && !wheelDetected) {
+                    Toast.makeText(requireContext(), "Car detected, proceed", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(requireContext(), "No car front detected, please take another photo", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "No car detected, please take another photo", Toast.LENGTH_SHORT).show()
                     capturedImageView.setImageBitmap(null)
                 }
             }
