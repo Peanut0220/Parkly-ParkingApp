@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.net.Uri
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
@@ -533,41 +534,44 @@ class ParkingLotView @JvmOverloads constructor(
                 val centerY = space.centerY().toFloat() + 10 // Offset slightly for better centering
                 canvas.drawText(parkingId, centerX, centerY, paint)
             }
+
         } else {
+
             val reservations = reservationVM?.getAll()
+            val conflictedSpace = mutableListOf<String>()
+            val filteredReservations =
+                reservations?.filter { it.status != "Expired" && it.status != "Used" && it.status != "Cancelled" }
+
+            val startParam = StartTime
+            val endParam = when (Duration) {
+                "1 Hour" -> startParam + 1
+                "2 Hours" -> startParam + 2
+                "3 Hours" -> startParam + 3
+                else -> startParam + 4
+            }
+
+            // Check if there is a conflict with any of the filtered reservations
+            val conflictedList = filteredReservations?.filter { reservation ->
+                reservation.date == getMidnightMillis(Date) && // Check if dates match
+                        (startParam < reservation.startTime + reservation.duration &&
+                                endParam > reservation.startTime) // Check time overlap
+            }
+            if (conflictedList != null) {
+                conflictedList.forEachIndexed { index, reservation ->
+                    conflictedSpace.add(reservation.spaceID)
+                }
+            }
+
+
             // Action is not empty, check for reservation conflicts
             parkingSpaces.forEachIndexed { index, space ->
 
 
-                // Fetch all reservations and filter by the specific parking space ID
-                val filteredReservations =
-                    reservations?.filter { it.spaceID == getParkingId(index) && it.status != "Expired" }
-                if (filteredReservations != null) {
-                    if (filteredReservations.isNotEmpty()) {
-                        // Parse the start and end time parameters
-                        val startParam = StartTime
-                        val endParam = when (Duration) {
-                            "1 Hour" -> startParam + 1
-                            "2 Hours" -> startParam + 2
-                            "3 Hours" -> startParam + 3
-                            else -> startParam + 4
-                        }
-
-                        // Check if there is a conflict with any of the filtered reservations
-                        val hasConflict = filteredReservations.any { reservation ->
-                            reservation.date == Date && // Check if dates match
-                                    (reservation.startTime < endParam &&
-                                            (reservation.startTime + reservation.duration) > startParam) // Check time overlap
-                        }
-                        // Safely update the paint color based on conflict detection
-                        paint.color = if (hasConflict) Color.RED else Color.GREEN
-
-                    } else {
-                        paint.color = Color.GREEN
-                    }
-                }
-
-
+                if (conflictedSpace.contains(spaceVM?.get(getParkingId(index))?.spaceID)) {
+                    paint.color = Color.RED
+                    conflictedSpace.remove(spaceVM?.get(getParkingId(index))?.spaceID)
+                } else
+                    paint.color = Color.GREEN
                 // Draw the parking space rectangle
                 canvas.drawRect(space, paint)
 
@@ -666,7 +670,7 @@ class ParkingLotView @JvmOverloads constructor(
 
                 // Fetch all reservations and filter by the specific parking space ID
                 val filteredReservations =
-                    reservations?.filter { it.spaceID == getParkingId(index) && it.status != "Expired" }
+                    reservations?.filter { it.spaceID == getParkingId(index) && it.status != "Expired" && it.status != "Used" && it.status != "Cancelled" }
                 if (filteredReservations != null) {
                     if (filteredReservations.isNotEmpty()) {
                         // Parse the start and end time parameters
@@ -686,9 +690,9 @@ class ParkingLotView @JvmOverloads constructor(
                         }
 
                         val hasConflict = filteredReservations.any { reservation ->
-                            reservation.date == Date && // Check if dates match
-                                    (reservation.startTime < endParam &&
-                                            (reservation.startTime + reservation.duration) > startParam) // Check time overlap
+                            reservation.date == getMidnightMillis(Date) && // Check if dates match
+                                    (startParam < reservation.startTime + reservation.duration &&
+                                            endParam > reservation.startTime) // Check time overlap
                         }
 
                         if (!hasConflict) {
@@ -725,7 +729,10 @@ class ParkingLotView @JvmOverloads constructor(
                                                         startTime = StartTime,
                                                         duration = finalDuration,
                                                         status = "Pending",
-                                                        createdAt = convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur")
+                                                        createdAt = convertToLocalMillisLegacy(
+                                                            DateTime.now().millis,
+                                                            "Asia/Kuala_Lumpur"
+                                                        )
                                                     )
 
                                                     lifecycleOwner!!.lifecycleScope.launch {
@@ -786,7 +793,10 @@ class ParkingLotView @JvmOverloads constructor(
                                                     startTime = StartTime,
                                                     duration = finalDuration,
                                                     status = "Pending",
-                                                    createdAt = convertToLocalMillisLegacy(DateTime.now().millis, "Asia/Kuala_Lumpur")
+                                                    createdAt = convertToLocalMillisLegacy(
+                                                        DateTime.now().millis,
+                                                        "Asia/Kuala_Lumpur"
+                                                    )
                                                 )
 
                                                 lifecycleOwner!!.lifecycleScope.launch {
