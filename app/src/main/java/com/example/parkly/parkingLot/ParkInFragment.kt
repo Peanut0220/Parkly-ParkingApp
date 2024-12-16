@@ -116,7 +116,6 @@ class ParkInFragment : Fragment() {
             .addOnSuccessListener { labels ->
                 var carDetected = false
                 var bumperDetected = false
-                var wheelDetected = false
 
                 Log.d("ok", labels.toString())
 
@@ -131,16 +130,9 @@ class ParkInFragment : Fragment() {
                         bumperDetected = true
                         Log.d("ok", "Bumper detected with confidence: ${label.confidence}")
                     }
-
-                    if (label.text.contains("Wheel", ignoreCase = true) && label.confidence > 0.6) {
-                        wheelDetected = true
-                        Log.d("ok", "Wheel detected with confidence: ${label.confidence}")
-                    }
-
                 }
-
                 // If both car and bumper are detected with required confidence
-                if (carDetected && bumperDetected && !wheelDetected) {
+                if (carDetected && bumperDetected) {
                     Toast.makeText(requireContext(), "Car detected, proceed", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(requireContext(), "No car detected, please take another photo", Toast.LENGTH_SHORT).show()

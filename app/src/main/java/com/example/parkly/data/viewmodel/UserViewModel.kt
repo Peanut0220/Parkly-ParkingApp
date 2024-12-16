@@ -53,7 +53,6 @@ class UserViewModel(val app: Application) : AndroidViewModel(app) {
             .update(
                 "name", user.name,
                 "avatar", user.avatar,
-                "ic",user.ic,
                 "phone",user.phone,
                 "dob",user.dob,
                 "type",user.type
@@ -69,7 +68,6 @@ class UserViewModel(val app: Application) : AndroidViewModel(app) {
                 user.name.isNotBlank() &&
                 user.email.isNotBlank() &&
                 user.phone.isNotBlank() &&
-                user.ic.isNotBlank() &&
                 user.dob != 0L && // Ensures dob has a valid timestamp
                 user.type.isNotBlank()
     }

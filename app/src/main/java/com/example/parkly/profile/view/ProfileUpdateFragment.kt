@@ -51,7 +51,6 @@ class ProfileUpdateFragment : Fragment() {
 
         userVM.getUserLD().observe(viewLifecycleOwner) { user ->
             binding.edtName.setText(user.name)
-            binding.edtIC.setText(user.ic)
             binding.edtPhone.setText(user.phone)
             binding.chipDate.text = displayDate(user.dob)
 
@@ -77,7 +76,6 @@ class ProfileUpdateFragment : Fragment() {
 
     private fun submit() {
         val name = binding.edtName.text.toString().trim()
-        val ic = binding.edtIC.text.toString().trim()
         val phone = binding.edtPhone.text.toString().trim()
         val avatar = binding.avatar.cropToBlob(300, 300)
         val dateText = binding.chipDate.text.toString()
@@ -94,7 +92,7 @@ class ProfileUpdateFragment : Fragment() {
         val icRegex = Regex("^\\d{6}-\\d{2}-\\d{4}$")
 
         // Check if any required fields are empty
-        if (name.isEmpty() || ic.isEmpty() || phone.isEmpty()) {
+        if (name.isEmpty() || phone.isEmpty()) {
             snackbar("Please fill in all required fields.")
             return
         }
@@ -105,15 +103,10 @@ class ProfileUpdateFragment : Fragment() {
             return
         }
 
-        // Validate IC number
-        if (!ic.matches(icRegex)) {
-            snackbar("Please enter a valid Malaysian IC number.(XXXXXX-XX-XXXX)")
-            return
-        }
 
         // Proceed with submission if all validations pass
         lifecycleScope.launch {
-            userVM.update(User(name = name, ic = ic, phone = phone, avatar = avatar,dob = dob,type = "Driver"))
+            userVM.update(User(name = name,phone = phone, avatar = avatar,dob = dob,type = "Driver"))
         }
     }
 

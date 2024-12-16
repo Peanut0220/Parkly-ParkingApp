@@ -10,7 +10,6 @@ data class User(
     val email: String = "",
     val phone: String = "",
     val avatar: Blob = Blob.fromBytes(ByteArray(0)),
-    val ic: String = "",
     val dob: Long = 0,
     val type: String = "",
     val token: String = "",
