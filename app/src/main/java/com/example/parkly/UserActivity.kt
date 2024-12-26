@@ -133,7 +133,6 @@ class UserActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onResume() {
         super.onResume()
         setOnlineStatus(userId, true)

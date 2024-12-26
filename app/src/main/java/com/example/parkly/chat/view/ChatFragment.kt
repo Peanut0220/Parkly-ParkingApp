@@ -134,7 +134,6 @@ class ChatFragment : Fragment() {
             val database = FirebaseDatabase.getInstance()
             val messageRef = database.getReference("chatRooms").child(chatRoomId).child("messages")
             var latestMessage = ChatMessage()
-
             val latestMessageQuery = messageRef.orderByChild("sendTime").limitToLast(1)
 
             latestMessageQuery.addChildEventListener(object : ChildEventListener {
@@ -153,7 +152,6 @@ class ChatFragment : Fragment() {
                             adapter.notifyDataSetChanged()
                             adapter.submitList(chatList.sortedByDescending { it.latestMessage.sendTime })
                         }
-
                     }
                 }
 
@@ -168,7 +166,6 @@ class ChatFragment : Fragment() {
 
                 override fun onCancelled(p0: DatabaseError) {
                 }
-
             })
         }
     }
